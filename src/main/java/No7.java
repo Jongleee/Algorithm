@@ -1,4 +1,3 @@
-
 class Solution7 {
     public int[] solution(long n) {
         // 숫자로 변환하여 한자리씩 배열에 저장
