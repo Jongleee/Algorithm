@@ -1,4 +1,4 @@
-class Solution {
+class Solution5 {
     public String solution(String s) {
         String answer = "";
         //단어를 하나씩 쪼개기

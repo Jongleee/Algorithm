@@ -1,5 +1,5 @@
 import java.util.*;
-class Solution {
+class Solution4 {
 
     public String solution(String[] participant, String[] completion) {
         String answer = "";

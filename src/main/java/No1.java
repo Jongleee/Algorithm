@@ -1,4 +1,4 @@
-class Solution {
+class Solution1 {
     public String solution(int a, int b) {
         String answer = "";
         // 1월 1일이 금요일이라고 주어졌으므로 금요일을 시작으로 요일의 값을 정하고 각 월의 총 일자를 정해줌

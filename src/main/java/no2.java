@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class Solution2 {
     public int[] solution(int[] arr, int divisor) {
         int cnt = 0;
         int j = 0;
