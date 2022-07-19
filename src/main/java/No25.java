@@ -4,8 +4,10 @@ public class No25 {
             // 제곱수인 경우에만 홀수이므로 빼면됨
             int sumAll=0;
             for (int i = left; i <=right ; i++) {
-                Double sqrt=Math.sqrt(i);
-                if(sqrt==sqrt.intValue()){
+//                double sqrt=Math.sqrt(i);
+//                if(sqrt== (int) sqrt){
+                double sqrt=Math.sqrt(i);
+                if(sqrt== (int) sqrt){
                     sumAll-=i;
                 }
                 else sumAll+=i;
