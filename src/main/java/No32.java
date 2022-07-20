@@ -5,20 +5,20 @@ public class No32 {
     class Solution {
         public int[] solution(int N, int[] stages) {
             int[] answer = new int[N];
-            double[] success = new double[N];
+            double[] remain = new double[N];
             double[][] failureNum = new double[N][2];
             //각 스테이지에 머무르는 사람의 수를 구함
             for (int i = 0; i < stages.length; i++) {
-                if (stages[i] <= N) success[stages[i] - 1] += 1;
+                if (stages[i] <= N) remain[stages[i] - 1] += 1;
             }
             //실패율을 구하기 위해 나눠질 값을 구함
             //분모는 단계마다 줄어들게 설정
             double denominator = stages.length;
             for (int i = 0; i < N; i++) {
-                double numerator = success[i];
+                double numerator = remain[i];
                 if (denominator == 0) failureNum[i][0] = 0;
                 else failureNum[i][0] = numerator / denominator;
-                denominator -= success[i];
+                denominator -= remain[i];
             }
             for (int i = 0; i < N; i++) {
                 failureNum[i][1] = i + 1;
