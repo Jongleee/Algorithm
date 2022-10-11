@@ -1,20 +1,21 @@
-import java.util.ArrayList;
-
 class Solution {
-    public int solution(int[][] board, int[] moves) {
-        int answer = 0;
-        ArrayList<Integer> arr=new ArrayList<Integer>();
-        for (int i = 0; i < moves.length; i++) {
-            for (int j = 0; j < board.length ; j++) {
-                if (board[j][moves[i]-1] != 0) {
-                    arr.add(board[j][moves[i]-1]);
-                    break;
-                }
-            }
+    public int solution(int[] arr) {
+        int answer = arr[0];
+        for (int i = 1; i <arr.length ; i++) {
+            int gcd = gcd(answer, arr[i]);
+            answer= answer*arr[i]/gcd;
         }
-        for (int i = 1; i < arr.size(); i++) {
-            if (arr.get(i) == arr.get(i - 1)) answer += 2;
-        }
+
         return answer;
+    }
+    public int gcd(int x, int y){
+        int a=Math.max(x,y);
+        int b = Math.min(x,y);
+        while (a%b!=0){
+            int r = a%b;
+            a=b;
+            b=r;
+        }
+        return b;
     }
 }
