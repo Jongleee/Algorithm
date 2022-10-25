@@ -1,4 +1,6 @@
-class Solution {
+package com.example.algorithm;
+
+public class ConversionWord {
     boolean[] visit;
     int depth = 0;
     int answer = 0;
