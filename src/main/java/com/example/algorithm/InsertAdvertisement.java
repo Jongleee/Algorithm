@@ -1,6 +1,6 @@
 package com.example.algorithm;
 
-public class lv3광고삽입 {
+public class InsertAdvertisement {
     public String solution(String play_time, String adv_time, String[] logs) {
         //"99:59:59","25:00:00",new String[]{"69:59:59-89:59:59", "01:00:00-21:00:00", "79:59:59-99:59:59", "11:00:00-31:00:00"}
         int playTime = timeToSecond(play_time);
