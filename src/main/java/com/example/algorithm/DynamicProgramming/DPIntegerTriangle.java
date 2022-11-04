@@ -1,4 +1,4 @@
-package com.example.algorithm;
+package com.example.algorithm.DynamicProgramming;
 
 public class DPIntegerTriangle {
     public int solution(int[][] triangle) {

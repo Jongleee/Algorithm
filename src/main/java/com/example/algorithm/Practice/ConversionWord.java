@@ -1,4 +1,4 @@
-package com.example.algorithm;
+package com.example.algorithm.Practice;
 
 public class ConversionWord {
     boolean[] visit;
