@@ -1,4 +1,4 @@
-package com.example.algorithm;
+package com.example.algorithm.Practice;
 
 public class BallMoveSimulation {
     public long solution(int n, int m, int x, int y, int[][] queries) {

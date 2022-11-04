@@ -1,4 +1,4 @@
-package com.example.algorithm;
+package com.example.algorithm.BFS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
