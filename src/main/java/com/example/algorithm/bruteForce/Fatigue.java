@@ -1,4 +1,4 @@
-package com.example.algorithm.BruteForce;
+package com.example.algorithm.bruteForce;
 
 public class Fatigue {
     public int answer = 0;

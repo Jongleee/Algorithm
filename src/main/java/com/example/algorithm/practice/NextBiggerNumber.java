@@ -1,4 +1,4 @@
-package com.example.algorithm.Practice;
+package com.example.algorithm.practice;
 
 public class NextBiggerNumber {
     public int solution(int n) {

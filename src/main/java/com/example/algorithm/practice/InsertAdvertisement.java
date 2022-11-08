@@ -1,4 +1,4 @@
-package com.example.algorithm.Practice;
+package com.example.algorithm.practice;
 
 public class InsertAdvertisement {
     public String solution(String play_time, String adv_time, String[] logs) {

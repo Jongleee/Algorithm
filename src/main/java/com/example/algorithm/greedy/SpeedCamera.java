@@ -1,4 +1,4 @@
-package com.example.algorithm.Greedy;
+package com.example.algorithm.greedy;
 
 import java.util.Arrays;
 import java.util.Comparator;

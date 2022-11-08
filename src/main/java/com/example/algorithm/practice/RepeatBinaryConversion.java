@@ -1,4 +1,4 @@
-package com.example.algorithm.Practice;
+package com.example.algorithm.practice;
 
 public class RepeatBinaryConversion {
     public int[] solution(String s) {

@@ -1,4 +1,4 @@
-package com.example.algorithm.DynamicProgramming;
+package com.example.algorithm.dynamicProgramming;
 
 import java.util.ArrayList;
 import java.util.HashSet;

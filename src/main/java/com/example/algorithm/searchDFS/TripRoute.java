@@ -1,4 +1,4 @@
-package com.example.algorithm.DFS;
+package com.example.algorithm.searchDFS;
 
 import java.util.ArrayList;
 import java.util.Collections;
