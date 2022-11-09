@@ -23,8 +23,8 @@ public class ConnectingIslands {
         return answer;
     }
 
-    public int findParent( int node) {
-        if (parent[node] == node) return node;
-        return findParent(parent[node]);
+    public int findParent( int i) {
+        if (parent[i] == i) return i;
+        return findParent(parent[i]);
     }
 }
