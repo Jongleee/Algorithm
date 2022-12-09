@@ -1,4 +1,4 @@
-package com.example.algorithm.practice;
+package com.example.algorithm.practice.searchDFS;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;

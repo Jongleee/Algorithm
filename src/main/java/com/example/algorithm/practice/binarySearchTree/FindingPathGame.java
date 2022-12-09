@@ -1,4 +1,4 @@
-package com.example.algorithm.practice;
+package com.example.algorithm.practice.binarySearchTree;
 
 import java.util.Arrays;
 import java.util.Comparator;
