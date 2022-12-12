@@ -3,13 +3,11 @@ package com.example.algorithm.practice;
 public class LockAndKey {
     public static void main(String[] args) {
         System.out.println(
-                solution(new int[][]{{0, 0, 0}, {1, 0, 0}, {0, 1, 1}}, new int[][]{{1, 1, 1}, {1, 1, 0}, {1, 0, 1}})
-        );
+                solution(new int[][] { { 0, 0, 0 }, { 1, 0, 0 }, { 0, 1, 1 } },
+                        new int[][] { { 1, 1, 1 }, { 1, 1, 0 }, { 1, 0, 1 } }));
     }
 
     public static boolean solution(int[][] key, int[][] lock) {
-        boolean answer = true;
-
         int m = key.length;
         int n = lock.length;
 
@@ -29,38 +27,39 @@ public class LockAndKey {
             rotate(key);
         }
 
-
         return false;
     }
 
-    public static boolean check(int[][] map, int[][] key, int lockLen){
+    public static boolean check(int[][] map, int[][] key, int lockLen) {
         int keyLen = key.length;
         int mapLen = map.length;
-        for(int i=0; i<mapLen-keyLen+1; i++){
-            for(int j=0; j<mapLen-keyLen+1; j++){
+        for (int i = 0; i < mapLen - keyLen + 1; i++) {
+            for (int j = 0; j < mapLen - keyLen + 1; j++) {
 
-                for(int k=0; k<keyLen; k++){
-                    for(int l=0; l<keyLen; l++){
-                        map[i+k][j+l] += key[k][l];
+                for (int k = 0; k < keyLen; k++) {
+                    for (int l = 0; l < keyLen; l++) {
+                        map[i + k][j + l] += key[k][l];
                     }
                 }
 
                 boolean flag = true;
-                for(int k=keyLen-1; k<keyLen+lockLen-1; k++){
-                    for(int l=keyLen-1; l<keyLen+lockLen-1; l++){
-                        if(map[k][l] != 1){
+                for (int k = keyLen - 1; k < keyLen + lockLen - 1; k++) {
+                    for (int l = keyLen - 1; l < keyLen + lockLen - 1; l++) {
+                        if (map[k][l] != 1) {
                             flag = false;
                             break;
                         }
                     }
-                    if(!flag) break;
+                    if (!flag)
+                        break;
                 }
 
-                if(flag) return true;
+                if (flag)
+                    return true;
 
-                for(int k=0; k<keyLen; k++){
-                    for(int l=0; l<keyLen; l++){
-                        map[i+k][j+l] -= key[k][l];
+                for (int k = 0; k < keyLen; k++) {
+                    for (int l = 0; l < keyLen; l++) {
+                        map[i + k][j + l] -= key[k][l];
                     }
                 }
 

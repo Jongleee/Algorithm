@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 public class IndicateN {
-    public int solution(int N, int number) {
-        int answer = 0;
+    public static void main(String[] args) {
+        System.out.println(solution(5,12));
+    }
+    public static int solution(int N, int number) {
         List<Set<Integer>> countList = new ArrayList<>();
 
         for(int i=0; i<9; i++)
