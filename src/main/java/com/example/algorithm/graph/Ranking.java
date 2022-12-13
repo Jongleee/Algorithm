@@ -1,7 +1,6 @@
 package com.example.algorithm.graph;
 
 public class Ranking {
-
     public static void main(String[] args) {
         System.out.println(solution(5, new int[][]{{4, 3}, {4, 2}, {3, 2}, {1, 2}, {2, 5}}));
     }
