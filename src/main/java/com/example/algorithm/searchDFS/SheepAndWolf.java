@@ -3,13 +3,13 @@ package com.example.algorithm.searchDFS;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class SheepAndWolf {
     static ArrayList<Integer>[] childs;
     static int[] graphInfo;
     static int sheepCnt = 0;
 
     public static int solution(int[] info, int[][] edges) {
-        //new int[]{0,1,0,1,1,0,1,0,0,1,0}, new int[][]{{0,1},{0,2},{1,3},{1,4},{2,5},{2,6},{3,7},{4,8},{6,9},{9,10}}
         graphInfo = info;
         childs = new ArrayList[info.length];
         for (int[] edge : edges) {
@@ -35,8 +35,11 @@ public class SheepAndWolf {
             case 1:
                 wolfCnt++;
                 break;
+            default:
+                break;
         }
-        if (wolfCnt >= sheepCnt) return;
+        if (wolfCnt >= sheepCnt)
+            return;
         SheepAndWolf.sheepCnt = Math.max(sheepCnt, SheepAndWolf.sheepCnt);
 
         List<Integer> list = new ArrayList<>(nextPos);
@@ -48,5 +51,10 @@ public class SheepAndWolf {
         for (int next : list) {
             dfs(next, sheepCnt, wolfCnt, list);
         }
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(
+            new int[]{0,1,0,1,1,0,1,0,0,1,0}, new
+            int[][]{{0,1},{0,2},{1,3},{1,4},{2,5},{2,6},{3,7},{4,8},{6,9},{9,10}}));    
     }
 }

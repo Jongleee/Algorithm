@@ -4,11 +4,6 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class DiskController {
-    public static void main(String[] args) {
-        System.out.println(
-                solution(new int[][]{{0, 3}, {1, 9}, {2, 6}})
-        );
-    }
     public static int solution(int[][] jobs) {
 
         int answer = 0;
@@ -32,6 +27,11 @@ public class DiskController {
             }
         }
 
-        return (int) Math.floor(answer / jobs.length);
+        return (answer / jobs.length);
+    }
+    public static void main(String[] args) {
+        System.out.println(
+                solution(new int[][]{{0, 3}, {1, 9}, {2, 6}})
+        );
     }
 }

@@ -1,4 +1,4 @@
-package com.example.algorithm.searchBFS;
+package com.example.algorithm.searchBroadFirstSearch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.Queue;
 
 public class ReturnToBase {
     int[] distance;
-    ArrayList<Integer>[] route;
+    ArrayList<?>[] route;
     int limit=1000000;
 
     public int[] solution(int n, int[][] roads, int[] sources, int destination) {
@@ -18,8 +18,8 @@ public class ReturnToBase {
             route[i] = new ArrayList<>();
         }
         for (int i = 0; i < roads.length; i++) {
-            route[roads[i][0]].add(roads[i][1]);
-            route[roads[i][1]].add(roads[i][0]);
+            route[roads[i][0]].add(roads[i][1], null);
+            route[roads[i][1]].add(roads[i][0], null);
         }
         Arrays.fill(distance,limit);
         bfs(destination);
@@ -39,7 +39,7 @@ public class ReturnToBase {
             int start = queue.poll();
 
             for (int i = 0; i < route[start].size(); i++) {
-                int next = route[start].get(i);
+                int next = (int) route[start].get(i);
                 if(distance[next]>distance[start]+1){
                     distance[next]=distance[start]+1;
                     queue.add(next);

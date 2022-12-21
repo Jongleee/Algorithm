@@ -1,4 +1,4 @@
-package com.example.algorithm.searchBFS;
+package com.example.algorithm.searchBroadFirstSearch;
 
 public class PickItem {
 
@@ -42,7 +42,7 @@ public class PickItem {
         }
     }
 
-    private void markEdge(int firstRow, int firstCol, int secondRow, int secondCol) {
+    private static void markEdge(int firstRow, int firstCol, int secondRow, int secondCol) {
         for (int row = firstRow; row <= secondRow; row++) {
             board[row][firstCol] = true;
         }
@@ -57,7 +57,7 @@ public class PickItem {
         }
     }
 
-    private void markSpace(int firstRow, int firstCol, int secondRow, int secondCol) {
+    private static void markSpace(int firstRow, int firstCol, int secondRow, int secondCol) {
         for (int row = firstRow + 1; row < secondRow; row++) {
             for (int col = firstCol + 1; col < secondCol; col++) {
                 board[row][col] = false;

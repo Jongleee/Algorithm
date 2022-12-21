@@ -1,4 +1,4 @@
-package com.example.algorithm.searchBFS;
+package com.example.algorithm.searchBroadFirstSearch;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,6 +9,7 @@ public class FarthestNode {
     int depth = 0;
     ArrayList<Integer>[] adj;
 
+    @SuppressWarnings("unchecked")
     public int solution(int n, int[][] edge) {
         int answer = 0;
         visit = new int[n + 1];
@@ -28,7 +29,7 @@ public class FarthestNode {
     }
 
     public void bfs(int start, int count) {
-        Queue<Integer> queue = new LinkedList();
+        Queue<Integer> queue = new LinkedList<>();
         queue.add(start);
         queue.add(count);
         visit[start] = count;

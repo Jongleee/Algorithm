@@ -21,7 +21,6 @@ public class FindingPathGame {
             }
         });
 
-        //트리를 만든다.
         Node root = node[0];
         for (int i = 1; i < node.length; i++) {
             insertNode(root, node[i]);

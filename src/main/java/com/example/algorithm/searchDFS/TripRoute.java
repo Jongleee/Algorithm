@@ -1,15 +1,14 @@
 package com.example.algorithm.searchDFS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class TripRoute {
-    ArrayList<String> visitRoute = new ArrayList<>();
-    boolean[] visited;
+    static ArrayList<String> visitRoute = new ArrayList<>();
+    static boolean[] visited;
 
-    public String[] solution(String[][] tickets) {
-//        tickets=new String[][]{{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}};
-        String[] answer = {};
+    public static String[] solution(String[][] tickets) {
         int cnt = 0;
         visited = new boolean[tickets.length];
         dfs("ICN", "ICN", tickets, cnt);
@@ -17,7 +16,7 @@ public class TripRoute {
         return visitRoute.get(0).split(" ");
     }
 
-    public void dfs(String start, String route, String[][] tickets, int cnt) {
+    public static void dfs(String start, String route, String[][] tickets, int cnt) {
         if (cnt == tickets.length) {
             visitRoute.add(route);
             return;
@@ -30,4 +29,7 @@ public class TripRoute {
             }
         }
     }
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(new String[][]{{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}})));
+        }
 }
