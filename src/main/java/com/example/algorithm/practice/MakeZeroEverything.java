@@ -2,14 +2,14 @@ package com.example.algorithm.practice;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unchecked")
 public class MakeZeroEverything {
-    int[] visit;
-    long[] temp;
-    ArrayList<Integer>[] adj;
-    long answer;
+    static int[] visit;
+    static long[] temp;
+    static ArrayList<Integer>[] adj;
+    static long answer;
 
-    public long solution(int[] a, int[][] edges) {
-        //new int[]{-5, 0, 2, 1, 2},new int[][]{{0, 1}, {3, 4}, {2, 3}, {0, 3}}
+    public static long solution(int[] a, int[][] edges) {
         int sum = 0;
         visit = new int[a.length];
         adj = new ArrayList[a.length];
@@ -28,7 +28,7 @@ public class MakeZeroEverything {
         return answer;
     }
 
-    public long dfs(int i) {
+    public static long dfs(int i) {
         visit[i] = 1;
         for (int j = 0; j < adj[i].size(); j++) {
             int next = adj[i].get(j);
@@ -36,8 +36,11 @@ public class MakeZeroEverything {
                 temp[i] += dfs(next);
             }
         }
-        this.answer += Math.abs(temp[i]);
+        answer += Math.abs(temp[i]);
         return temp[i];
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(new int[]{-5, 0, 2, 1, 2},new int[][]{{0, 1}, {3, 4}, {2, 3}, {0, 3}}));
     }
 
 }

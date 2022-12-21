@@ -4,7 +4,6 @@ import java.util.Stack;
 
 public class RightParenthesis {
     boolean solution(String s) {
-        int answer = 0;
         StringBuilder sb = new StringBuilder(s);
         return isCorrect(sb);
     }
