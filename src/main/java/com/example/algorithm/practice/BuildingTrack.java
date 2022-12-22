@@ -12,7 +12,10 @@ public class BuildingTrack {
     private static int[] dy = {1, 0, -1, 0};
 
     private static class Car implements Comparable<Car> {
-        int x, y, dir, sum;
+        int x;
+        int y;
+        int dir;
+        int sum;
 
         public Car(int x, int y, int dir, int sum) {
             this.x = x;
@@ -27,7 +30,7 @@ public class BuildingTrack {
         }
     }
 
-    static public int solution(int[][] board) {
+    public static int solution(int[][] board) {
         n = board.length;
         return build(0, 0, board);
     }
@@ -38,15 +41,8 @@ public class BuildingTrack {
         int[][][] minSum = new int[n][n][4];
 
         minSum[i][j][3] = minSum[i][j][2] = minSum[i][j][1] = minSum[i][j][0] = -1;
-        PriorityQueue<Car> queue = new PriorityQueue<Car>();
-        if (board[i][j + 1] == 0) {
-            queue.add(new Car(i, j + 1, 0, 100));
-            minSum[i][j + 1][0] = 100;
-        }
-        if (board[i + 1][j] == 0) {
-            queue.add(new Car(i + 1, j, 1, 100));
-            minSum[i + 1][j][1] = 100;
-        }
+        PriorityQueue<Car> queue = new PriorityQueue<>();
+        extracted(i, j, board, minSum, queue);
 
         while (!queue.isEmpty()) {
             Car tmp = queue.poll();
@@ -59,16 +55,32 @@ public class BuildingTrack {
                 answer = sum;
                 break;
             }
-            for (int d = 0; d < 4; d++) {
-                int row = x + dx[d];
-                int col = y + dy[d];
-                int tempSum = sum + (d == dir ? 100 : 600);
-                if (row < 0 || row >= n || col < 0 || col >= n || board[row][col] == 1) continue;
-                if (minSum[row][col][d] != 0 && minSum[row][col][d] <= tempSum) continue;
-                queue.add(new Car(row, col, d, tempSum));
-                minSum[row][col][d] = tempSum;
-            }
+            movingCar(board, minSum, queue, x, y, dir, sum);
         }
         return answer;
+    }
+
+    private static void movingCar(int[][] board, int[][][] minSum, PriorityQueue<Car> queue, int x, int y, int dir,
+            int sum) {
+        for (int d = 0; d < 4; d++) {
+            int row = x + dx[d];
+            int col = y + dy[d];
+            int tempSum = sum + (d == dir ? 100 : 600);
+            if (row < 0 || row >= n || col < 0 || col >= n || board[row][col] == 1) continue;
+            if (minSum[row][col][d] != 0 && minSum[row][col][d] <= tempSum) continue;
+            queue.add(new Car(row, col, d, tempSum));
+            minSum[row][col][d] = tempSum;
+        }
+    }
+
+    private static void extracted(int i, int j, int[][] board, int[][][] minSum, PriorityQueue<Car> queue) {
+        if (board[i][j + 1] == 0) {
+            queue.add(new Car(i, j + 1, 0, 100));
+            minSum[i][j + 1][0] = 100;
+        }
+        if (board[i + 1][j] == 0) {
+            queue.add(new Car(i + 1, j, 1, 100));
+            minSum[i + 1][j][1] = 100;
+        }
     }
 }

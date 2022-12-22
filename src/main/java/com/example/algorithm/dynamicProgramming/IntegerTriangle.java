@@ -1,8 +1,7 @@
 package com.example.algorithm.dynamicProgramming;
 
-public class DPIntegerTriangle {
-    public int solution(int[][] triangle) {
-        //new int[][]{{7}, {3, 8}, {8, 1, 0}, {2, 7, 4, 4}, {4, 5, 2, 6, 5}}
+public class IntegerTriangle {
+    public static int solution(int[][] triangle) {
         int[][] dp = new int[triangle.length][triangle.length];
         dp[0][0] = triangle[0][0];
 
@@ -18,5 +17,8 @@ public class DPIntegerTriangle {
 
         }
         return answer;
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(new int[][]{{7}, {3, 8}, {8, 1, 0}, {2, 7, 4, 4}, {4, 5, 2, 6, 5}}));
     }
 }
