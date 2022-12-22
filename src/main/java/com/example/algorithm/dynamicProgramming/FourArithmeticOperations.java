@@ -1,12 +1,11 @@
 package com.example.algorithm.dynamicProgramming;
 
 public class FourArithmeticOperations {
-//    new String[]{"5", "-", "3", "+", "1", "+", "2", "-", "4"}
-    private int numbers[];
-    private String operations[];
-    private int dp[][][];
+    private static int[] numbers;
+    private static String[] operations;
+    private static int[][][] dp;
 
-    public int solution(String arr[]) {
+    public static int solution(String[] arr) {
         int n = arr.length / 2;
 
         dp = new int[200][200][2];
@@ -31,45 +30,60 @@ public class FourArithmeticOperations {
         return calculate(0, n, 0);
     }
 
-    private int calculate(int start, int end, int sign) {
+    private static int calculate(int start, int end, int sign) {
         if (start == end) {
             dp[start][end][sign] = numbers[start];
             return dp[start][end][sign];
         }
-
-        if (sign == 0 && dp[start][end][sign] != -10000000) {
-            return dp[start][end][sign];
-        }
-
-        if (sign == 1 && dp[start][end][sign] != 10000000) {
-            return dp[start][end][sign];
+        if (dp[start][end][sign] != -10000000) {
+            if (sign == 0 || sign == 1) {
+                return dp[start][end][sign];
+            }
         }
 
         dp[start][end][sign] = 0;
 
-        int result = sign == 0 ? -10000000 : 10000000;
+        int result = 0;
 
         if (sign == 0) {
-            for (int i = start; i < end; i++) {
-                if (operations[i].equals("-")) {
-                    result = Math.max(result, calculate(start, i, 0) - calculate(i + 1, end, 1));
-                    continue;
-                }
-                result = Math.max(result, calculate(start, i, 0) + calculate(i + 1, end, 0));
-            }
+            result = signZero(start, end);
         }
 
         if (sign == 1) {
-            for (int i = start; i < end; i++) {
-                if (operations[i].equals("-")) {
-                    result = Math.min(result, calculate(start, i, 1) - calculate(i + 1, end, 0));
-                    continue;
-                }
-                result = Math.min(result, calculate(start, i, 1) + calculate(i + 1, end, 1));
-            }
+            result = signOne(start, end);
         }
 
         dp[start][end][sign] = result;
         return dp[start][end][sign];
+    }
+
+    private static int signOne(int start, int end) {
+        int result;
+        result = 10000000;
+        for (int i = start; i < end; i++) {
+            if (operations[i].equals("-")) {
+                result = Math.min(result, calculate(start, i, 1) - calculate(i + 1, end, 0));
+                continue;
+            }
+            result = Math.min(result, calculate(start, i, 1) + calculate(i + 1, end, 1));
+        }
+        return result;
+    }
+
+    private static int signZero(int start, int end) {
+        int result;
+        result = -10000000;
+        for (int i = start; i < end; i++) {
+            if (operations[i].equals("-")) {
+                result = Math.max(result, calculate(start, i, 0) - calculate(i + 1, end, 1));
+                continue;
+            }
+            result = Math.max(result, calculate(start, i, 0) + calculate(i + 1, end, 0));
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution(new String[] { "5", "-", "3", "+", "1", "+", "2", "-", "4" }));
     }
 }
