@@ -4,10 +4,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class OvertimeIndex {
-    public long solution(int n, int[] works) {
-        //4, new int[] {4, 3, 3}
-        //1, new int[] {2,1,2}
-        //3, new int[] {1,1}
+    public static long solution(int n, int[] works) {
         long answer = 0;
         PriorityQueue<Integer> worksQueue = new PriorityQueue<>(Comparator.reverseOrder());
         for (int work : works) {
@@ -18,13 +15,19 @@ public class OvertimeIndex {
             worksQueue.add(max - 1);
             n--;
 
-            if (worksQueue.peek() == 0) break;
+            if (worksQueue.peek() == 0)
+                break;
         }
-        if (n > 0) return 0;
+        if (n > 0)
+            return 0;
         for (int i = 0; i < works.length; i++) {
             int work = worksQueue.poll();
             answer += (long) work * work;
         }
         return answer;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution(4, new int[] { 4, 3, 3 }));
     }
 }
