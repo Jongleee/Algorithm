@@ -16,7 +16,9 @@ public class JewelryShopping {
         Set<String> set = new HashSet<>();
         Queue<String> queue = new LinkedList<>();
 
-        int len = gems.length + 1, start = 0, index = 0;
+        int len = gems.length + 1;
+        int start = 0;
+        int index = 0;
 
         set.addAll(Arrays.asList(gems));
 

@@ -12,46 +12,24 @@ public class InstallColumnBeam {
     static boolean[][] pillar;
     static boolean[][] bar;
 
-    public static int[][] solution(int n, int[][] build_frame) {
+    public static int[][] solution(int n, int[][] buildFrame) {
         pillar = new boolean[n + 1][n + 1];
         bar = new boolean[n + 1][n + 1];
 
         int count = 0;
-        for (int i = 0; i < build_frame.length; i++) {
-            int x = build_frame[i][0];
-            int y = build_frame[i][1];
-            int type = build_frame[i][2];
-            int action = build_frame[i][3];
+        for (int i = 0; i < buildFrame.length; i++) {
+            int x = buildFrame[i][0];
+            int y = buildFrame[i][1];
+            int type = buildFrame[i][2];
+            int action = buildFrame[i][3];
 
             switch (type) {
                 case 0:
-                    if (action == 1) {
-                        if (checkPillar(x, y)) {
-                            pillar[x][y] = true;
-                            count++;
-                        }
-                    } else {
-                        pillar[x][y] = false;
-                        if (canDelete(n) == false)
-                            pillar[x][y] = true;
-                        else
-                            count--;
-                    }
+                    count = pillarCount(n, count, x, y, action);
                     break;
 
                 case 1:
-                    if (action == 1) {
-                        if (checkBar(x, y)) { 
-                            bar[x][y] = true;
-                            count++;
-                        }
-                    } else { 
-                        bar[x][y] = false;
-                        if (canDelete(n) == false)
-                            bar[x][y] = true;
-                        else
-                            count--;
-                    }
+                    count = barCount(n, count, x, y, action);
                     break;
 
                 default:
@@ -78,12 +56,44 @@ public class InstallColumnBeam {
         return result;
     }
 
+    private static int barCount(int n, int count, int x, int y, int action) {
+        if (action == 1) {
+            if (checkBar(x, y)) { 
+                bar[x][y] = true;
+                count++;
+            }
+        } else { 
+            bar[x][y] = false;
+            if (!canDelete(n))
+                bar[x][y] = true;
+            else
+                count--;
+        }
+        return count;
+    }
+
+    private static int pillarCount(int n, int count, int x, int y, int action) {
+        if (action == 1) {
+            if (checkPillar(x, y)) {
+                pillar[x][y] = true;
+                count++;
+            }
+        } else {
+            pillar[x][y] = false;
+            if (!canDelete(n))
+                pillar[x][y] = true;
+            else
+                count--;
+        }
+        return count;
+    }
+
     public static boolean canDelete(int n) {
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= n; j++) {
-                if (pillar[i][j] && checkPillar(i, j) == false)
+                if (pillar[i][j] && !checkPillar(i, j))
                     return false; 
-                else if (bar[i][j] && checkBar(i, j) == false)
+                if (bar[i][j] && !checkBar(i, j))
                     return false;
             }
         }
@@ -91,20 +101,10 @@ public class InstallColumnBeam {
     }
 
     public static boolean checkPillar(int x, int y) {
-        if (y == 0)
-            return true;
-        else if (y > 0 && pillar[x][y - 1])
-            return true;
-        else if (x > 0 && bar[x - 1][y] || bar[x][y])
-            return true;
-        return false;
+        return (y == 0)||(y > 0 && pillar[x][y - 1])||(x > 0 && bar[x - 1][y] || bar[x][y]);
     }
 
     public static boolean checkBar(int x, int y) {
-        if (y > 0 && pillar[x][y - 1] || pillar[x + 1][y - 1])
-            return true; 
-        else if (x > 0 && bar[x - 1][y] && bar[x + 1][y])
-            return true;
-        return false;
+        return (y > 0 && pillar[x][y - 1] || pillar[x + 1][y - 1])||(x > 0 && bar[x - 1][y] && bar[x + 1][y]);
     }
 }

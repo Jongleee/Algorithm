@@ -29,9 +29,8 @@ public class DiskController {
 
         return (answer / jobs.length);
     }
+
     public static void main(String[] args) {
-        System.out.println(
-                solution(new int[][]{{0, 3}, {1, 9}, {2, 6}})
-        );
+        System.out.println(solution(new int[][] { { 0, 3 }, { 1, 9 }, { 2, 6 } }));
     }
 }

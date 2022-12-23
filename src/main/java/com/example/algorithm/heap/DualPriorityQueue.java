@@ -1,11 +1,11 @@
 package com.example.algorithm.heap;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class DualPriorityQueue {
-    public int[] solution(String[] operations) {
-        //                new String[]{"I -45", "I 653", "D 1", "I -642", "I 45", "I 97", "D 1", "D -1", "I 333"}
+    public static int[] solution(String[] operations) {
         int[] answer = {0,0};
         PriorityQueue<Integer> priorityQueueWithMax = new PriorityQueue<>(Comparator.reverseOrder());
         PriorityQueue<Integer> priorityQueueWithMin = new PriorityQueue<>();
@@ -37,5 +37,8 @@ public class DualPriorityQueue {
             answer[1] = priorityQueueWithMin.peek();
         }
         return answer;
+    }
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(new String[]{"I -45", "I 653", "D 1", "I -642", "I 45", "I 97", "D 1", "D -1", "I 333"})));
     }
 }

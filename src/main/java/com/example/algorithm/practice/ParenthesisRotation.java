@@ -22,23 +22,35 @@ public class ParenthesisRotation {
             if(stack.isEmpty())stack.push(s.charAt(i));
             else {
                 if (s.charAt(i) == ']') {
-                    if (stack.peek() == '[') stack.pop();
-                    else {
-                        stack.push(s.charAt(i));
-                    }
+                    popConditionBig(s, stack, i);
                 }
 
                 else if(s.charAt(i)=='}'){
-                    if(stack.peek() == '{') stack.pop();
-                    else {stack.push(s.charAt(i));}
+                    popConditionMiddle(s, stack, i);
                 }
                 else if(s.charAt(i)==')'){
-                    if(stack.peek() == '(') stack.pop();
-                    else {stack.push(s.charAt(i));}
+                    popConditionSmall(s, stack, i);
                 }
                 else {stack.push(s.charAt(i));}
             }
         }
         return stack.isEmpty();
+    }
+
+    private void popConditionSmall(StringBuilder s, Stack<Character> stack, int i) {
+        if(stack.peek() == '(') stack.pop();
+        else {stack.push(s.charAt(i));}
+    }
+
+    private void popConditionMiddle(StringBuilder s, Stack<Character> stack, int i) {
+        if(stack.peek() == '{') stack.pop();
+        else {stack.push(s.charAt(i));}
+    }
+
+    private void popConditionBig(StringBuilder s, Stack<Character> stack, int i) {
+        if (stack.peek() == '[') stack.pop();
+        else {
+            stack.push(s.charAt(i));
+        }
     }
 }

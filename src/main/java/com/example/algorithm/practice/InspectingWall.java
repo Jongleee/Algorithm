@@ -2,7 +2,7 @@ package com.example.algorithm.practice;
 
 public class InspectingWall {
     public static void main(String[] args) {
-        System.out.println(solution(12, new int[] { 1, 3, 4, 9, 10 }, new int[] { 3, 5, 7 }));
+        System.out.println(solution(12, new int[] { 1, 5, 6, 10 }, new int[] { 1, 2, 3, 4 }));
     }
 
     static int ans = -1;
@@ -61,7 +61,8 @@ public class InspectingWall {
     private static int[] spreadPoint(int n, int[] weak) {
         int[] spread = new int[weak.length * 2 - 1];
         for (int i = 0; i < weak.length; i++) {
-            spread[i] = weak[i];
+            if (i <= weak.length)
+                spread[i] = weak[i];
         }
         for (int i = 0; i < weak.length - 1; i++) {
             spread[i + weak.length] = weak[i] + n;

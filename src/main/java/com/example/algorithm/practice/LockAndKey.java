@@ -43,30 +43,39 @@ public class LockAndKey {
                 }
 
                 boolean flag = true;
-                for (int k = keyLen - 1; k < keyLen + lockLen - 1; k++) {
-                    for (int l = keyLen - 1; l < keyLen + lockLen - 1; l++) {
-                        if (map[k][l] != 1) {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (!flag)
-                        break;
-                }
+                flag = checkKey(map, lockLen, keyLen, flag);
 
                 if (flag)
                     return true;
 
-                for (int k = 0; k < keyLen; k++) {
-                    for (int l = 0; l < keyLen; l++) {
-                        map[i + k][j + l] -= key[k][l];
-                    }
-                }
+                removeKey(map, key, keyLen, i, j);
 
             }
         }
 
         return false;
+    }
+
+    private static boolean checkKey(int[][] map, int lockLen, int keyLen, boolean flag) {
+        for (int k = keyLen - 1; k < keyLen + lockLen - 1; k++) {
+            for (int l = keyLen - 1; l < keyLen + lockLen - 1; l++) {
+                if (map[k][l] != 1) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (!flag)
+                break;
+        }
+        return flag;
+    }
+
+    private static void removeKey(int[][] map, int[][] key, int keyLen, int i, int j) {
+        for (int k = 0; k < keyLen; k++) {
+            for (int l = 0; l < keyLen; l++) {
+                map[i + k][j + l] -= key[k][l];
+            }
+        }
     }
 
     public static void rotate(int[][] key) {

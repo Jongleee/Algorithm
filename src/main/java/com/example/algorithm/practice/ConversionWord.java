@@ -1,12 +1,11 @@
 package com.example.algorithm.practice;
 
 public class ConversionWord {
-    boolean[] visit;
+    static boolean[] visit;
     int depth = 0;
-    int answer = 0;
+    static int answer = 0;
 
-    public int solution(String begin, String target, String[] words) {
-//        solution("hit","cog",new String[]{"hot", "dot", "dog", "lot", "log", "cog"});
+    public static int solution(String begin, String target, String[] words) {
         visit = new boolean[words.length];
         int test = 0;
         for (String word : words) {
@@ -17,7 +16,7 @@ public class ConversionWord {
         return answer;
     }
 
-    public void dfs(String begin, String target, String[] words, int depth) {
+    public static void dfs(String begin, String target, String[] words, int depth) {
         if (begin.equals(target)) {
             answer = depth;
             return;
@@ -36,5 +35,8 @@ public class ConversionWord {
                 visit[i] = false;
             }
         }
+    }
+    public static void main(String[] args) {
+        System.out.println(solution("hit","cog",new String[]{"hot", "dot", "dog", "lot", "log", "cog"}));
     }
 }

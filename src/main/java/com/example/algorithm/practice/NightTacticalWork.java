@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class NightTacticalWork {
-    public int solution(int distance, int[][] scope, int[][] times) {
-        //10, new int[][]{{3, 4}, {5, 8}}, new int[][]{{2, 5}, {4, 3}}
+    public static int solution(int distance, int[][] scope, int[][] times) {
         List<Integer> temp = new ArrayList<>();
         for (int i = 0; i < scope.length; i++) {
 
@@ -27,7 +26,10 @@ public class NightTacticalWork {
             }
         }
         Collections.sort(temp);
-        if(temp.size()>0) return temp.get(0);
+        if(!temp.isEmpty()) return temp.get(0);
         return distance;
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(10, new int[][]{{3, 4}, {5, 8}}, new int[][]{{2, 5}, {4, 3}}));
     }
 }
