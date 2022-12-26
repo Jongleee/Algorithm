@@ -14,8 +14,7 @@ class Solution2 {
         }
         // 나누어 떨어지지 않는 경우 {-1} 대입
         if (cnt == 0) {
-            int[] answer = {-1};
-            return answer;
+            return new int[] {-1};
         }
         // 나누어 떨어지는 값의 갯수 만큼의 배열을 정의
         int[] answer = new int[cnt];

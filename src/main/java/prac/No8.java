@@ -8,12 +8,11 @@ class Solution8 {
         String[] a = String.valueOf(n).split("");
         // 역순 배열
         Arrays.sort(a, Collections.reverseOrder());
-        String b="";
+        StringBuilder b=new StringBuilder();
         // 배열을 역순으로 표시
         for (int i = 0; i < a.length; i++) {
-            b+=a[i];
+            b.append(a[i]);
         }
-        long answer=Long.parseLong(b);
-        return answer;
+        return Long.parseLong(b.toString());
     }
 }
