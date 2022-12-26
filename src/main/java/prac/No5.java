@@ -2,7 +2,7 @@ package prac;
 
 class Solution5 {
     public String solution(String s) {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         //단어를 하나씩 쪼개기
         String[] ss = s.split("");
 
@@ -22,9 +22,9 @@ class Solution5 {
                 ss[i] = ss[i].toLowerCase();
                 cnt++;
             }
-            answer+=ss[i];
+            answer.append(ss[i]);
 
         }
-        return answer;
+        return answer.toString();
     }
 }
