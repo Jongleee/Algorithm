@@ -8,7 +8,7 @@ class Solution8 {
         String[] a = String.valueOf(n).split("");
         // 역순 배열
         Arrays.sort(a, Collections.reverseOrder());
-        StringBuilder b=new StringBuilder();
+        StringBuilder b = new StringBuilder();
         // 배열을 역순으로 표시
         for (int i = 0; i < a.length; i++) {
             b.append(a[i]);
