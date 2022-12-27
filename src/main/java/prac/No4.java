@@ -1,6 +1,8 @@
 package prac;
 
 import java.util.*;
+import java.util.Map.Entry;
+
 class Solution4 {
 
     public String solution(String[] participant, String[] completion) {
@@ -8,27 +10,29 @@ class Solution4 {
         Arrays.sort(participant);
         Arrays.sort(completion);
         // 반복문으로 정렬된 값의 비교에서 일치하지 않는 경우를 찾아줌
-        for (int i=0;i<completion.length;i++){
-            if(!participant[i].equals(completion[i])){
+        for (int i = 0; i < completion.length; i++) {
+            if (!participant[i].equals(completion[i])) {
                 return participant[i];
             }
         }
         // 위의 반복문에서 일치하지 않는 값이 없다면 배열의 마지막 값이 답이 됨
-        return participant[participant.length -1];
+        return participant[participant.length - 1];
     }
 }
 
-class Solution4hash{
+class Solution4hash {
     public String solution(String[] participant, String[] completion) {
-        HashMap<String,Integer>map=new HashMap<>();
+        HashMap<String, Integer> map = new HashMap<>();
         String answer = "";
-        for (String key : participant) map.put(key, map.getOrDefault(key,0) + 1);
+        for (String key : participant)
+            map.put(key, map.getOrDefault(key, 0) + 1);
 
-        for (String key : completion) map.put(key, map.get(key) - 1);
+        for (String key : completion)
+            map.put(key, map.get(key) - 1);
 
-        for (String key : map.keySet()) {
-            if (map.get(key) !=  0)
-                return key;
+        for (Entry<String, Integer> key : map.entrySet()) {
+            if (key.getValue() != 0)
+                return key.getKey();
         }
         return answer;
     }

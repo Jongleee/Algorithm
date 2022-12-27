@@ -8,10 +8,9 @@ public class No12 {
         for (int i = 0; i < a.length; i++) {
             n += Integer.parseInt(a[i]);
         }
-        if (x % n == 0) {
-            return true;
-        } else return false;
-
+        if (n == 0)
+            return false;
+        return x % n == 0;
     }
 
     public static void main(String[] args) {
