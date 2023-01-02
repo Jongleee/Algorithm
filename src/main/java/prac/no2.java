@@ -3,7 +3,7 @@ package prac;
 import java.util.*;
 
 class Solution2 {
-    public int[] solution(int[] arr, int divisor) {
+    public static int[] solution(int[] arr, int divisor) {
         int cnt = 0;
         int j = 0;
         // divisor로 나눈 나머지가 0인 값의 갯수를 구함
@@ -28,5 +28,9 @@ class Solution2 {
 
         Arrays.sort(answer);
         return answer;
+    }
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(new int[]{2, 36, 1, 3},	1)));
+        // [1, 2, 3, 36]
     }
 }
