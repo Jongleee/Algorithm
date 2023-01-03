@@ -1,7 +1,7 @@
 package prac;
 
 public class No6 {
-    public int solution(int n) {
+    public static int solution(int n) {
         int answer = 0;
         // 문자열로 변환하여 각 숫자를 구함
         String[] a = Integer.toString(n).split("");
@@ -13,5 +13,9 @@ public class No6 {
         // 10으로 나눈 나머지 더해도 될듯?
 
         return answer;
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(987));
+        //24
     }
 }

@@ -3,7 +3,7 @@ package prac;
 import java.util.Arrays;
 
 class Solution10 {
-    public int[] solution(int[] arr) {
+    public static int[] solution(int[] arr) {
         // 먼저 빈 배열인 경우에 값을 정해줌
         if (arr.length <= 1) {
             return new int[] { -1 };
@@ -25,5 +25,9 @@ class Solution10 {
 
         }
         return answer;
+    }
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(new int[]{4,3,2,1})));
+        //[4, 3, 2]
     }
 }

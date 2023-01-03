@@ -1,7 +1,7 @@
 package prac;
 
 class Solution5 {
-    public String solution(String s) {
+    public static String solution(String s) {
         StringBuilder answer = new StringBuilder();
         // 단어를 하나씩 쪼개기
         String[] ss = s.split("");
@@ -26,5 +26,9 @@ class Solution5 {
 
         }
         return answer.toString();
+    }
+    public static void main(String[] args) {
+        System.out.println(solution("try hello world"));
+        //TrY HeLlO WoRlD
     }
 }
