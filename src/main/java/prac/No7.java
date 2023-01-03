@@ -1,7 +1,9 @@
 package prac;
 
+import java.util.Arrays;
+
 class Solution7 {
-    public int[] solution(long n) {
+    public static int[] solution(long n) {
         // 숫자로 변환하여 한자리씩 배열에 저장
         String[] b = String.valueOf(n).split("");
         int[] answer = new int[b.length];
@@ -11,5 +13,9 @@ class Solution7 {
             answer[i] = Integer.parseInt(b[j]);
         }
         return answer;
+    }
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(21425)));
+        //[5, 2, 4, 1, 2]
     }
 }
