@@ -1,0 +1,3 @@
+SELECT  COUNT(*) AS USERS
+FROM user_info
+WHERE age is null
