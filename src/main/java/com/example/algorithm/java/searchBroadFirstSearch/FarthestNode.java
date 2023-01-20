@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class FarthestNode {
-    int[] visit;
-    int depth = 0;
-    ArrayList<Integer>[] adj;
+    static int[] visit;
+    static int depth = 0;
+    static ArrayList<Integer>[] adj;
 
     @SuppressWarnings("unchecked")
-    public int solution(int n, int[][] edge) {
+    public static int solution(int n, int[][] edge) {
         int answer = 0;
         visit = new int[n + 1];
         adj = new ArrayList[n + 1];
@@ -28,7 +28,7 @@ public class FarthestNode {
         return answer;
     }
 
-    public void bfs(int start, int count) {
+    public static void bfs(int start, int count) {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(start);
         queue.add(count);
@@ -47,4 +47,8 @@ public class FarthestNode {
             }
         }
     }
+    public static void main(String[] args) {
+        System.out.println(solution(6,	new int[][] {{3, 6}, {4, 3}, {3, 2}, {1, 3}, {1, 2}, {2, 4}, {5, 2}}));
+    }
+    //답 3
 }

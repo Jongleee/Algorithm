@@ -51,4 +51,5 @@ public class BallMoveSimulation {
         System.out.println(
                 solution(2, 5, 0, 1, new int[][] { { 3, 1 }, { 2, 2 }, { 1, 1 }, { 2, 3 }, { 0, 1 }, { 2, 1 } }));
     }
+    //답 2
 }

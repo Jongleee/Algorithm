@@ -32,11 +32,14 @@ public class ChooseHikingCourse {
         }
 
         for (int[] i : paths) {
-            if(isGate(i[0], gates)||isSummit(i[1], summits)) graph.get(i[0]).add(new Edge(i[1], i[2]));
-            else if(isGate(i[1], gates)||isSummit(i[0], summits)) graph.get(i[1]).add(new Edge(i[0], i[2]));
-            else{
-            graph.get(i[0]).add(new Edge(i[1], i[2]));
-            graph.get(i[1]).add(new Edge(i[0], i[2]));}
+            if (isGate(i[0], gates) || isSummit(i[1], summits))
+                graph.get(i[0]).add(new Edge(i[1], i[2]));
+            else if (isGate(i[1], gates) || isSummit(i[0], summits))
+                graph.get(i[1]).add(new Edge(i[0], i[2]));
+            else {
+                graph.get(i[0]).add(new Edge(i[1], i[2]));
+                graph.get(i[1]).add(new Edge(i[0], i[2]));
+            }
         }
 
         int[] intensity = new int[n + 1];
@@ -99,12 +102,10 @@ public class ChooseHikingCourse {
     }
 
     public static void main(String[] args) {
-        System.out
-                .println(
-                        Arrays.toString(
-                                solution(6,
-                                        new int[][] { { 1, 2, 3 }, { 2, 3, 5 }, { 2, 4, 2 }, { 2, 5, 4 }, { 3, 4, 4 },
-                                                { 4, 5, 3 }, { 4, 6, 1 }, { 5, 6, 1 } },
-                                        new int[] { 1, 3 }, new int[] { 5 })));
+        System.out.println(Arrays.toString(solution(6,
+                new int[][] { { 1, 2, 3 }, { 2, 3, 5 }, { 2, 4, 2 }, { 2, 5, 4 }, { 3, 4, 4 }, { 4, 5, 3 }, { 4, 6, 1 },
+                        { 5, 6, 1 } },
+                new int[] { 1, 3 }, new int[] { 5 })));
     }
+    //답 [5, 3]
 }
