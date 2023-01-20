@@ -42,4 +42,5 @@ public class FIFOScheduling {
     public static void main(String[] args) {
         System.out.println(solution(6, new int[] { 1, 2, 3 }));
     }
+    //답 2
 }
