@@ -3,8 +3,8 @@ package com.example.algorithm.java.practice.dynamicProgramming;
 public class CodingTestStudy {
     int goalAlp = 0;
     int goalCop = 0;
-    public int solution(int alp, int cop, int[][] problems) {
 
+    public int solution(int alp, int cop, int[][] problems) {
 
         getGoal(problems);
 
@@ -21,11 +21,7 @@ public class CodingTestStudy {
 
         int[][] dp = new int[goalAlp + 2][goalCop + 2];
 
-        for (int i = alp; i <= goalAlp; i++) {
-            for (int j = cop; j <= goalCop; j++) {
-                dp[i][j] = Integer.MAX_VALUE;
-            }
-        }
+        dpSetting(alp, cop, dp);
 
         dp[alp][cop] = 0;
 
@@ -36,26 +32,13 @@ public class CodingTestStudy {
 
                 dp[i][j + 1] = Math.min(dp[i][j + 1], dp[i][j] + 1);
 
-                for (int[] p : problems) {
-
-                    if (i >= p[0] && j >= p[1]) {
-                        if (i + p[2] > goalAlp && j + p[3] > goalCop) {
-                            dp[goalAlp][goalCop] = Math.min(dp[goalAlp][goalCop], dp[i][j] + p[4]);
-                        } else if (i + p[2] > goalAlp) {
-                            dp[goalAlp][j + p[3]] = Math.min(dp[goalAlp][j + p[3]], dp[i][j] + p[4]);
-                        } else if (j + p[3] > goalCop) {
-                            dp[i + p[2]][goalCop] = Math.min(dp[i + p[2]][goalCop], dp[i][j] + p[4]);
-                        } else if (i + p[2] <= goalAlp && j + p[3] <= goalCop) {
-                            dp[i + p[2]][j + p[3]] = Math.min(dp[i + p[2]][j + p[3]], dp[i][j] + p[4]);
-                        }
-                    }
-
-                }
+                findAnswer(problems, dp, i, j);
             }
         }
 
         return dp[goalAlp][goalCop];
     }
+
     private void getGoal(int[][] problems) {
         for (int i = 0; i < problems.length; i++) {
             if (problems[i][0] > goalAlp)
@@ -66,4 +49,29 @@ public class CodingTestStudy {
         }
     }
 
+    private void dpSetting(int alp, int cop, int[][] dp) {
+        for (int i = alp; i <= goalAlp; i++) {
+            for (int j = cop; j <= goalCop; j++) {
+                dp[i][j] = Integer.MAX_VALUE;
+            }
+        }
+    }
+
+    private void findAnswer(int[][] problems, int[][] dp, int i, int j) {
+        for (int[] p : problems) {
+
+            if (i >= p[0] && j >= p[1]) {
+                if (i + p[2] > goalAlp && j + p[3] > goalCop) {
+                    dp[goalAlp][goalCop] = Math.min(dp[goalAlp][goalCop], dp[i][j] + p[4]);
+                } else if (i + p[2] > goalAlp) {
+                    dp[goalAlp][j + p[3]] = Math.min(dp[goalAlp][j + p[3]], dp[i][j] + p[4]);
+                } else if (j + p[3] > goalCop) {
+                    dp[i + p[2]][goalCop] = Math.min(dp[i + p[2]][goalCop], dp[i][j] + p[4]);
+                } else if (i + p[2] <= goalAlp && j + p[3] <= goalCop) {
+                    dp[i + p[2]][j + p[3]] = Math.min(dp[i + p[2]][j + p[3]], dp[i][j] + p[4]);
+                }
+            }
+
+        }
+    }
 }
