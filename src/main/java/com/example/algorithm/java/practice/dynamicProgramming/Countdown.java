@@ -12,8 +12,7 @@ public class Countdown {
 
     public static void init(int t) {
         for (int i = 1; i <= t; i++)
-            for (int j = 0; j < 1; j++)
-                dp[i][j] = max;
+            dp[i][0] = max;
 
         score.add(50);
         for (int i = 1; i < 21; i++)
@@ -27,12 +26,12 @@ public class Countdown {
         }
     }
 
-    public static void setMin(int[] res, int[] comp) {
-        if (res[0] > comp[0]) {
-            res[0] = comp[0];
-            res[1] = comp[1];
-        } else if (res[0] == comp[0] && res[1] < comp[1])
-            res[1] = comp[1];
+    public static void setMin(int[] a, int[] b) {
+        if (a[0] > b[0]) {
+            a[0] = b[0];
+            a[1] = b[1];
+        } else if (a[0] == b[0] && a[1] < b[1])
+            a[1] = b[1];
     }
 
     public static int[] solve(int remain) {
@@ -45,15 +44,13 @@ public class Countdown {
 
         int[] result = new int[] { max, max };
 
-        // Single, Ball 숫자 순회 tmpRes[0] + 1, tmpRes[0] + 1
         for (int i = 0; i < score.size(); i++) {
-            int[] tmpRes = solve(remain - score.get(i));
-            setMin(result, new int[] { tmpRes[0] + 1, tmpRes[1] + 1 });
+            int[] temp = solve(remain - score.get(i));
+            setMin(result, new int[] { temp[0] + 1, temp[1] + 1 });
         }
-        // Double, Tripple 숫자 순회
         for (int i = 0; i < multiScore.size(); i++) {
-            int[] tmpRes = solve(remain - multiScore.get(i));
-            setMin(result, new int[] { tmpRes[0] + 1, tmpRes[1] });
+            int[] temp = solve(remain - multiScore.get(i));
+            setMin(result, new int[] { temp[0] + 1, temp[1] });
         }
 
         dp[remain][0] = result[0];
