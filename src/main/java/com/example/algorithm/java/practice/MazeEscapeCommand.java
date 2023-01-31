@@ -9,7 +9,7 @@ public class MazeEscapeCommand {
         int up = 0;
         int distance = Math.abs(x - r) + Math.abs(c - y);
         k -= distance;
-        if (k < 0 || k % 2 != 0)
+        if (k < 0 || k % 2 != 0||m<y)
             return "impossible";
         if (x - r > 0)
             up = x - r;
