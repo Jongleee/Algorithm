@@ -68,7 +68,7 @@ public class PuzzlePieceFill {
     private static void init(int[][] gameBoard, int[][] table) {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                if (gameBoard[i][j] == 0) {
+                if (gameBoard[i][j] == 0 && !visited[i][j]) {
                     empty.add((ArrayList<Point>) check(gameBoard, i, j, 0));
                 }
             }
@@ -86,7 +86,7 @@ public class PuzzlePieceFill {
         }
     }
 
-    public static ArrayList<Point> check(int[][] board, int x, int y, int type) {
+    public static List<Point> check(int[][] board, int x, int y, int type) {
         Queue<Point> q = new LinkedList<>();
         ArrayList<Point> result = new ArrayList<>();
 
