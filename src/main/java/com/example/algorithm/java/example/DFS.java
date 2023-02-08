@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.searchDFS;
+package com.example.algorithm.java.example;
 
 import java.util.List;
 import java.util.Stack;
