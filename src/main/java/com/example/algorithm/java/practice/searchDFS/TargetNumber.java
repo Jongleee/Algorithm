@@ -24,7 +24,7 @@ public class TargetNumber {
         int[] n2 = { 4, 1, 2, 1 };
         int t2 = 4;// 2
         System.out.println(solution(n1, t1));
-        answer=0;
+        answer = 0;
         System.out.println(solution(n2, t2));
     }
 }
