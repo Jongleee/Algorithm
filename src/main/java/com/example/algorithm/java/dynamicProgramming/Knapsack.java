@@ -2,30 +2,31 @@ package com.example.algorithm.java.dynamicProgramming;
 
 public class Knapsack {
 
-    public static int knapSack(int weight, int[] weights, int[] val, int n) {
-        int i;
-        int w;
-        int[][] dp = new int[n + 1][weight + 1];
+    public static int knapsack(int capacity, int[] itemWeights, int[] itemValues, int numItems) {
+        int[][] maxValues = new int[numItems + 1][capacity + 1];
 
-        for (i = 0; i <= n; i++) {
-            for (w = 0; w <= weight; w++) {
-                if (i == 0 || w == 0)
-                    dp[i][w] = 0;
-                else if (weights[i - 1] <= w)
-                    dp[i][w] = Math.max(val[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w]);
-                else
-                    dp[i][w] = dp[i - 1][w];
+        for (int i = 0; i <= numItems; i++) {
+            for (int w = 0; w <= capacity; w++) {
+                if (i == 0 || w == 0) {
+                    maxValues[i][w] = 0;
+                } else if (itemWeights[i - 1] <= w) {
+                    int valueIfIncluded = itemValues[i - 1] + maxValues[i - 1][w - itemWeights[i - 1]];
+                    int valueIfExcluded = maxValues[i - 1][w];
+                    maxValues[i][w] = Math.max(valueIfIncluded, valueIfExcluded);
+                } else {
+                    maxValues[i][w] = maxValues[i - 1][w];
+                }
             }
         }
-
-        return dp[n][weight];
+        
+        return maxValues[numItems][capacity];
     }
 
     public static void main(String[] args) {
         int[] val = new int[] {60, 100, 120};
         int[] weights = new int[] {10, 20, 30};
-        int weight = 50;
+        int capacity = 50;
         int n = val.length;
-        System.out.println(knapSack(weight, weights, val, n));
+        System.out.println(knapsack(capacity, weights, val, n));
     }
 }

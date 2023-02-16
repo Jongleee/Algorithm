@@ -92,7 +92,7 @@ class Graph {
         // add edge 1-4 (or A-E in above figure)
         graph.edges[4].src = 1;
         graph.edges[4].dest = 4;
-        graph.edges[4].weight = 2;//-2;
+        graph.edges[4].weight = 2;//음수사이클 : -2
 
         // add edge 3-2 (or D-C in above figure)
         graph.edges[5].src = 3;
