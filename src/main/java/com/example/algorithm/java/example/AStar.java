@@ -27,24 +27,18 @@ public class AStar {
     static ArrayList<AData> closeList = new ArrayList<>();
     static ArrayList<int[]> path = new ArrayList<>(); // 마지막에 경로를 저장할 곳이다.
 
+    private static final int[] dx = { 0, 0, -1, 1 }; // 상하좌우
+    private static final int[] dy = { 1, -1, 0, 0 }; // 상하좌우
+
     private static void aStarFind(int startx, int starty, int endx, int endy, int nowIndex) {
         closeList.add(new AData(startx, starty, -1, 0, 0)); // 시작지점을 바로 탐색할 수 있도록 CloseList에 미리 넣어준다.
 
         while (closeList.get(nowIndex).x != endx || closeList.get(nowIndex).y != endy) { // 목적지에 도착할때까지 반복한다.
-            for (int way = 0; way < 4; way++) { // 상하좌우 순서
-                int nowx = closeList.get(nowIndex).x;
-                int nowy = closeList.get(nowIndex).y;
+            for (int i = 0; i < dx.length; i++) {
+                int nowx = closeList.get(nowIndex).x + dx[i];
+                int nowy = closeList.get(nowIndex).y + dy[i];
 
                 boolean flag = false; // 해당 위치가 열린, 닫힌리스트중에 있는가 확인할때 쓴다.
-
-                if (way == 0)
-                    nowy++;
-                else if (way == 1)
-                    nowy--;
-                else if (way == 2)
-                    nowx--;
-                else if (way == 3)
-                    nowx++;
 
                 flag = flag(nowx, nowy, flag);
                 flag = findShorterRoute(nowIndex, nowx, nowy, flag);
@@ -95,6 +89,17 @@ public class AStar {
         nowIndex++;
         return nowIndex;
     }
+    private static boolean findShorterRoute(int nowIndex, int nowx, int nowy, boolean flag) {
+        for (int i = 0; i < openList.size(); i++) {
+            if (openList.get(i).x == nowx && openList.get(i).y == nowy) {
+                flag = true;
+                if (openList.get(i).g > closeList.get(nowIndex).g + 1) {
+                    openList.set(i, new AData(nowx, nowy, nowIndex, closeList.get(nowIndex).g + 1, openList.get(i).h));
+                }
+            }
+        }
+        return flag;
+    }
 
     private static void printRoute(int nowIndex) {
         while (nowIndex != -1) { // 도착지점부터 역순으로 되짚어간다
@@ -109,17 +114,6 @@ public class AStar {
         }
     }
 
-    private static boolean findShorterRoute(int nowIndex, int nowx, int nowy, boolean flag) {
-        for (int i = 0; i < openList.size(); i++) {
-            if (openList.get(i).x == nowx && openList.get(i).y == nowy) {
-                flag = true;
-                if (openList.get(i).g > closeList.get(nowIndex).g + 1) {
-                    openList.set(i, new AData(nowx, nowy, nowIndex, closeList.get(nowIndex).g + 1, openList.get(i).h));
-                }
-            }
-        }
-        return flag;
-    }
 
     public static void main(String[] args) {
         int startx = 0;
