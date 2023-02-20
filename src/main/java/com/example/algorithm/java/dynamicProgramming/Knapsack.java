@@ -18,13 +18,13 @@ public class Knapsack {
                 }
             }
         }
-        
+
         return maxValues[numItems][capacity];
     }
 
     public static void main(String[] args) {
-        int[] val = new int[] {60, 100, 120};
-        int[] weights = new int[] {10, 20, 30};
+        int[] val = new int[] { 60, 100, 120 };
+        int[] weights = new int[] { 10, 20, 30 };
         int capacity = 50;
         int n = val.length;
         System.out.println(knapsack(capacity, weights, val, n));

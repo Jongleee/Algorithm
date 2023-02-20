@@ -1,4 +1,5 @@
 package com.example.algorithm.java.example;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +43,8 @@ public class AStarAlgorithm {
                 }
                 boolean isNodeInOpenList = isNodeInOpenList(nextX, nextY);
                 if (!isNodeInOpenList) {
-                    openList.add(new AStarData(nextX, nextY, currentIndex, current.gCost + 1, calculateHCost(nextX, nextY, endX, endY)));
+                    openList.add(new AStarData(nextX, nextY, currentIndex, current.gCost + 1,
+                            calculateHCost(nextX, nextY, endX, endY)));
                 } else {
                     updateGCostIfShorter(current, nextX, nextY);
                 }
@@ -52,10 +54,9 @@ public class AStarAlgorithm {
             }
             currentIndex = getNextIndex();
         }
-        
+
         return buildPath(currentIndex);
     }
-
 
     private static boolean isNodeInClosedList(int x, int y) {
         return closedList.stream().anyMatch(n -> n.x == x && n.y == y);
@@ -105,7 +106,7 @@ public class AStarAlgorithm {
         List<int[]> path = new ArrayList<>();
         while (currentIndex != -1) {
             AStarData current = closedList.get(currentIndex);
-            path.add(new int[]{current.x, current.y});
+            path.add(new int[] { current.x, current.y });
             currentIndex = current.parentIndex;
         }
         Collections.reverse(path);
@@ -117,7 +118,7 @@ public class AStarAlgorithm {
         int starty = 0;
         int endx = 5;
         int endy = 5;
-        for (int[] i: findShortestPath(startx, starty, endx, endy)) {
+        for (int[] i : findShortestPath(startx, starty, endx, endy)) {
             System.out.println(Arrays.toString(i));
         }
 

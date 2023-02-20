@@ -49,5 +49,5 @@ public class Printer {
         System.out.println(solution(p1, l1));// 1
         System.out.println(solution(p2, l2));// 5
     }
-    
+
 }

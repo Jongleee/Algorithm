@@ -41,7 +41,7 @@ class Graph {
                     dist[v] = dist[u] + weight;
             }
         }
-        
+
         // Step 3: 한번 더 반복하면서 음수 사이클을 찾아줌
         for (Edge edge : edges) {
             int u = edge.src;
@@ -61,7 +61,6 @@ class Graph {
         for (int i = 0; i < vertex; ++i)
             System.out.println(i + "\t\t" + dist[i]);
     }
-
 
     public static void main(String[] args) {
         int vertex = 5; // Number of vertices in graph
@@ -92,7 +91,7 @@ class Graph {
         // add edge 1-4 (or A-E in above figure)
         graph.edges[4].src = 1;
         graph.edges[4].dest = 4;
-        graph.edges[4].weight = 2;//음수사이클 : -2
+        graph.edges[4].weight = 2;// 음수사이클 : -2
 
         // add edge 3-2 (or D-C in above figure)
         graph.edges[5].src = 3;
