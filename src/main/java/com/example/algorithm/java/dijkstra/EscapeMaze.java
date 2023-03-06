@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+@SuppressWarnings("unchecked")
 public class EscapeMaze {
     public int solution(int n, int start, int end, int[][] roads, int[] traps) {
         List<Edge>[] adj = new ArrayList[n + 1];
