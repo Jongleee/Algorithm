@@ -3,17 +3,18 @@ package com.example.algorithm.java.dynamicProgramming;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class MinimizeSalesDecline {
-    
+
     static final int INF = 999999999;
 
     static List<Integer>[] adj;
     static int[][] dp;
     static List<Integer> val;
 
-    static int getDp(int node, int pnode, int sel) {
-        if (dp[node][sel] != 0) {
-            return dp[node][sel];
+    static int getDp(int node, int parentNode, int select) {
+        if (dp[node][select] != 0) {
+            return dp[node][select];
         }
 
         int ret = 0;
@@ -21,12 +22,12 @@ public class MinimizeSalesDecline {
         boolean join = false;
 
         if (node != 1 && adj[node].size() == 1) {
-            dp[node][sel] = sel == 1 ? val.get(node - 1) : 0;
-            return dp[node][sel];
+            dp[node][select] = select == 1 ? val.get(node - 1) : 0;
+            return dp[node][select];
         }
 
         for (int child : adj[node]) {
-            if (child == pnode) {
+            if (child == parentNode) {
                 continue;
             }
 
@@ -41,7 +42,7 @@ public class MinimizeSalesDecline {
             }
         }
 
-        if (sel == 1) {
+        if (select == 1) {
             ret += val.get(node - 1);
         } else {
             if (!join) {
@@ -49,11 +50,11 @@ public class MinimizeSalesDecline {
             }
         }
 
-        dp[node][sel] = ret;
-        return dp[node][sel];
+        dp[node][select] = ret;
+        return dp[node][select];
     }
 
-    static void makeConn(int[][] links) {
+    static void makeConnection(int[][] links) {
         for (int[] link : links) {
             int f = link[0];
             int s = link[1];
@@ -76,7 +77,7 @@ public class MinimizeSalesDecline {
             adj[i] = new ArrayList<>();
         }
 
-        makeConn(links);
+        makeConnection(links);
 
         dp = new int[n + 1][2];
         answer = Math.min(getDp(1, 0, 1), getDp(1, 0, 0));
@@ -85,8 +86,9 @@ public class MinimizeSalesDecline {
     }
 
     public static void main(String[] args) {
-        int[] sales1 = {14, 17, 15, 18, 19, 14, 13, 16, 28, 17}	;
-        int[][] links1 = {{10, 8}, {1, 9}, {9, 7}, {5, 4}, {1, 5}, {5, 10}, {10, 6}, {1, 3}, {10, 2}};
-        System.out.println(solution(sales1  , links1)); //44
+        int[] sales1 = { 14, 17, 15, 18, 19, 14, 13, 16, 28, 17 };
+        int[][] links1 = { { 10, 8 }, { 1, 9 }, { 9, 7 }, { 5, 4 }, { 1, 5 }, { 5, 10 }, { 10, 6 }, { 1, 3 },
+                { 10, 2 } };
+        System.out.println(solution(sales1, links1)); // 44
     }
 }
