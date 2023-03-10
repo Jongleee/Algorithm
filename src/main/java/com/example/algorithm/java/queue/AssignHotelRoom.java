@@ -1,30 +1,36 @@
 package com.example.algorithm.java.queue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AssignHotelRoom {
-    public long[] solution(long k, long[] room_number) {
-        Map<Long, Long> nextRooms = new HashMap<>();
-        long[] answer = new long[room_number.length];
+    public static long[] solution(long k, long[] roomNumbers) {
+        Map<Long, Long> nextRoomMap = new HashMap<>();
+        long[] assignedRooms = new long[roomNumbers.length];
 
-        for (int i = 0; i < room_number.length; i++) {
-            long emptyRoom = findEmptyRoom(room_number[i], nextRooms);
-            answer[i] = emptyRoom;
-            nextRooms.put(room_number[i], emptyRoom + 1);
+        for (int i = 0; i < roomNumbers.length; i++) {
+            long emptyRoom = getNextEmptyRoom(roomNumbers[i], nextRoomMap);
+            assignedRooms[i] = emptyRoom;
+            nextRoomMap.put(roomNumbers[i], emptyRoom + 1);
         }
 
-        return answer;
+        return assignedRooms;
     }
 
-    private long findEmptyRoom(long request, Map<Long, Long> nextRooms) {
-        if (!nextRooms.containsKey(request)) {
-            nextRooms.put(request, request + 1);
-            return request;
+    private static long getNextEmptyRoom(long roomNumber, Map<Long, Long> nextRoomMap) {
+        if (!nextRoomMap.containsKey(roomNumber)) {
+            nextRoomMap.computeIfAbsent(roomNumber, a -> a+1);
+            return roomNumber;
         }
 
-        long emptyRoom = findEmptyRoom(nextRooms.get(request), nextRooms);
-        nextRooms.put(request, emptyRoom);
-        return emptyRoom;
+        long nextEmptyRoom = getNextEmptyRoom(nextRoomMap.get(roomNumber), nextRoomMap);
+        nextRoomMap.put(roomNumber, nextEmptyRoom);
+        return nextEmptyRoom;
+    }
+
+    public static void main(String[] args) {
+        long[] assignedRooms = solution(10, new long[] {1, 3, 4, 1, 3, 1});
+        System.out.println(Arrays.toString(assignedRooms));
     }
 }
