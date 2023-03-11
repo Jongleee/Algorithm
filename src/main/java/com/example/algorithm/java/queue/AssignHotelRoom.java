@@ -6,10 +6,13 @@ import java.util.Map;
 
 public class AssignHotelRoom {
     public static long[] solution(long k, long[] roomNumbers) {
+        int n = roomNumbers.length;
+        if (k > n)
+            return new long[] { -1 };
         Map<Long, Long> nextRoomMap = new HashMap<>();
-        long[] assignedRooms = new long[roomNumbers.length];
+        long[] assignedRooms = new long[n];
 
-        for (int i = 0; i < roomNumbers.length; i++) {
+        for (int i = 0; i < n; i++) {
             long emptyRoom = getNextEmptyRoom(roomNumbers[i], nextRoomMap);
             assignedRooms[i] = emptyRoom;
             nextRoomMap.put(roomNumbers[i], emptyRoom + 1);
@@ -20,7 +23,7 @@ public class AssignHotelRoom {
 
     private static long getNextEmptyRoom(long roomNumber, Map<Long, Long> nextRoomMap) {
         if (!nextRoomMap.containsKey(roomNumber)) {
-            nextRoomMap.computeIfAbsent(roomNumber, a -> a+1);
+            nextRoomMap.computeIfAbsent(roomNumber, a -> a + 1);
             return roomNumber;
         }
 
@@ -30,7 +33,7 @@ public class AssignHotelRoom {
     }
 
     public static void main(String[] args) {
-        long[] assignedRooms = solution(10, new long[] {1, 3, 4, 1, 3, 1});
+        long[] assignedRooms = solution(10, new long[] { 1, 3, 4, 1, 3, 1 });
         System.out.println(Arrays.toString(assignedRooms));
     }
 }
