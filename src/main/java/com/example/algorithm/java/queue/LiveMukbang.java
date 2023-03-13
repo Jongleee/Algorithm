@@ -29,15 +29,15 @@ public class LiveMukbang {
         }
     }
 
-    public static int solution(int[] food_times, long k) {
+    public static int solution(int[] foodTimes, long k) {
         Queue<Food> q = new PriorityQueue<>(Comparator.comparingInt(Food::getTime).thenComparingInt(Food::getIndex));
 
-        for (int i = 0; i < food_times.length; i++) {
-            q.add(new Food(i + 1, food_times[i]));
+        for (int i = 0; i < foodTimes.length; i++) {
+            q.add(new Food(i + 1, foodTimes[i]));
         }
 
         int prevTime = 0;
-        int n = food_times.length;
+        int n = foodTimes.length;
 
         while (!q.isEmpty()) {
             Food food = q.peek();
