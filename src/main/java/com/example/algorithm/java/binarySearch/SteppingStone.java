@@ -15,7 +15,7 @@ public class SteppingStone {
 
         while (left <= right) {
             int mid = (left + right) / 2;
-            int removedRockCnt = countRemovedRocks(rocks, mid);
+            int removedRockCnt = countRemovedRocks(rocks, mid, distance);
 
             if (removedRockCnt <= n) {
                 answer = mid;
@@ -27,8 +27,9 @@ public class SteppingStone {
         return answer;
     }
 
-    private static int countRemovedRocks(int[] rocks, int mid) {
+    private static int countRemovedRocks(int[] rocks, int mid, int distance) {
         int before = 0;
+        int end = distance;
         int removeCnt = 0;
 
         for (int rock : rocks) {
@@ -39,7 +40,7 @@ public class SteppingStone {
             }
         }
 
-        if (removeCnt > 0 && rocks[rocks.length - 1] - before < mid) {
+        if (end - before < mid) {
             removeCnt++;
         }
 
