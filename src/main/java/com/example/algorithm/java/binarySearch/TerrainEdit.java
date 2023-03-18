@@ -1,7 +1,7 @@
 package com.example.algorithm.java.binarySearch;
 
 public class TerrainEdit {
-    public static long solution(int[][] land, int P, int Q) {
+    public static long solution(int[][] land, int p, int q) {
         long answer = -1;
         long maxHeight = 0;
         long minHeight = Long.MAX_VALUE;
@@ -18,8 +18,8 @@ public class TerrainEdit {
         while (front <= rear) {
             long mid = (front + rear) / 2;
     
-            long cost1 = getCost(land, mid, P, Q);
-            long cost2 = getCost(land, mid + 1, P, Q);
+            long cost1 = getCost(land, mid, p, q);
+            long cost2 = getCost(land, mid + 1, p, q);
     
             if (cost1 <= cost2) {
                 answer = cost1;
@@ -33,14 +33,14 @@ public class TerrainEdit {
         return answer;
     }
     
-    private static long getCost(int[][] land, long height, int P, int Q) {
+    private static long getCost(int[][] land, long height, int p, int q) {
         long cost = 0;
         for (int i = 0; i < land.length; i++) {
             for (int j = 0; j < land[i].length; j++) {
                 if (land[i][j] < height) {
-                    cost += (height - land[i][j]) * P;
+                    cost += (height - land[i][j]) * p;
                 } else if (land[i][j] > height) {
-                    cost += (land[i][j] - height) * Q;
+                    cost += (land[i][j] - height) * q;
                 }
             }
         }
