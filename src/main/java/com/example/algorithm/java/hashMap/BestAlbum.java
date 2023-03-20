@@ -1,4 +1,4 @@
-package com.example.algorithm.java.hash;
+package com.example.algorithm.java.hashMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
