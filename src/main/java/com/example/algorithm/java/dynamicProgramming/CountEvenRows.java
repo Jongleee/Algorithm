@@ -7,21 +7,54 @@ public class CountEvenRows {
         int row = a.length;
         int col = a[0].length;
 
-        int[][] combis = new int[row + 2][row + 2];
-        combis[0][0] = 1;
+        int[][] combinations = makeCombinations(row);
+
+        int[] numOfOne = countNumOfOne(a, row, col);
+
+        int[][] dp = new int[col + 1][row + 1];
+        dp[1][row - numOfOne[0]] = combinations[row][row - numOfOne[0]];
+
+        for (int curCol = 0; curCol < col; curCol++) {
+            for (int curRow = 0; curRow < row; curRow++) {
+                if (dp[curCol][curRow] == 0)
+                    continue;
+
+                for (int one = 0; one <= numOfOne[curCol]; one++) {
+                    int next = (curRow - one) + (numOfOne[curCol] - one);
+                    if (next > row || curRow < one)
+                        continue;
+                    int cases = (int) (((long) combinations[curRow][one]
+                            * combinations[row - curRow][numOfOne[curCol] - one])
+                            % MOD);
+
+                    dp[curCol + 1][next] = (dp[curCol + 1][next] + (int) (((long) dp[curCol][curRow] * cases) % MOD))
+                            % MOD;
+                }
+            }
+        }
+
+        return dp[col][row];
+    }
+
+    private static int[][] makeCombinations(int row) {
+        int[][] combinations = new int[row + 1][row + 1];
+        combinations[0][0] = 1;
 
         for (int i = 1; i <= row; i++) {
             for (int j = 0; j <= i; j++) {
                 if (j == 0)
-                    combis[i][j] = 1;
+                    combinations[i][j] = 1;
                 else if (i == j)
-                    combis[i][j] = 1;
+                    combinations[i][j] = 1;
                 else
-                    combis[i][j] = (combis[i - 1][j - 1] + combis[i - 1][j]) % MOD;
+                    combinations[i][j] = (combinations[i - 1][j - 1] + combinations[i - 1][j]) % MOD;
             }
         }
+        return combinations;
+    }
 
-        int[] numOfOne = new int[col+2];
+    private static int[] countNumOfOne(int[][] a, int row, int col) {
+        int[] numOfOne = new int[col + 1];
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
@@ -29,36 +62,15 @@ public class CountEvenRows {
                     numOfOne[j]++;
             }
         }
-
-        int[][] DP = new int[col + 2][row + 2];
-        DP[1][row - numOfOne[0]] = combis[row][row - numOfOne[0]];
-
-        for (int curCol = 0; curCol <= col; curCol++) {
-            for (int curRow = 0; curRow <= row; curRow++) {
-                if (DP[curCol][curRow] == 0)
-                    continue;
-
-                for (int one = 0; one <= numOfOne[curCol]; one++) {
-                    int next = (curRow - one) + (numOfOne[curCol] - one);
-                    if (next > row || curRow < one)
-                        continue;
-                    int cases = (int) (((long) combis[curRow][one] * combis[row - curRow][numOfOne[curCol] - one])
-                            % MOD);
-
-                    DP[curCol + 1][next] = (DP[curCol + 1][next] + (int) (((long) DP[curCol][curRow] * cases) % MOD))
-                            % MOD;
-                }
-            }
-        }
-
-        return DP[col][row];
+        return numOfOne;
     }
+
     public static void main(String[] args) {
-        int [][] a1 = {{0,1,0},{1,1,1},{1,1,0},{0,1,1}};
-        int[][] a2={{1,0,0},{1,0,0}};	
-        int[][] a3 = {{1,0,0,1,1},{0,0,0,0,0},{1,1,0,0,0},{0,0,0,0,1}};
-        System.out.println(solution(a1));//6
-        System.out.println(solution(a2));//0
-        System.out.println(solution(a3));//72
+        int[][] a1 = { { 0, 1, 0 }, { 1, 1, 1 }, { 1, 1, 0 }, { 0, 1, 1 } };
+        int[][] a2 = { { 1, 0, 0 }, { 1, 0, 0 } };
+        int[][] a3 = { { 1, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 }, { 1, 1, 0, 0, 0 }, { 0, 0, 0, 0, 1 } };
+        System.out.println(solution(a1));// 6
+        System.out.println(solution(a2));// 0
+        System.out.println(solution(a3));// 72
     }
 }
