@@ -4,9 +4,7 @@ import java.util.Arrays;
 
 public class InterceptSystem {
     public int solution(int[][] targets) {
-        Arrays.sort(targets, (o1, o2) -> {
-            return o1[1] - o2[1];
-        });
+        Arrays.sort(targets, (o1, o2) -> o1[1] - o2[1]);
         int lastLocation = -1;
         int missileCnt = 0;
         for (int[] t : targets) {
