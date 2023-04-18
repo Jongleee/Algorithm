@@ -1,6 +1,5 @@
 package com.example.algorithm.java.graph;
 
-
 public class SoloTicTacToe {
     private static char[][] graph;
     private static int oCount;
@@ -62,6 +61,7 @@ public class SoloTicTacToe {
         }
         return count;
     }
+
     public static void main(String[] args) {
         System.out.println(solution(new String[] { "O.X", ".O.", "..X" }));
     }
