@@ -4,26 +4,24 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-class Point {
-    private int x;
-    private int y;
-
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-}
-
 public class ColoringBook {
-
+    static class Point {
+        private int x;
+        private int y;
+    
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    
+        public int getX() {
+            return x;
+        }
+    
+        public int getY() {
+            return y;
+        }
+    }
     private static final int[] DX = { -1, 0, 1, 0 };
     private static final int[] DY = { 0, 1, 0, -1 };
 
