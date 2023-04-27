@@ -3,19 +3,18 @@ package com.example.algorithm.java.searchBroadFirstSearch;
 import java.util.LinkedList;
 import java.util.Queue;
 
-class Position {
-    int x;
-    int y;
-    int level;
-
-    public Position(int x, int y, int level) {
-        this.x = x;
-        this.y = y;
-        this.level = level;
-    }
-}
-
 public class EscapeMaze {
+    static class Position {
+        int x;
+        int y;
+        int level;
+
+        public Position(int x, int y, int level) {
+            this.x = x;
+            this.y = y;
+            this.level = level;
+        }
+    }
 
     static char[][] map;
     static boolean[][] visited;
