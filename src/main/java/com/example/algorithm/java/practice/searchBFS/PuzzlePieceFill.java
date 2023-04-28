@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-class Point implements Comparable<Point> {
+public class PuzzlePieceFill {
+    static class Point implements Comparable<Point> {
     int x;
     int y;
 
@@ -16,7 +17,6 @@ class Point implements Comparable<Point> {
         this.y = y;
     }
 
-    // 오름차순 정렬
     @Override
     public int compareTo(Point o) {
         if (this.x == o.x) {
@@ -26,8 +26,6 @@ class Point implements Comparable<Point> {
         return this.x - o.x;
     }
 }
-
-public class PuzzlePieceFill {
 
     static int[] dx = { -1, 0, 1, 0 };
     static int[] dy = { 0, -1, 0, 1 };

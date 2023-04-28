@@ -5,10 +5,6 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class ChooseHikingCourse {
-
-    static final int MAX = 20000001;
-    static ArrayList<ArrayList<Edge>> graph;
-
     static class Edge implements Comparable<Edge> {
         int index;
         int intensity;
@@ -22,8 +18,11 @@ public class ChooseHikingCourse {
         public int compareTo(Edge o) {
             return this.intensity - o.intensity;
         }
-
     }
+
+    static final int MAX = 20000001;
+    static ArrayList<ArrayList<Edge>> graph;
+
 
     public static int[] solution(int n, int[][] paths, int[] gates, int[] summits) {
         graph = new ArrayList<>();

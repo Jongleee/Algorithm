@@ -5,25 +5,26 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-class AStarData {
-    int x;
-    int y;
-    int parentIndex;
-    int gCost;
-    int hCost;
-    int fCost;
-
-    public AStarData(int x, int y, int parentIndex, int gCost, int hCost) {
-        this.x = x;
-        this.y = y;
-        this.parentIndex = parentIndex;
-        this.gCost = gCost;
-        this.hCost = hCost;
-        this.fCost = gCost + hCost;
-    }
-}
 
 public class AStarAlgorithm {
+    static class AStarData {
+        int x;
+        int y;
+        int parentIndex;
+        int gCost;
+        int hCost;
+        int fCost;
+    
+        public AStarData(int x, int y, int parentIndex, int gCost, int hCost) {
+            this.x = x;
+            this.y = y;
+            this.parentIndex = parentIndex;
+            this.gCost = gCost;
+            this.hCost = hCost;
+            this.fCost = gCost + hCost;
+        }
+    }
+    
     private static final int[] directionX = { 0, 0, -1, 1 };
     private static final int[] directionY = { 1, -1, 0, 0 };
     private static List<AStarData> openList = new ArrayList<>();

@@ -4,12 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class RicochetRobot {
-    private final int[] dx = { -1, 1, 0, 0 };
-    private final int[] dy = { 0, 0, -1, 1 };
-
-    private int n;
-    private int m;
-
     private static class Location {
         final int x;
         final int y;
@@ -21,6 +15,12 @@ public class RicochetRobot {
             this.depth = depth;
         }
     }
+
+    private final int[] dx = { -1, 1, 0, 0 };
+    private final int[] dy = { 0, 0, -1, 1 };
+
+    private int n;
+    private int m;
 
     public int solution(String[] board) {
         n = board.length;

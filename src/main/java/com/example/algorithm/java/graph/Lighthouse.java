@@ -10,7 +10,6 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Lighthouse {
-
     class TreeNode {
         int num;
         List<TreeNode> childs;

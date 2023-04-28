@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class LiveMukbang {
-    public static class Food {
+    static class Food {
         private final int index;
         private int time;
 

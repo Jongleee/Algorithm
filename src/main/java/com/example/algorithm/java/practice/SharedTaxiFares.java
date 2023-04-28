@@ -5,14 +5,6 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class SharedTaxiFares {
-    public static void main(String[] args) {
-        System.out.println(solution(6, 4, 6, 2, new int[][] { { 4, 1, 10 }, { 3, 5, 24 }, { 5, 6, 2 }, { 3, 1, 41 },
-                { 5, 1, 24 }, { 4, 6, 50 }, { 2, 4, 66 }, { 2, 3, 22 }, { 1, 6, 25 } }));
-    }
-
-    static final int MAX = 20000001;
-    static ArrayList<ArrayList<Edge>> graph;
-
     static class Edge implements Comparable<Edge> {
         int index;
         int cost;
@@ -26,9 +18,10 @@ public class SharedTaxiFares {
         public int compareTo(Edge e) {
             return this.cost - e.cost;
         }
-
-
     }
+
+    static final int MAX = 20000001;
+    static ArrayList<ArrayList<Edge>> graph;
 
     public static int solution(int n, int s, int a, int b, int[][] fares) {
         int answer = MAX;
@@ -82,5 +75,9 @@ public class SharedTaxiFares {
             }
         }
         return costs;
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(6, 4, 6, 2, new int[][] { { 4, 1, 10 }, { 3, 5, 24 }, { 5, 6, 2 }, { 3, 1, 41 },
+                { 5, 1, 24 }, { 4, 6, 50 }, { 2, 4, 66 }, { 2, 3, 22 }, { 1, 6, 25 } }));
     }
 }

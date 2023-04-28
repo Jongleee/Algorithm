@@ -4,6 +4,16 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class ProperParenthesis {
+    private static class Node {
+        private final int left;
+        private final int right;
+
+        private Node(int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+    }
+
     public static int solution(int n) {
         Deque<Node> stack = new LinkedList<>();
         stack.push(new Node(0, 0));
@@ -23,16 +33,6 @@ public class ProperParenthesis {
         }
 
         return count;
-    }
-
-    private static class Node {
-        private final int left;
-        private final int right;
-
-        private Node(int left, int right) {
-            this.left = left;
-            this.right = right;
-        }
     }
 
     public static void main(String[] args) {

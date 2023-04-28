@@ -9,17 +9,31 @@ import java.util.PriorityQueue;
 
 @SuppressWarnings("unchecked")
 public class EscapeMaze {
-    public int solution(int n, int start, int end, int[][] roads, int[] traps) {
+    static class Edge implements Comparable<Edge> {
+        int to;
+        int cost;
+        int state;
+
+        Edge(int to, int cost, int state) {
+            this.to = to;
+            this.cost = cost;
+            this.state = state;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return this.cost - o.cost;
+        }
+    }
+
+    public static int solution(int n, int start, int end, int[][] roads, int[] traps) {
         List<Edge>[] adj = new ArrayList[n + 1];
         Map<Integer, Integer> trap = new HashMap<>();
         int answer = Integer.MAX_VALUE;
 
         init(n, roads, traps, adj, trap);
 
-        int[][] dist = new int[n + 1][1 << 10];
-        for (int i = 1; i <= n; i++) {
-            Arrays.fill(dist[i], answer);
-        }
+        int[][] dist = fillDistance(n, answer);
 
         PriorityQueue<Edge> pq = new PriorityQueue<>();
         pq.add(new Edge(start, 0, 0));
@@ -45,7 +59,7 @@ public class EscapeMaze {
                 int nextCost = next.cost;
                 int isReverse = next.state;
 
-                if (isReverse != (isConnected(curNode, nextNode, curState, trap) ? 1 : 0)) {
+                if (isReverse != isConnected(curNode, nextNode, curState, trap)) {
                     continue;
                 }
 
@@ -64,7 +78,15 @@ public class EscapeMaze {
         return answer;
     }
 
-    private void init(int n, int[][] roads, int[] traps, List<Edge>[] adj, Map<Integer, Integer> trap) {
+    private static int[][] fillDistance(int n, int answer) {
+        int[][] dist = new int[n + 1][1 << 10];
+        for (int i = 1; i <= n; i++) {
+            Arrays.fill(dist[i], answer);
+        }
+        return dist;
+    }
+
+    private static void init(int n, int[][] roads, int[] traps, List<Edge>[] adj, Map<Integer, Integer> trap) {
         for (int i = 1; i <= n; i++) {
             adj[i] = new ArrayList<>();
         }
@@ -79,34 +101,21 @@ public class EscapeMaze {
         }
     }
 
-    private int getNextState(int curState, int nextNode, Map<Integer, Integer> trap) {
+    private static int getNextState(int curState, int nextNode, Map<Integer, Integer> trap) {
         if (trap.containsKey(nextNode)) {
             curState ^= (1 << trap.get(nextNode));
         }
         return curState;
     }
 
-    private boolean isConnected(int curNode, int nextNode, int curState, Map<Integer, Integer> trap) {
+    private static int isConnected(int curNode, int nextNode, int curState, Map<Integer, Integer> trap) {
         boolean currNodeTrapChk = trap.containsKey(curNode) && ((curState & (1 << trap.get(curNode))) != 0);
         boolean nextNodeTrapChk = trap.containsKey(nextNode) && ((curState & (1 << trap.get(nextNode))) != 0);
 
-        return currNodeTrapChk ^ nextNodeTrapChk;
+        return currNodeTrapChk ^ nextNodeTrapChk ? 1 : 0;
     }
 
-    class Edge implements Comparable<Edge> {
-        int to;
-        int cost;
-        int state;
-
-        Edge(int to, int cost, int state) {
-            this.to = to;
-            this.cost = cost;
-            this.state = state;
-        }
-
-        @Override
-        public int compareTo(Edge o) {
-            return this.cost - o.cost;
-        }
+    public static void main(String[] args) {
+        System.out.println(solution(0, 0, 0, null, null));
     }
 }
