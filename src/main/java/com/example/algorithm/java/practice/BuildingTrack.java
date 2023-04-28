@@ -4,13 +4,6 @@ import java.util.PriorityQueue;
 
 public class BuildingTrack {
 
-    public static void main(String[] args) {
-        System.out.println(solution(new int[][]{{0,0,0,0,0,0,0,1},{0,0,0,0,0,0,0,0},{0,0,0,0,0,1,0,0},{0,0,0,0,1,0,0,0},{0,0,0,1,0,0,0,1},{0,0,1,0,0,0,1,0},{0,1,0,0,0,1,0,0},{1,0,0,0,0,0,0,0}}));
-    }
-    private static int n;
-    private static int[] dx = {0, 1, 0, -1};
-    private static int[] dy = {1, 0, -1, 0};
-
     private static class Car implements Comparable<Car> {
         int x;
         int y;
@@ -29,6 +22,10 @@ public class BuildingTrack {
             return this.sum - o.sum;
         }
     }
+
+    private static int n;
+    private static int[] dx = {0, 1, 0, -1};
+    private static int[] dy = {1, 0, -1, 0};
 
     public static int solution(int[][] board) {
         n = board.length;
@@ -82,5 +79,8 @@ public class BuildingTrack {
             queue.add(new Car(i + 1, j, 1, 100));
             minSum[i + 1][j][1] = 100;
         }
+    }
+    public static void main(String[] args) {
+        System.out.println(solution(new int[][]{{0,0,0,0,0,0,0,1},{0,0,0,0,0,0,0,0},{0,0,0,0,0,1,0,0},{0,0,0,0,1,0,0,0},{0,0,0,1,0,0,0,1},{0,0,1,0,0,0,1,0},{0,1,0,0,0,1,0,0},{1,0,0,0,0,0,0,0}}));
     }
 }

@@ -3,9 +3,18 @@ package com.example.algorithm.java.practice;
 import java.util.Stack;
 
 public class EditGraph {
-    public static void main(String[] args) {
-        System.out.println(solution(8, 2, new String[]{"D 2","C","U 3","C","D 4","C","U 2","Z","Z"}));
+    public static class Node{
+        int pre;
+        int cur;
+        int nxt;
+        
+        public Node(int pre, int cur, int nxt) {
+            this.pre = pre;
+            this.cur = cur;
+            this.nxt = nxt;
+        }
     }
+    
     public static String solution(int n, int k, String[] cmd) {
         int[] pre = new int[n];
         int[] next = new int[n];
@@ -54,15 +63,7 @@ public class EditGraph {
         return k;
     }
     
-    public static class Node{
-        int pre;
-        int cur;
-        int nxt;
-        
-        public Node(int pre, int cur, int nxt) {
-            this.pre = pre;
-            this.cur = cur;
-            this.nxt = nxt;
-        }
+    public static void main(String[] args) {
+        System.out.println(solution(8, 2, new String[]{"D 2","C","U 3","C","D 4","C","U 2","Z","Z"}));
     }
 }

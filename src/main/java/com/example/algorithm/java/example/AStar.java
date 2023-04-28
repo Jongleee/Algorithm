@@ -2,27 +2,27 @@ package com.example.algorithm.java.example;
 
 import java.util.ArrayList;
 
-class AData {
+public class AStar {
+    static class AData {
 
-    int x;
-    int y;
-    int pIndex;
-    int g; // 시작지점으로부터 온 거리
-    int h; // 목적지까지의 거리
-    int f; // 기대 거리
-
-    public AData(int x, int y, int pIndex, int g, int h) { // OpenList에 추가할 때 사용할 값
-        this.x = x;
-        this.y = y;
-        this.pIndex = pIndex;
-        this.g = g;
-        this.h = h;
-        this.f = g + h; // F값은 G+H 이므로 따로 입력하지 않도록 했다.
+        int x;
+        int y;
+        int pIndex;
+        int g; // 시작지점으로부터 온 거리
+        int h; // 목적지까지의 거리
+        int f; // 기대 거리
+    
+        public AData(int x, int y, int pIndex, int g, int h) { // OpenList에 추가할 때 사용할 값
+            this.x = x;
+            this.y = y;
+            this.pIndex = pIndex;
+            this.g = g;
+            this.h = h;
+            this.f = g + h; // F값은 G+H 이므로 따로 입력하지 않도록 했다.
+        }
+    
     }
 
-}
-
-public class AStar {
     static ArrayList<AData> openList = new ArrayList<>();
     static ArrayList<AData> closeList = new ArrayList<>();
     static ArrayList<int[]> path = new ArrayList<>(); // 마지막에 경로를 저장할 곳이다.

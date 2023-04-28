@@ -29,9 +29,9 @@ public class EscapeMaze {
         map = new char[row][col];
         visited = new boolean[row][col];
 
-        Position startPosition = null;
-        Position leverPosition = null;
-        Position endPosition = null;
+        Position startPosition = new Position(0, 0, 0);
+        Position leverPosition = new Position(0, 0, 0);
+        Position endPosition = new Position(0, 0, 0);
 
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
@@ -102,10 +102,8 @@ public class EscapeMaze {
     }
 
     public static void main(String[] args) {
-        String[] m1 = { "SOOOL", "XXXXO", "OOOOO", "OXXXX", "OOOOE" };
-        String[] m2 = { "LOOXS", "OOOOX", "OOOOO", "OOOOO", "EOOOO" };
-        System.out.println(solution(m1));
-        System.out.println(solution(m2));
+        String[] m = { "LOOXS", "OOOOX", "OOOOO", "OOOOO", "EOOOO" };
+        System.out.println(solution(m));
     }
 
 }

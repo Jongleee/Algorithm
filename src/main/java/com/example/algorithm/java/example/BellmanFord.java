@@ -2,17 +2,19 @@ package com.example.algorithm.java.example;
 
 import java.util.Arrays;
 
-class Edge {
-    int src;
-    int dest;
-    int weight;
 
-    public Edge() {
-        this.src = this.dest = this.weight = 0;
-    }
-}
 
 class Graph {
+    static class Edge {
+        int src;
+        int dest;
+        int weight;
+    
+        public Edge() {
+            this.src = this.dest = this.weight = 0;
+        }
+    }
+
     private static final int INF = Integer.MAX_VALUE;
 
     private int vertexCount;

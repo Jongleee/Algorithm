@@ -4,6 +4,15 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class Printer {
+    static class Document {
+        int index;
+        int priority;
+
+        public Document(int index, int priority) {
+            this.index = index;
+            this.priority = priority;
+        }
+    }
 
     public static int solution(int[] priorities, int location) {
         Deque<Document> queue = new LinkedList<>();
@@ -29,16 +38,6 @@ public class Printer {
         }
 
         return answer;
-    }
-
-    private static class Document {
-        int index;
-        int priority;
-
-        public Document(int index, int priority) {
-            this.index = index;
-            this.priority = priority;
-        }
     }
 
     public static void main(String[] args) {
