@@ -1,4 +1,4 @@
-package com.example.algorithm.java.searchDFS;
+package com.example.algorithm.java.recursive;
 
 import java.util.Arrays;
 
