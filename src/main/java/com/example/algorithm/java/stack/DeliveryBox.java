@@ -5,37 +5,23 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class DeliveryBox {
-
     public int solution(int[] order) {
         Queue<Integer> belt = new LinkedList<>();
         Stack<Integer> assistance = new Stack<>();
 
-        int answer = 0;
+        int cnt = 0;
         for (int i = 0; i < order.length; i++) {
-            belt.offer(i + 1);
-        }
-        int temp = 0;
-        for (Integer i : order) {
-            while (true) {
-                if (i < temp) {
-                    if (assistance.peek() == i) {
-                        temp = assistance.pop();
-                        answer += 1;
-                        break;
-                    } else {
-                        return answer;
-                    }
+            assistance.add(i + 1);
+            while (!assistance.isEmpty()) {
+                if (assistance.peek() == order[cnt]) {
+                    belt.offer(assistance.pop());
+                    cnt++;
+                } else {
+                    break;
+                }
 
-                }
-                else if (!belt.isEmpty()){
-                    if (belt.peek() == i){
-                        temp = belt.poll();
-                        answer += 1;
-                        break;
-                    }
-                }
             }
         }
-        return answer;
+        return belt.size();
     }
 }
