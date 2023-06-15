@@ -1,4 +1,4 @@
-package com.example.algorithm.java.priorityQueue;
+package com.example.algorithm.java.heap;
 
 import java.util.PriorityQueue;
 
