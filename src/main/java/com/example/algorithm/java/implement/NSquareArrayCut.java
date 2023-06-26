@@ -6,7 +6,7 @@ public class NSquareArrayCut {
         int[] answer = new int[length];
 
         for (int i = 0; i < length; i++) {
-            long offset = (long) i + left;
+            long offset =  i + left;
             int row = (int) (offset / n) + 1;
             int col = (int) (offset % n) + 1;
             answer[i] = Math.max(row, col);
