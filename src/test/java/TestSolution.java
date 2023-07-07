@@ -1,27 +1,31 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestSolution {
-	public int solution(String s) {
-		Deque<Character> stack = new ArrayDeque<>();
+	public String solution(String s) {
+		String[] words = s.split(" ");
 
-		for (char ch : s.toCharArray()) {
-			if (!stack.isEmpty() && stack.peek() == ch) {
-				stack.pop();
+		StringBuilder answerBuilder = new StringBuilder();
+
+		for (String word : words) {
+			if (word.isEmpty()) {
+				answerBuilder.append(" ");
 			} else {
-				stack.push(ch);
+				String capitalized = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+				answerBuilder.append(capitalized).append(" ");
 			}
 		}
 
-		return stack.isEmpty() ? 1 : 0;
+		String answer = answerBuilder.toString();
+		if (s.substring(s.length() - 1, s.length()).equals(" ") )
+			return answer;
+		return answer.trim();
 	}
 
 	@Test
 	public void 정답() {
-		Assertions.assertEquals(1, solution("baabaa"));
-		Assertions.assertEquals(0, solution("cdcd"));
+		Assertions.assertEquals("3people Unfollowed Me", solution("3people unFollowed me"));
+		Assertions.assertEquals("3people Unfollowed Me ", solution("3people unFollowed me "));
+		Assertions.assertEquals("For The Last Week", solution("for the last week"));
 	}
 }
