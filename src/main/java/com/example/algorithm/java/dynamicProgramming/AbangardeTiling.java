@@ -1,11 +1,9 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.dynamicProgramming;
 
-public class TestSolution {
+public class AbangardeTiling {
+    static final int MOD = 1000000007;
 
-	private static final int MOD = 1000000007;
-
-    public static int solution(int n) {
+    public int solution(int n) {
         long[] dp = new long[100002];
         long[] sum = new long[100002];
 
@@ -39,11 +37,10 @@ public class TestSolution {
         return (int) dp[n];
     }
 
+    // @Test
+    // public void 정답() {
+    // Assertions.assertEquals(3,solution(2));
 
-	@Test
-	public void 정답() {
-		Assertions.assertEquals(3,solution(2));
-
-		Assertions.assertEquals(10,solution(3));
-	}
+    // Assertions.assertEquals(10,solution(3));
+    // }
 }
