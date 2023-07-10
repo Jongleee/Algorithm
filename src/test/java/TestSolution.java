@@ -1,49 +1,54 @@
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestSolution {
 
-	private static final int MOD = 1000000007;
+    private static final int INF = 1000000;
 
-    public static int solution(int n) {
-        long[] dp = new long[100002];
-        long[] sum = new long[100002];
+    public int solution(int n, int m, int[][] edgeList, int k, int[] gpsLog) {
+        int[][] road = new int[n + 1][n + 1];
 
-        dp[0] = dp[1] = 1;
-        dp[2] = 3;
-        dp[3] = 10;
-        dp[4] = 23;
-        dp[5] = 62;
-        dp[6] = 170;
-
-        sum[0] = sum[1] = 1;
-        sum[2] = 3;
-        sum[3] = 11;
-        sum[4] = 24;
-        sum[5] = 65;
-        sum[6] = 181;
-
-        for (int i = 7; i <= n; i++) {
-            dp[i] = dp[i - 1] % MOD;
-            dp[i] += (dp[i - 2] * 2) % MOD;
-            dp[i] += (dp[i - 3] * 5) % MOD;
-            dp[i] += (sum[i - 4] * 2) % MOD;
-            dp[i] += (sum[i - 5] * 2) % MOD;
-            dp[i] += (sum[i - 6] * 4) % MOD;
-
-            dp[i] %= MOD;
-
-            sum[i] = (dp[i] + sum[i - 3]) % MOD;
+        for (int[] edge : edgeList) {
+            int s = edge[0], e = edge[1];
+            road[s][e] = 1;
+            road[e][s] = 1;
         }
 
-        return (int) dp[n];
+        int[][] dp = new int[k][n + 1];
+        for (int[] row : dp) {
+            Arrays.fill(row, INF);
+        }
+
+        dp[0][gpsLog[0]] = 0;
+
+        for (int i = 1; i < k; i++) {
+            for (int j = 1; j <= n; j++) {
+                dp[i][j] = Math.min(dp[i][j], dp[i - 1][j]);
+                for (int node = 1; node <= n; node++) {
+                    if (road[j][node] == 1) {
+                        dp[i][j] = Math.min(dp[i][j], dp[i - 1][node]);
+                    }
+                }
+                if (j != gpsLog[i]) {
+                    dp[i][j]++;
+                }
+            }
+        }
+
+        return dp[k - 1][gpsLog[k - 1]] < INF ? dp[k - 1][gpsLog[k - 1]] : -1;
     }
 
+    @Test
+    public void 정답() {
+        Assertions.assertEquals(1, solution(7, 10, new int[][] { { 1, 2 }, { 1, 3 }, { 2, 3 }, { 2, 4 }, { 3, 4 },
+                { 3, 5 }, { 4, 6 }, { 5, 6 }, { 5, 7 }, { 6, 7 } }, 6, new int[] { 1, 2, 3, 3, 6, 7 }));
 
-	@Test
-	public void 정답() {
-		Assertions.assertEquals(3,solution(2));
-
-		Assertions.assertEquals(10,solution(3));
-	}
+        Assertions.assertEquals(0, solution(
+                7, 10,
+                new int[][] { { 1, 2 }, { 1, 3 }, { 2, 3 }, { 2, 4 }, { 3, 4 }, { 3, 5 }, { 4, 6 }, { 5, 6 }, { 5, 7 },
+                        { 6, 7 } },
+                6, new int[] { 1, 2, 4, 6, 5, 7 }));
+    }
 }
