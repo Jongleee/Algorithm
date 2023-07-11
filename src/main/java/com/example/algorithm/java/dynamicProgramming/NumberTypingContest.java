@@ -1,9 +1,8 @@
+package com.example.algorithm.java.dynamicProgramming;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class NumberTypingContest {
     int[][] cost;
     int[][][] dp;
     int len;
@@ -90,17 +89,5 @@ public class TestSolution {
                 }
             }
         }
-    }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(1, solution(7, 10, new int[][] { { 1, 2 }, { 1, 3 }, { 2, 3 }, { 2, 4 }, { 3, 4 },
-                { 3, 5 }, { 4, 6 }, { 5, 6 }, { 5, 7 }, { 6, 7 } }, 6, new int[] { 1, 2, 3, 3, 6, 7 }));
-
-        Assertions.assertEquals(0, solution(
-                7, 10,
-                new int[][] { { 1, 2 }, { 1, 3 }, { 2, 3 }, { 2, 4 }, { 3, 4 }, { 3, 5 }, { 4, 6 }, { 5, 6 }, { 5, 7 },
-                        { 6, 7 } },
-                6, new int[] { 1, 2, 4, 6, 5, 7 }));
     }
 }
