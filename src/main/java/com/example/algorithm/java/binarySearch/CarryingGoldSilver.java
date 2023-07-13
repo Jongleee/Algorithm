@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.binarySearch;
 
-public class TestSolution {
+public class CarryingGoldSilver {
     public long solution(int a, int b, int[] g, int[] s, int[] w, int[] t) {
         long answer = 4 * (long) 10e13;
 
@@ -43,13 +42,15 @@ public class TestSolution {
         return answer;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(50,
-                solution(10, 10, new int[] { 100 }, new int[] { 100 }, new int[] { 7 }, new int[] { 10 }));
+    // @Test
+    // public void 정답() {
+    // Assertions.assertEquals(50,
+    // solution(10, 10, new int[] { 100 }, new int[] { 100 }, new int[] { 7 }, new
+    // int[] { 10 }));
 
-        Assertions.assertEquals(499, solution(90, 500, new int[] { 70, 70, 0 }, new int[] { 0, 0, 500 },
-                new int[] { 100, 100, 2 }, new int[] { 4, 8, 1 }));
+    // Assertions.assertEquals(499, solution(90, 500, new int[] { 70, 70, 0 }, new
+    // int[] { 0, 0, 500 },
+    // new int[] { 100, 100, 2 }, new int[] { 4, 8, 1 }));
 
-    }
+    // }
 }
