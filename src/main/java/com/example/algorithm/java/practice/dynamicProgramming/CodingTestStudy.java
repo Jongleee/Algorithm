@@ -1,77 +1,69 @@
 package com.example.algorithm.java.practice.dynamicProgramming;
 
 public class CodingTestStudy {
-    int goalAlp = 0;
-    int goalCop = 0;
+    public class Solution {
+        public int solution(int alp, int cop, int[][] problems) {
+            int goalAlp = getMaxValue(problems, 0);
+            int goalCop = getMaxValue(problems, 1);
 
-    public int solution(int alp, int cop, int[][] problems) {
-
-        getGoal(problems);
-
-        if (goalAlp <= alp && goalCop <= cop) {
-            return 0;
-        }
-
-        if (alp >= goalAlp) {
-            alp = goalAlp;
-        }
-        if (cop >= goalCop) {
-            cop = goalCop;
-        }
-
-        int[][] dp = new int[goalAlp + 2][goalCop + 2];
-
-        dpSetting(alp, cop, dp);
-
-        dp[alp][cop] = 0;
-
-        for (int i = alp; i <= goalAlp; i++) {
-            for (int j = cop; j <= goalCop; j++) {
-
-                dp[i + 1][j] = Math.min(dp[i + 1][j], dp[i][j] + 1);
-
-                dp[i][j + 1] = Math.min(dp[i][j + 1], dp[i][j] + 1);
-
-                findAnswer(problems, dp, i, j);
+            if (goalAlp <= alp && goalCop <= cop) {
+                return 0;
             }
-        }
 
-        return dp[goalAlp][goalCop];
-    }
+            alp = Math.min(alp, goalAlp);
+            cop = Math.min(cop, goalCop);
 
-    private void getGoal(int[][] problems) {
-        for (int i = 0; i < problems.length; i++) {
-            if (problems[i][0] > goalAlp)
-                goalAlp = problems[i][0];
+            int[][] dp = new int[goalAlp + 2][goalCop + 2];
+            initializeDP(dp, alp, cop, goalAlp, goalCop);
 
-            if (problems[i][1] > goalCop)
-                goalCop = problems[i][1];
-        }
-    }
-
-    private void dpSetting(int alp, int cop, int[][] dp) {
-        for (int i = alp; i <= goalAlp; i++) {
-            for (int j = cop; j <= goalCop; j++) {
-                dp[i][j] = Integer.MAX_VALUE;
-            }
-        }
-    }
-
-    private void findAnswer(int[][] problems, int[][] dp, int i, int j) {
-        for (int[] p : problems) {
-
-            if (i >= p[0] && j >= p[1]) {
-                if (i + p[2] > goalAlp && j + p[3] > goalCop) {
-                    dp[goalAlp][goalCop] = Math.min(dp[goalAlp][goalCop], dp[i][j] + p[4]);
-                } else if (i + p[2] > goalAlp) {
-                    dp[goalAlp][j + p[3]] = Math.min(dp[goalAlp][j + p[3]], dp[i][j] + p[4]);
-                } else if (j + p[3] > goalCop) {
-                    dp[i + p[2]][goalCop] = Math.min(dp[i + p[2]][goalCop], dp[i][j] + p[4]);
-                } else if (i + p[2] <= goalAlp && j + p[3] <= goalCop) {
-                    dp[i + p[2]][j + p[3]] = Math.min(dp[i + p[2]][j + p[3]], dp[i][j] + p[4]);
+            for (int i = alp; i <= goalAlp; i++) {
+                for (int j = cop; j <= goalCop; j++) {
+                    dp[i + 1][j] = Math.min(dp[i + 1][j], dp[i][j] + 1);
+                    dp[i][j + 1] = Math.min(dp[i][j + 1], dp[i][j] + 1);
+                    updateDP(dp, problems, i, j, goalAlp, goalCop);
                 }
             }
 
+            return dp[goalAlp][goalCop];
+        }
+
+        private int getMaxValue(int[][] problems, int index) {
+            int maxValue = 0;
+            for (int[] problem : problems) {
+                maxValue = Math.max(maxValue, problem[index]);
+            }
+            return maxValue;
+        }
+
+        private void initializeDP(int[][] dp, int alp, int cop, int goalAlp, int goalCop) {
+            for (int i = alp; i <= goalAlp; i++) {
+                for (int j = cop; j <= goalCop; j++) {
+                    dp[i][j] = Integer.MAX_VALUE;
+                }
+            }
+            dp[alp][cop] = 0;
+        }
+
+        private void updateDP(int[][] dp, int[][] problems, int i, int j, int goalAlp, int goalCop) {
+            for (int[] problem : problems) {
+                int p0 = problem[0];
+                int p1 = problem[1];
+                int p2 = problem[2];
+                int p3 = problem[3];
+                int p4 = problem[4];
+
+                if (i >= p0 && j >= p1) {
+                    if (i + p2 > goalAlp && j + p3 > goalCop) {
+                        dp[goalAlp][goalCop] = Math.min(dp[goalAlp][goalCop], dp[i][j] + p4);
+                    } else if (i + p2 > goalAlp) {
+                        dp[goalAlp][j + p3] = Math.min(dp[goalAlp][j + p3], dp[i][j] + p4);
+                    } else if (j + p3 > goalCop) {
+                        dp[i + p2][goalCop] = Math.min(dp[i + p2][goalCop], dp[i][j] + p4);
+                    } else if (i + p2 <= goalAlp && j + p3 <= goalCop) {
+                        dp[i + p2][j + p3] = Math.min(dp[i + p2][j + p3], dp[i][j] + p4);
+                    }
+                }
+            }
         }
     }
 }
