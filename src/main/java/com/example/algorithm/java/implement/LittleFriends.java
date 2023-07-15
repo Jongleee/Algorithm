@@ -1,11 +1,10 @@
+package com.example.algorithm.java.implement;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class LittleFriends {
     private HashMap<Character, int[][]> map;
     private LinkedList<Character> list;
     private char[][] charBoard;
@@ -111,11 +110,10 @@ public class TestSolution {
         return true;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("ABCD", solution(3, 3, new String[] { "DBA", "C*A", "CDB" }));
-        Assertions.assertEquals("RYAN", solution(2, 4, new String[] { "NRYN", "ARYA" }));
-        Assertions.assertEquals("MUZI", solution(4, 4, new String[] { ".ZI.", "M.**", "MZU.", ".IU." }));
-        Assertions.assertEquals("IMPOSSIBLE", solution(2, 2, new String[] { "AB", "BA" }));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("ABCD", solution(3, 3, new String[] { "DBA", "C*A", "CDB" }));
+    //     Assertions.assertEquals("RYAN", solution(2, 4, new String[] { "NRYN", "ARYA" }));
+    //     Assertions.assertEquals("MUZI", solution(4, 4, new String[] { ".ZI.", "M.**", "MZU.", ".IU." }));
+    //     Assertions.assertEquals("IMPOSSIBLE", solution(2, 2, new String[] { "AB", "BA" }));
 }
