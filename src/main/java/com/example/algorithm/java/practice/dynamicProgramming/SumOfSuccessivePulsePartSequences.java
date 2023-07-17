@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.practice.dynamicProgramming;
 
-public class TestSolution {
+public class SumOfSuccessivePulsePartSequences {
     public long solution(int[] sequence) {
         int n = sequence.length;
 
@@ -32,8 +31,8 @@ public class TestSolution {
         return sequence[i] * multiplier;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(10, solution(new int[] { 2, 3, -6, 1, 3, -1, 2, 4 }));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(10, solution(new int[] { 2, 3, -6, 1, 3, -1, 2, 4 }));
+    // }
 }
