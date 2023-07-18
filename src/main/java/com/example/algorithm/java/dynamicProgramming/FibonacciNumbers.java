@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.dynamicProgramming;
 
-public class TestSolution {
+public class FibonacciNumbers {
     public long solution(int n) {
         long[] dp = new long[n + 1];
         dp[0] = 0;
@@ -13,10 +12,10 @@ public class TestSolution {
 
         return dp[n];
     }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(2, solution(3));
-        Assertions.assertEquals(5, solution(5));
-    }
+    
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(2, solution(3));
+    //     Assertions.assertEquals(5, solution(5));
+    // }
 }
