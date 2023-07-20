@@ -1,9 +1,8 @@
+package com.example.algorithm.java.stack;
+
 import java.util.Stack;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class MakeHamburger {
     public int solution(int[] ingredient) {
         int answer = 0;
         Stack<Integer> inStack = new Stack<Integer>();
@@ -27,10 +26,9 @@ public class TestSolution {
 
         return answer;
     }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(2, solution(new int[] { 2, 1, 1, 2, 3, 1, 2, 3, 1 }));
-        Assertions.assertEquals(0, solution(new int[] { 1, 3, 2, 1, 2, 1, 3, 1, 2 }));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(2, solution(new int[] { 2, 1, 1, 2, 3, 1, 2, 3, 1 }));
+    //     Assertions.assertEquals(0, solution(new int[] { 1, 3, 2, 1, 2, 1, 3, 1, 2 }));
+    // }
 }
