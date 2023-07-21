@@ -1,11 +1,10 @@
+package com.example.algorithm.java.prefixSum;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class Camping {
     public int solution(int n, int[][] data) {
         int[][] compressedData = compressCoordinates(n, data);
 
@@ -82,9 +81,9 @@ public class TestSolution {
         return prefixSum[endX - 1][endY - 1] - prefixSum[endX - 1][startY] - prefixSum[startX][endY - 1]
                 + prefixSum[startX][startY];
     }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(3, solution(4, new int[][] { { 0, 0 }, { 1, 1 }, { 0, 2 }, { 2, 0 } }));
-    }
+    
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(3, solution(4, new int[][] { { 0, 0 }, { 1, 1 }, { 0, 2 }, { 2, 0 } }));
+    // }
 }
