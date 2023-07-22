@@ -1,9 +1,6 @@
-import java.util.Arrays;
+package com.example.algorithm.java.implement;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class WalkingPark {
     public int[] solution(String[] park, String[] routes) {
         int sx = 0;
         int sy = 0;
@@ -40,6 +37,8 @@ public class TestSolution {
                     case "N":
                         ny--;
                         break;
+                    default:
+                        break;
                 }
                 if (nx < 0 || ny < 0 || ny >= arr.length || nx >= arr[0].length || arr[ny][nx] == 'X') {
                     break;
@@ -53,14 +52,16 @@ public class TestSolution {
 
         return new int[] { sy, sx };
     }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("[2, 1]",
-                Arrays.toString(solution(new String[] { "SOO", "OOO", "OOO" }, new String[] { "E 2", "S 2", "W 1" })));
-        Assertions.assertEquals("[0, 1]",
-                Arrays.toString(solution(new String[] { "SOO", "OXX", "OOO" }, new String[] { "E 2", "S 2", "W 1" })));
-        Assertions.assertEquals("[0, 0]", Arrays
-                .toString(solution(new String[] { "OSO", "OOO", "OXO", "OOO" }, new String[] { "E 2", "S 3", "W 1" })));
-    }
+    // @Test
+    // public void 정답() {
+    // Assertions.assertEquals("[2, 1]",
+    // Arrays.toString(solution(new String[] { "SOO", "OOO", "OOO" }, new String[] {
+    // "E 2", "S 2", "W 1" })));
+    // Assertions.assertEquals("[0, 1]",
+    // Arrays.toString(solution(new String[] { "SOO", "OXX", "OOO" }, new String[] {
+    // "E 2", "S 2", "W 1" })));
+    // Assertions.assertEquals("[0, 0]", Arrays
+    // .toString(solution(new String[] { "OSO", "OOO", "OXO", "OOO" }, new String[]
+    // { "E 2", "S 3", "W 1" })));
+    // }
 }
