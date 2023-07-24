@@ -1,13 +1,12 @@
+package com.example.algorithm.java.hashMap;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class RecieveReportResult {
     public int[] solution(String[] idList, String[] report, int k) {
         Map<String, Set<String>> reporterInfoMap = new HashMap<>();
         Map<String, Integer> reportedCountInfoMap = new HashMap<>();
@@ -36,13 +35,13 @@ public class TestSolution {
         return answer;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("[2, 1, 1, 0]",
-                Arrays.toString(solution(new String[] { "muzi", "frodo", "apeach", "neo" },
-                        new String[] { "muzi frodo", "apeach frodo", "frodo neo", "muzi neo", "apeach muzi" }, 2)));
-        Assertions.assertEquals("[0, 0]", Arrays
-                .toString(solution(new String[] { "con", "ryan" },
-                        new String[] { "ryan con", "ryan con", "ryan con", "ryan con" }, 3)));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("[2, 1, 1, 0]",
+    //             Arrays.toString(solution(new String[] { "muzi", "frodo", "apeach", "neo" },
+    //                     new String[] { "muzi frodo", "apeach frodo", "frodo neo", "muzi neo", "apeach muzi" }, 2)));
+    //     Assertions.assertEquals("[0, 0]", Arrays
+    //             .toString(solution(new String[] { "con", "ryan" },
+    //                     new String[] { "ryan con", "ryan con", "ryan con", "ryan con" }, 3)));
+    // }
 }
