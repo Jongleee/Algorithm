@@ -1,10 +1,8 @@
-import java.util.Arrays;
+package com.example.algorithm.java.hashMap;
+
 import java.util.HashMap;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class RunningRace {
     public String[] solution(String[] players, String[] callings) {
         HashMap<String, Integer> rank = new HashMap<>();
 
@@ -29,10 +27,10 @@ public class TestSolution {
 
         return players;
     }
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("[mumu, kai, mine, soe, poe]",
-                Arrays.toString(solution(new String[] {"mumu", "soe", "poe", "kai", "mine"},
-                        new String[] { "kai", "kai", "mine", "mine"})));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("[mumu, kai, mine, soe, poe]",
+    //             Arrays.toString(solution(new String[] {"mumu", "soe", "poe", "kai", "mine"},
+    //                     new String[] { "kai", "kai", "mine", "mine"})));
+    // }
 }
