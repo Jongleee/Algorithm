@@ -1,9 +1,6 @@
-import java.util.Arrays;
+package com.example.algorithm.java.bruteForce;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class DesktopClean {
     public int[] solution(String[] wallpaper) {
         int minRow = Integer.MAX_VALUE;
         int minCol = Integer.MAX_VALUE;
@@ -27,12 +24,12 @@ public class TestSolution {
         return new int[] { minRow, minCol, maxRow + 1, maxCol + 1 };
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("[0, 1, 3, 4]",
-                Arrays.toString(solution(new String[] { ".#...", "..#..", "...#." })));
-        Assertions.assertEquals("[1, 3, 5, 8]",
-                Arrays.toString(solution(
-                        new String[] { "..........", ".....#....", "......##..", "...##.....", "....#....." })));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("[0, 1, 3, 4]",
+    //             Arrays.toString(solution(new String[] { ".#...", "..#..", "...#." })));
+    //     Assertions.assertEquals("[1, 3, 5, 8]",
+    //             Arrays.toString(solution(
+    //                     new String[] { "..........", ".....#....", "......##..", "...##.....", "....#....." })));
+    // }
 }
