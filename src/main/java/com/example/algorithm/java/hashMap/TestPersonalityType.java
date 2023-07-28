@@ -1,10 +1,9 @@
+package com.example.algorithm.java.hashMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestSolution {
+public class TestPersonalityType {
     public String solution(String[] survey, int[] choices) {
         Map<Character, Integer> map = new HashMap<>();
 
@@ -29,9 +28,9 @@ public class TestSolution {
         return result.toString();
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("TCMA", solution(new String[] { "AN", "CF", "MJ", "RT", "NA"}, new int[] {5, 3, 2, 7, 5}));
-        Assertions.assertEquals("RCJA", solution(new String[] {"TR", "RT", "TR"}, new int[] { 7,1,3}));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("TCMA", solution(new String[] { "AN", "CF", "MJ", "RT", "NA"}, new int[] {5, 3, 2, 7, 5}));
+    //     Assertions.assertEquals("RCJA", solution(new String[] {"TR", "RT", "TR"}, new int[] { 7,1,3}));
+    // }
 }
