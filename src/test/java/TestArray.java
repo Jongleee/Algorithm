@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestSolution {
+public class TestArray {
 
     private int[] parent = new int[2501];
     private String[] value = new String[2501];
