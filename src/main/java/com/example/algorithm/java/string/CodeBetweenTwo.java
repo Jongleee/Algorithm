@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.string;
 
-public class TestValue {
+public class CodeBetweenTwo {
     public String solution(String s, String skip, int index) {
         StringBuilder answerBuilder = new StringBuilder();
 
@@ -22,9 +21,9 @@ public class TestValue {
         return answerBuilder.toString();
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("happy",
-                solution("aukks", "wbqd", 5));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("happy",
+    //             solution("aukks", "wbqd", 5));
+    // }
 }
