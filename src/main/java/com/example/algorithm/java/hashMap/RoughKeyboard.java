@@ -1,9 +1,8 @@
+package com.example.algorithm.java.hashMap;
+
 import java.util.HashMap;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestArray {
+public class RoughKeyboard {
     public int[] solution(String[] keymap, String[] targets) {
         HashMap<Character, Integer> map = new HashMap<>();
         int[] answer = new int[targets.length];
@@ -32,13 +31,14 @@ public class TestArray {
         return answer;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertArrayEquals(new int[] { 9, 4 },
-                solution(new String[] { "ABACD", "BCEFD" }, new String[] { "ABCD", "AABB" }));
-        Assertions.assertArrayEquals(new int[] { -1 },
-                solution(new String[] { "AA" }, new String[] { "B" }));
-        Assertions.assertArrayEquals(new int[] { 4, 6 },
-                solution(new String[] { "AGZ", "BSSS" }, new String[] { "ASA", "BGZ" }));
-    }
+    // @Test
+    // public void 정답() {
+    // Assertions.assertArrayEquals(new int[] { 9, 4 },
+    // solution(new String[] { "ABACD", "BCEFD" }, new String[] { "ABCD", "AABB"
+    // }));
+    // Assertions.assertArrayEquals(new int[] { -1 },
+    // solution(new String[] { "AA" }, new String[] { "B" }));
+    // Assertions.assertArrayEquals(new int[] { 4, 6 },
+    // solution(new String[] { "AGZ", "BSSS" }, new String[] { "ASA", "BGZ" }));
+    // }
 }
