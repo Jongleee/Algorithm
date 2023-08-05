@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.string;
 
-public class TestValue {
+public class Babbling2 {
     public int solution(String[] babbling) {
         int answer = 0;
         String[] words = {"aya", "ye", "woo", "ma"};
@@ -24,10 +23,10 @@ public class TestValue {
         }
         return answer;
     }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(1, solution(new String[] { "aya", "yee", "u", "maa" }));
-        Assertions.assertEquals(2, solution(new String[] { "ayaye", "uuu", "yeye", "yemawoo", "ayaayaa" }));
-    }
+    
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(1, solution(new String[] { "aya", "yee", "u", "maa" }));
+    //     Assertions.assertEquals(2, solution(new String[] { "ayaye", "uuu", "yeye", "yemawoo", "ayaayaa" }));
+    // }
 }
