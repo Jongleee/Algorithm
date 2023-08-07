@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.string;
 
-public class TestValue {
+public class NumberPartner {
     public String solution(String X, String Y) {
         StringBuilder sb = new StringBuilder();
 
@@ -33,12 +32,12 @@ public class TestValue {
         return sb.toString();
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("-1", solution("100", "2345"));
-        Assertions.assertEquals("0", solution("100", "203045"));
-        Assertions.assertEquals("10", solution("100", "123450"));
-        Assertions.assertEquals("321", solution("12321", "42531"));
-        Assertions.assertEquals("552", solution("5525", "1255"));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("-1", solution("100", "2345"));
+    //     Assertions.assertEquals("0", solution("100", "203045"));
+    //     Assertions.assertEquals("10", solution("100", "123450"));
+    //     Assertions.assertEquals("321", solution("12321", "42531"));
+    //     Assertions.assertEquals("552", solution("5525", "1255"));
+    // }
 }
