@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.math;
 
-public class TestValue {
+public class KnightWeapon {
     public int solution(int number, int limit, int power) {
         int answer = 0;
 
@@ -25,9 +24,9 @@ public class TestValue {
         return count;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(10, solution(5, 3, 2));
-        Assertions.assertEquals(21, solution(10, 3, 2));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(10, solution(5, 3, 2));
+    //     Assertions.assertEquals(21, solution(10, 3, 2));
+    // }
 }
