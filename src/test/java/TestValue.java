@@ -2,32 +2,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int number, int limit, int power) {
-        int answer = 0;
-
-        for (int i = 1; i <= number; i++) {
-            int count = countDivisors(i);
-            answer += count > limit ? power : count;
-        }
-
-        return answer;
-    }
-
-    private int countDivisors(int num) {
-        int count = 0;
-        for (int j = 1; j * j <= num; j++) {
-            if (j * j == num) {
-                count++;
-            } else if (num % j == 0) {
-                count += 2;
+    public int solution(int n, int m, int[] section) {
+        int roller = section[0];
+        int cnt = 1;
+        for (int s : section) {
+            if (s > roller + m - 1) {
+                cnt++;
+                roller = s;
             }
         }
-        return count;
+        return cnt;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(10, solution(5, 3, 2));
-        Assertions.assertEquals(21, solution(10, 3, 2));
+        Assertions.assertEquals(2, solution(8, 4, new int[] { 2, 3, 6 }));
+        Assertions.assertEquals(1, solution(5, 4, new int[] { 1, 3 }));
+        Assertions.assertEquals(4, solution(4, 1, new int[] { 1, 2, 3, 4 }));
     }
 }
