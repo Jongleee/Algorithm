@@ -1,23 +1,26 @@
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int n, int m, int[] section) {
-        int roller = section[0];
-        int cnt = 1;
-        for (int s : section) {
-            if (s > roller + m - 1) {
-                cnt++;
-                roller = s;
+    public int solution(int k, int m, int[] score) {
+        Arrays.sort(score);
+        int answer = 0;
+
+        for (int i = score.length - 1; i >= 0; i--) {
+            int multiplier = (score.length - i) % m;
+            if (multiplier == 0) {
+                answer += score[i] * m;
             }
         }
-        return cnt;
+
+        return answer;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(2, solution(8, 4, new int[] { 2, 3, 6 }));
-        Assertions.assertEquals(1, solution(5, 4, new int[] { 1, 3 }));
-        Assertions.assertEquals(4, solution(4, 1, new int[] { 1, 2, 3, 4 }));
+        Assertions.assertEquals(8, solution(3, 4, new int[] { 1, 2, 3, 1, 2, 3, 1 }));
+        Assertions.assertEquals(33, solution(4, 3, new int[] { 4, 1, 2, 2, 4, 4, 4, 4, 1, 2, 4, 2 }));
     }
 }
