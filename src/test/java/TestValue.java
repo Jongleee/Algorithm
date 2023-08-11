@@ -1,26 +1,29 @@
-import java.util.Arrays;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int k, int m, int[] score) {
-        Arrays.sort(score);
-        int answer = 0;
+    public String solution(String[] cards1, String[] cards2, String[] goal) {
+        int one = 0;
+        int two = 0;
 
-        for (int i = score.length - 1; i >= 0; i--) {
-            int multiplier = (score.length - i) % m;
-            if (multiplier == 0) {
-                answer += score[i] * m;
+        for (String g : goal) {
+            if (one < cards1.length && g.equals(cards1[one])) {
+                one++;
+            } else if (two < cards2.length && g.equals(cards2[two])) {
+                two++;
+            } else {
+                return "No";
             }
         }
 
-        return answer;
+        return "Yes";
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(8, solution(3, 4, new int[] { 1, 2, 3, 1, 2, 3, 1 }));
-        Assertions.assertEquals(33, solution(4, 3, new int[] { 4, 1, 2, 2, 4, 4, 4, 4, 1, 2, 4, 2 }));
+        Assertions.assertEquals("Yes", solution(new String[] { "i", "drink", "water" }, new String[] { "want", "to" },
+                new String[] { "i", "want", "to", "drink", "water" }));
+        Assertions.assertEquals("No", solution(new String[] { "i", "water", "drink" }, new String[] { "want", "to" },
+                new String[] { "i", "want", "to", "drink", "water" }));
     }
 }
