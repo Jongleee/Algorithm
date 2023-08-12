@@ -1,10 +1,9 @@
+package com.example.algorithm.java.sort;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestArray {
+public class HallOfFame1 {
     public int[] solution(int k, int[] score) {
         int[] answer = new int[score.length];
         ArrayList<Integer> temp = new ArrayList<>();
@@ -29,11 +28,11 @@ public class TestArray {
         list.add(index, value);
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertArrayEquals(new int[] { 10, 10, 10, 20, 20, 100, 100 },
-                solution(3, new int[] { 10, 100, 20, 150, 1, 100, 200 }));
-        Assertions.assertArrayEquals(new int[] { 0, 0, 0, 0, 20, 40, 70, 70, 150, 300 },
-                solution(4, new int[] { 0, 300, 40, 300, 20, 70, 150, 50, 500, 1000 }));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertArrayEquals(new int[] { 10, 10, 10, 20, 20, 100, 100 },
+    //             solution(3, new int[] { 10, 100, 20, 150, 1, 100, 200 }));
+    //     Assertions.assertArrayEquals(new int[] { 0, 0, 0, 0, 20, 40, 70, 70, 150, 300 },
+    //             solution(4, new int[] { 0, 300, 40, 300, 20, 70, 150, 50, 500, 1000 }));
+    // }
 }
