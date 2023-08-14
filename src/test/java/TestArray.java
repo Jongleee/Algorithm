@@ -1,39 +1,37 @@
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestArray {
-    public int[] solution(int k, int[] score) {
-        int[] answer = new int[score.length];
-        ArrayList<Integer> temp = new ArrayList<>();
+    public int[] solution(String[] name, int[] yearning, String[][] photo) {
+        int[] answer = new int[photo.length];
 
-        for (int i = 0; i < score.length; i++) {
-            if (temp.size() < k) {
-                insertAndSort(temp, score[i]);
-            } else if (temp.get(0) < score[i]) {
-                temp.remove(0);
-                insertAndSort(temp, score[i]);
+        HashMap<String, Integer> nameToYearning = new HashMap<>();
+        for (int i = 0; i < name.length; i++) {
+            nameToYearning.put(name[i], yearning[i]);
+        }
+
+        for (int i = 0; i < photo.length; i++) {
+            int totalYearning = 0;
+            for (String person : photo[i]) {
+                totalYearning += nameToYearning.getOrDefault(person, 0);
             }
-            answer[i] = temp.get(0);
+            answer[i] = totalYearning;
         }
-        return answer;
-    }
 
-    private void insertAndSort(ArrayList<Integer> list, int value) {
-        int index = Collections.binarySearch(list, value);
-        if (index < 0) {
-            index = -index - 1;
-        }
-        list.add(index, value);
+        return answer;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertArrayEquals(new int[] { 10, 10, 10, 20, 20, 100, 100 },
-                solution(3, new int[] { 10, 100, 20, 150, 1, 100, 200 }));
-        Assertions.assertArrayEquals(new int[] { 0, 0, 0, 0, 20, 40, 70, 70, 150, 300 },
-                solution(4, new int[] { 0, 300, 40, 300, 20, 70, 150, 50, 500, 1000 }));
+        Assertions.assertArrayEquals(new int[] { 19, 15, 6 },
+                solution(new String[] { "may", "kein", "kain", "radi" }, new int[] { 5, 10, 1, 3 },
+                        new String[][] { { "may", "kein", "kain", "radi" }, { "may", "kein", "brin", "deny" },
+                                { "kon", "kain", "may", "coni" } }));
+        Assertions.assertArrayEquals(new int[] { 67, 0, 55 },
+                solution(new String[] { "kali", "mari", "don" }, new int[] { 11, 1, 55 },
+                        new String[][] { { "kali", "mari", "don" }, { "pony", "tom", "teddy" },
+                                { "con", "mona", "don" } }));
     }
 }
