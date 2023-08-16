@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.string;
 
-public class TestValue {
+public class FoodFightContest {
     public String solution(int[] food) {
         StringBuilder answer = new StringBuilder();
 
@@ -21,9 +20,9 @@ public class TestValue {
         return answer.toString();
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals("1223330333221", solution(new int[] { 1, 3, 4, 6 }));
-        Assertions.assertEquals("111303111", solution(new int[] { 1, 7, 1, 2 }));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("1223330333221", solution(new int[] { 1, 3, 4, 6 }));
+    //     Assertions.assertEquals("111303111", solution(new int[] { 1, 7, 1, 2 }));
+    // }
 }
