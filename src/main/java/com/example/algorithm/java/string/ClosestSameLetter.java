@@ -1,10 +1,9 @@
+package com.example.algorithm.java.string;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestArray {
+public class ClosestSameLetter {
     public int[] solution(String s) {
         int[] answer = new int[s.length()];
         Map<Character, Integer> map = new HashMap<>();
@@ -24,11 +23,11 @@ public class TestArray {
         return answer;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertArrayEquals(new int[] { -1, -1, -1, 2, 2, 2 },
-                solution("banana"));
-        Assertions.assertArrayEquals(new int[] { -1, -1, 1, -1, -1, -1 },
-                solution("foobar"));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertArrayEquals(new int[] { -1, -1, -1, 2, 2, 2 },
+    //             solution("banana"));
+    //     Assertions.assertArrayEquals(new int[] { -1, -1, 1, -1, -1, -1 },
+    //             solution("foobar"));
+    // }
 }
