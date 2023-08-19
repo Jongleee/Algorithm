@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.bruteForce;
 
-public class TestValue {
+public class Trio {
     public int solution(int[] number) {
         int answer = 0;
         int n = number.length;
@@ -19,10 +18,10 @@ public class TestValue {
         return answer;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(2, solution(new int[] { -2, 3, 0, 2, -5 }));
-        Assertions.assertEquals(5, solution(new int[] { -3, -2, -1, 0, 1, 2, 3 }));
-        Assertions.assertEquals(0, solution(new int[] { -1, 1, -1, 1 }));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(2, solution(new int[] { -2, 3, 0, 2, -5 }));
+    //     Assertions.assertEquals(5, solution(new int[] { -3, -2, -1, 0, 1, 2, 3 }));
+    //     Assertions.assertEquals(0, solution(new int[] { -1, 1, -1, 1 }));
+    // }
 }
