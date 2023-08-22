@@ -1,34 +1,26 @@
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestArray {
-    public int[] solution(String s) {
-        int[] answer = new int[s.length()];
-        Map<Character, Integer> map = new HashMap<>();
+    public int[][] solution(int[][] arr1, int[][] arr2) {
+        int rows = arr1.length;
+        int cols = arr1[0].length;
+        int[][] result = new int[rows][cols];
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            if (map.containsKey(c)) {
-                answer[i] = i - map.get(c);
-            } else {
-                answer[i] = -1;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[i][j] = arr1[i][j] + arr2[i][j];
             }
-
-            map.put(c, i);
         }
 
-        return answer;
+        return result;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertArrayEquals(new int[] { -1, -1, -1, 2, 2, 2 },
-                solution("banana"));
-        Assertions.assertArrayEquals(new int[] { -1, -1, 1, -1, -1, -1 },
-                solution("foobar"));
+        Assertions.assertArrayEquals(new int[][] { { 4, 6 }, { 7, 9 } },
+                solution(new int[][] { { 1, 2 }, { 2, 3 } }, new int[][] { { 3, 4 }, { 5, 6 } }));
+        Assertions.assertArrayEquals(new int[][] { { 4 }, { 6 } },
+                solution(new int[][] { { 1 }, { 2 } }, new int[][] { { 3 }, { 4 } }));
     }
 }
