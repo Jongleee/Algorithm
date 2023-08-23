@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.string;
 
-public class TestValue {
+public class StringHandlingDefault {
     public boolean solution(String s) {
         if (s.length() == 4 || s.length() == 6) {
             try {
@@ -13,10 +12,9 @@ public class TestValue {
         }
         return false;
     }
-
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(false, solution("a234"));
-        Assertions.assertEquals(true, solution("1234"));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(false, solution("a234"));
+    //     Assertions.assertEquals(true, solution("1234"));
+    // }
 }
