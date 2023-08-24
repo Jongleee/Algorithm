@@ -2,21 +2,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public boolean solution(String s) {
-        if (s.length() == 4 || s.length() == 6) {
-            try {
-                Integer.parseInt(s);
-                return true;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        return false;
+    public long solution(int price, int money, int count) {
+        long totalCost = (long) price * count * (count + 1) / 2;
+        return Math.max(totalCost - money, 0);
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(false, solution("a234"));
-        Assertions.assertEquals(true, solution("1234"));
+        Assertions.assertEquals(10, solution(3, 20, 4));
     }
 }
