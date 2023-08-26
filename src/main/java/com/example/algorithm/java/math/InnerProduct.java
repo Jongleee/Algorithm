@@ -2,7 +2,7 @@ package com.example.algorithm.java.math;
 
 import java.util.stream.IntStream;
 
-public class InnerProduc {
+public class InnerProduct {
     public int solution(int[] a, int[] b) {
         return IntStream.range(0, a.length)
                 .map(i -> a[i] * b[i])

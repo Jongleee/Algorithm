@@ -1,18 +1,14 @@
-import java.util.stream.IntStream;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int[] a, int[] b) {
-        return IntStream.range(0, a.length)
-                .map(i -> a[i] * b[i])
-                .sum();
+    public String solution(String s) {
+        return s.substring((s.length() - 1) / 2, s.length() / 2 + 1);
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(3, solution(new int[] { 1, 2, 3, 4 }, new int[] { -3, -1, 0, 2 }));
-        Assertions.assertEquals(-2, solution(new int[] { -1,0,1 }, new int[] {1,0, -1}));
+        Assertions.assertEquals("c", solution("abcde"));
+        Assertions.assertEquals("we", solution("qwer"));
     }
 }
