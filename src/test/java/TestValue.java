@@ -2,17 +2,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public String solution(String phone_number) {
-        int len = phone_number.length() - 4;
-        String asterisks = "*".repeat(len);
-        String lastFourDigits = phone_number.substring(len);
+    public int solution(int[] absolutes, boolean[] signs) {
+        int answer = 0;
 
-        return asterisks + lastFourDigits;
+        for (int i = 0; i < signs.length; i++) {
+            int value = signs[i] ? absolutes[i] : -absolutes[i];
+            answer += value;
+        }
+
+        return answer;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals("*******4444", solution("01033334444"));
-        Assertions.assertEquals("*****8888", solution("027778888"));
+        Assertions.assertEquals(9, solution(new int[] { 4, 7, 12 }, new boolean[] { true, false, true }));
+        Assertions.assertEquals(0, solution(new int[] { 1, 2, 3 }, new boolean[] { false, false, true }));
     }
 }
