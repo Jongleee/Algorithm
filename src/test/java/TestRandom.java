@@ -11,10 +11,10 @@ public class TestRandom {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        int num = scanner.nextInt();
         while (true) {
             System.out.println("Choose an number:");
             if (scanner.hasNextInt()) {
+                int num = scanner.nextInt();
                 if (num <= 5)
                     break;
                 List<Integer> numbers = new ArrayList<>();
