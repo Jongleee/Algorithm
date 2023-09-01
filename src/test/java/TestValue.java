@@ -2,20 +2,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int[] absolutes, boolean[] signs) {
-        int answer = 0;
-
-        for (int i = 0; i < signs.length; i++) {
-            int value = signs[i] ? absolutes[i] : -absolutes[i];
-            answer += value;
+    public String solution(String[] seoul) {
+        int cnt = 0;
+        for (String string : seoul) {
+            if (string.equals("Kim"))
+                break;
+            cnt++;
         }
-
-        return answer;
+        return "김서방은 " + cnt + "에 있다";
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(9, solution(new int[] { 4, 7, 12 }, new boolean[] { true, false, true }));
-        Assertions.assertEquals(0, solution(new int[] { 1, 2, 3 }, new boolean[] { false, false, true }));
+        Assertions.assertEquals("김서방은 1에 있다", solution(new String[] { "Jane", "Kim" }));
+
+        Assertions.assertEquals("김서방은 2에 있다", solution(new String[] { "Jane", "Jeong", "Kim" }));
     }
 }
