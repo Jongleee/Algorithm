@@ -1,21 +1,20 @@
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public String solution(String[] seoul) {
-        int cnt = 0;
-        for (String string : seoul) {
-            if (string.equals("Kim"))
-                break;
-            cnt++;
-        }
-        return "김서방은 " + cnt + "에 있다";
+    public long solution(int a, int b) {
+        int start = Math.min(a, b);
+        int end = Math.max(a, b);
+
+        return IntStream.rangeClosed(start, end).asLongStream().sum();
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals("김서방은 1에 있다", solution(new String[] { "Jane", "Kim" }));
-
-        Assertions.assertEquals("김서방은 2에 있다", solution(new String[] { "Jane", "Jeong", "Kim" }));
+        Assertions.assertEquals(12, solution(3, 5));
+        Assertions.assertEquals(3, solution(3, 3));
+        Assertions.assertEquals(12, solution(5, 3));
     }
 }
