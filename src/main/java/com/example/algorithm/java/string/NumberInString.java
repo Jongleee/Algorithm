@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.string;
 
-public class TestValue {
+public class NumberInString {
     boolean solution(String s) {
         int num = 0;
 
@@ -17,9 +16,9 @@ public class TestValue {
         return num == 0;
     }
 
-    @Test
-    public void 정답() {
-        Assertions.assertEquals(true, solution("pPoooyY"));
-        Assertions.assertEquals(false, solution("Pyy"));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(true, solution("pPoooyY"));
+    //     Assertions.assertEquals(false, solution("Pyy"));
+    // }
 }
