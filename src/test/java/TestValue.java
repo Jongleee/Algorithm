@@ -1,65 +1,46 @@
-import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public static int solution(int[][] clockHands) {
-        int n = clockHands.length;
-        int answer = Integer.MAX_VALUE;
+    public int solution(int[] topping) {
+        int answer = 0;
+        HashSet<Integer> set = new HashSet<>();
+        int[] ToppingType1 = new int[topping.length];
+        int[] ToppingType2 = new int[topping.length];
 
-        for (int i = 0; i < Math.pow(4, n); i++) {
-            int[][] copyArr = copy2DArray(clockHands);
-            int count = 0;
-            int a = i;
+        calculateDistinctToppings(topping, set, ToppingType1);
+        set.clear();
+        calculateDistinctToppings(reverseArray(topping), set, ToppingType2);
 
-            for (int j = 0; j < n; j++) {
-                int cnt = a % 4;
-                a /= 4;
-                rotateClockHands(copyArr, 0, j, cnt);
-                count += cnt;
-            }
-
-            for (int row = 1; row < n; row++) {
-                for (int col = 0; col < n; col++) {
-                    int cnt = (4 - copyArr[row - 1][col]) % 4;
-                    rotateClockHands(copyArr, row, col, cnt);
-                    count += cnt;
-                }
-            }
-
-            if (Arrays.equals(copyArr[n - 1], new int[n])) {
-                return count;
+        for (int i = 0; i < topping.length - 1; i++) {
+            if (ToppingType1[i] == ToppingType2[topping.length - i - 2]) {
+                answer++;
             }
         }
+
         return answer;
     }
 
-    private static int[][] copy2DArray(int[][] original) {
-        int n = original.length;
-        int[][] copy = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            System.arraycopy(original[i], 0, copy[i], 0, n);
+    public void calculateDistinctToppings(int[] topping, HashSet<Integer> set, int[] dp) {
+        for (int i = 0; i < topping.length; i++) {
+            set.add(topping[i]);
+            dp[i] = set.size();
         }
-        return copy;
     }
 
-    private static void rotateClockHands(int[][] clockHands, int row, int col, int cnt) {
-        int n = clockHands.length;
-        clockHands[row][col] = (clockHands[row][col] + cnt) % 4;
-        if (row > 0)
-            clockHands[row - 1][col] = (clockHands[row - 1][col] + cnt) % 4;
-        if (col > 0)
-            clockHands[row][col - 1] = (clockHands[row][col - 1] + cnt) % 4;
-        if (row < n - 1)
-            clockHands[row + 1][col] = (clockHands[row + 1][col] + cnt) % 4;
-        if (col < n - 1)
-            clockHands[row][col + 1] = (clockHands[row][col + 1] + cnt) % 4;
+    public int[] reverseArray(int[] arr) {
+        int[] reversed = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            reversed[i] = arr[arr.length - i - 1];
+        }
+        return reversed;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(3,
-                solution(new int[][] { { 0, 3, 3, 0 }, { 3, 2, 2, 3 }, { 0, 3, 2, 0 }, { 0, 3, 3, 3 } }));
+        Assertions.assertEquals(2, solution(new int[] { 1, 2, 1, 3, 1, 4, 1, 2 }));
+        Assertions.assertEquals(0, solution(new int[] { 1, 2, 3, 1, 4 }));
     }
 }
