@@ -12,27 +12,32 @@ public class TestRandom {
             if (scanner.hasNextInt()) {
                 Random random = new Random();
                 int num = scanner.nextInt();
-                if (num <= 5)
-                    break;
-                List<Integer> numbers = new ArrayList<>();
-                if (num < 10)
-                    numbers = random.ints(6, 1, num + 1)
-                            .boxed()
-                            .toList();
-                else {
-                    numbers = random.ints(1, num + 1)
-                            .distinct()
-                            .limit(6)
-                            .sorted()
-                            .boxed()
-                            .toList();
+                System.out.println("Choose reps:");
+                int reps = scanner.nextInt();
+                for (int i = 0; i < reps;) {
+                    if (num <= 5)
+                        break;
+                    List<Integer> numbers = new ArrayList<>();
+                    if (num < 10)
+                        numbers = random.ints(6, 1, num + 1)
+                                .boxed()
+                                .toList();
+                    else {
+                        numbers = random.ints(1, num + 1)
+                                .distinct()
+                                .limit(6)
+                                .sorted()
+                                .boxed()
+                                .toList();
+                    }
+                    i++;
+                    System.out.println("========= " + i + " ===========");
+                    System.out.println(numbers);
                 }
-                System.out.println("=======================");
-                System.out.println(numbers);
-                System.out.println("=======================");
             } else {
                 break;
             }
+            System.out.println("=======================");
         }
         scanner.close();
     }
