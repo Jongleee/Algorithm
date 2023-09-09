@@ -1,7 +1,7 @@
 package com.example.algorithm.java.bruteForce;
 
 public class DeliveryAndPickup {
-    public static long solution(int cap, int n, int[] deliveries, int[] pickups) {
+    public long solution(int cap, int n, int[] deliveries, int[] pickups) {
         long answer = 0;
         int deliveryLeft = 0;
         int pickupLeft = 0;
@@ -20,18 +20,19 @@ public class DeliveryAndPickup {
 
         return answer;
     }
+    // @Test
+    // public void 정답() {
+    //     int c1 = 4;
+    //     int n1 = 5;
+    //     int[] d1 = { 1, 0, 3, 1, 2 };
+    //     int[] p1 = { 0, 3, 0, 4, 0 };
+    //     int c2 = 2;
+    //     int n2 = 7;
+    //     int[] d2 = { 1, 0, 2, 0, 1, 0, 2 };
+    //     int[] p2 = { 0, 2, 0, 1, 0, 2, 0 };
 
-    public static void main(String[] args) {
-        int c1 = 4;
-        int n1 = 5;
-        int[] d1 = { 1, 0, 3, 1, 2 };
-        int[] p1 = { 0, 3, 0, 4, 0 };
-        int c2 = 2;
-        int n2 = 7;
-        int[] d2 = { 1, 0, 2, 0, 1, 0, 2 };
-        int[] p2 = { 0, 2, 0, 1, 0, 2, 0 };
+    //     Assertions.assertEquals(16, solution(c1, n1, d1, p1));
+    //     Assertions.assertEquals(30, solution(c2, n2, d2, p2));
+    // }
 
-        System.out.println(solution(c1, n1, d1, p1));// 16
-        System.out.println(solution(c2, n2, d2, p2));// 30
-    }
 }

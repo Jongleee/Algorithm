@@ -1,46 +1,29 @@
-import java.util.HashSet;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int[] topping) {
-        int answer = 0;
-        HashSet<Integer> set = new HashSet<>();
-        int[] ToppingType1 = new int[topping.length];
-        int[] ToppingType2 = new int[topping.length];
+    public static int solution(int k, int[][] dungeons) {
+        boolean[] visited = new boolean[dungeons.length];
+        return dfs(0, k, dungeons, visited);
+    }
 
-        calculateDistinctToppings(topping, set, ToppingType1);
-        set.clear();
-        calculateDistinctToppings(reverseArray(topping), set, ToppingType2);
+    public static int dfs(int depth, int k, int[][] dungeons, boolean[] visited) {
+        int maxDepth = depth;
 
-        for (int i = 0; i < topping.length - 1; i++) {
-            if (ToppingType1[i] == ToppingType2[topping.length - i - 2]) {
-                answer++;
+        for (int i = 0; i < dungeons.length; i++) {
+            if (!visited[i] && dungeons[i][0] <= k) {
+                visited[i] = true;
+                int subDepth = dfs(depth + 1, k - dungeons[i][1], dungeons, visited);
+                maxDepth = Math.max(maxDepth, subDepth);
+                visited[i] = false;
             }
         }
 
-        return answer;
-    }
-
-    public void calculateDistinctToppings(int[] topping, HashSet<Integer> set, int[] dp) {
-        for (int i = 0; i < topping.length; i++) {
-            set.add(topping[i]);
-            dp[i] = set.size();
-        }
-    }
-
-    public int[] reverseArray(int[] arr) {
-        int[] reversed = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            reversed[i] = arr[arr.length - i - 1];
-        }
-        return reversed;
+        return maxDepth;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(2, solution(new int[] { 1, 2, 1, 3, 1, 4, 1, 2 }));
-        Assertions.assertEquals(0, solution(new int[] { 1, 2, 3, 1, 4 }));
+        Assertions.assertEquals(3, solution(80, new int[][] { { 80, 20 }, { 50, 40 }, { 30, 10 } }));
     }
 }
