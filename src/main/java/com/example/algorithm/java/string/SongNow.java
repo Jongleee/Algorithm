@@ -1,27 +1,28 @@
 package com.example.algorithm.java.string;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SongNow {
-    private static HashMap<String, String> dict = new HashMap<>();
+    private static Map<String, String> dict = new HashMap<>();
 
     public String solution(String m, String[] musicinfos) {
         String answer = "(None)";
 
         initializeDictionary();
-        m = change(m);
+        m = convert(m);
 
         int maxTime = 0;
         for (String musicInfo : musicinfos) {
-            String[] temp = musicInfo.split(",");
-            int time = getTime(temp[0], temp[1]);
-            String music = change(temp[3]);
+            String[] info = musicInfo.split(",");
+            int time = getTime(info[0], info[1]);
+            String music = convert(info[3]);
 
             music = repeatMusic(music, time);
 
             if (music.contains(m) && time > maxTime) {
                 maxTime = time;
-                answer = temp[2];
+                answer = info[2];
             }
         }
 
@@ -36,9 +37,9 @@ public class SongNow {
         dict.put("A#", "a");
     }
 
-    private String change(String str) {
-        for (String key : dict.keySet()) {
-            str = str.replace(key, dict.get(key));
+    private String convert(String str) {
+        for (Map.Entry<String, String> entry : dict.entrySet()) {
+            str = str.replace(entry.getKey(), entry.getValue());
         }
         return str;
     }
@@ -63,4 +64,16 @@ public class SongNow {
         }
         return repeatedMusic.substring(0, time);
     }
+
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals("HELLO",
+    //             solution("ABCDEFG", new String[] { "12:00,12:14,HELLO,CDEFGAB", "13:00,13:05,WORLD,ABCDEF" }));
+
+    //     Assertions.assertEquals("FOO",
+    //             solution("CC#BCC#BCC#BCC#B", new String[] { "03:00,03:30,FOO,CC#B", "04:00,04:08,BAR,CC#BCC#BCC#B" }));
+
+    //     Assertions.assertEquals("WORLD",
+    //             solution("ABC", new String[] { "12:00,12:14,HELLO,C#DEFGAB", "13:00,13:05,WORLD,ABCDEF" }));
+    // }
 }
