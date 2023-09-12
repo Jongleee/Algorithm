@@ -4,24 +4,25 @@ public class SkillTree {
     public int solution(String skill, String[] skillTrees) {
         int answer = 0;
         for (String skillTree : skillTrees) {
-            StringBuilder filteredSkillTree = filterSkillTree(skill, skillTree);
-            if (isSkillValid(skill, filteredSkillTree))
+            if (isSkillValid(skill, skillTree)) {
                 answer++;
+            }
         }
         return answer;
     }
 
-    private StringBuilder filterSkillTree(String skill, String skillTree) {
+    private boolean isSkillValid(String skill, String skillTree) {
         StringBuilder filteredSkillTree = new StringBuilder();
         for (char c : skillTree.toCharArray()) {
             if (skill.contains(Character.toString(c))) {
                 filteredSkillTree.append(c);
             }
         }
-        return filteredSkillTree;
+        return skill.startsWith(filteredSkillTree.toString());
     }
 
-    private boolean isSkillValid(String skill, StringBuilder filteredSkillTree) {
-        return skill.indexOf(filteredSkillTree.toString()) == 0;
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(2, solution("CBD", new String[] { "BACDE", "CBADF", "AECB", "BDA" }));
+    // }
 }
