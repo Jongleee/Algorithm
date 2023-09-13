@@ -2,28 +2,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(String skill, String[] skillTrees) {
-        int answer = 0;
-        for (String skillTree : skillTrees) {
-            if (isSkillValid(skill, skillTree)) {
-                answer++;
-            }
-        }
-        return answer;
-    }
+    public String solution(String s, String skip, int index) {
+        StringBuilder answerBuilder = new StringBuilder();
 
-    private boolean isSkillValid(String skill, String skillTree) {
-        StringBuilder filteredSkillTree = new StringBuilder();
-        for (char c : skillTree.toCharArray()) {
-            if (skill.contains(Character.toString(c))) {
-                filteredSkillTree.append(c);
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int j = 0;
+            while (j < index) {
+                c += 1;
+                if (c > 'z') {
+                    c -= 26;
+                }
+                if (skip.contains(String.valueOf(c))) {
+                    j--;
+                }
+                j++;
             }
+            answerBuilder.append(c);
         }
-        return skill.startsWith(filteredSkillTree.toString());
+
+        return answerBuilder.toString();
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(2, solution("CBD", new String[] { "BACDE", "CBADF", "AECB", "BDA" }));
+        Assertions.assertEquals("happy",
+                solution("aukks", "wbqd", 5));
     }
 }
