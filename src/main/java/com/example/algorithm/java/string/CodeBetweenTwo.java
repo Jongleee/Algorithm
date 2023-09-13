@@ -6,7 +6,8 @@ public class CodeBetweenTwo {
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            for (int j = 0; j < index; j++) {
+            int j = 0;
+            while (j < index) {
                 c += 1;
                 if (c > 'z') {
                     c -= 26;
@@ -14,6 +15,7 @@ public class CodeBetweenTwo {
                 if (skip.contains(String.valueOf(c))) {
                     j--;
                 }
+                j++;
             }
             answerBuilder.append(c);
         }
@@ -23,7 +25,7 @@ public class CodeBetweenTwo {
 
     // @Test
     // public void 정답() {
-    //     Assertions.assertEquals("happy",
-    //             solution("aukks", "wbqd", 5));
+    // Assertions.assertEquals("happy",
+    // solution("aukks", "wbqd", 5));
     // }
 }
