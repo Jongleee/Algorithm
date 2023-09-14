@@ -1,37 +1,32 @@
+import java.util.Stack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestArray {
-    public long[] solution(long[] numbers) {
-        long[] answer = new long[numbers.length];
+    public static int[] solution(int[] prices) {
+        int n = prices.length;
+        int[] answer = new int[n];
+        Stack<Integer> stack = new Stack<>();
 
-        for (int i = 0; i < numbers.length; i++) {
-            answer[i] = processNumber(numbers[i]);
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && prices[i] < prices[stack.peek()]) {
+                int j = stack.pop();
+                answer[j] = i - j;
+            }
+            stack.push(i);
+        }
+
+        while (!stack.isEmpty()) {
+            int j = stack.pop();
+            answer[j] = n - j - 1;
         }
 
         return answer;
     }
 
-    private long processNumber(long number) {
-        if (number % 2 == 0) {
-            return number + 1;
-        } else {
-            String binaryString = Long.toBinaryString(number);
-
-            int zeroIdx = binaryString.lastIndexOf("0");
-
-            if (zeroIdx != -1) {
-                binaryString = binaryString.substring(0, zeroIdx) + "10" + binaryString.substring(zeroIdx + 2);
-            } else {
-                binaryString = "10" + binaryString.substring(1);
-            }
-
-            return Long.parseLong(binaryString, 2);
-        }
-    }
-
     @Test
     public void 정답() {
-        Assertions.assertArrayEquals(new long[] { 3, 11 }, solution(new long[] { 2, 7 }));
+        Assertions.assertArrayEquals(new int[] { 4, 3, 1, 1, 0}, solution(new int[] { 1, 2, 3, 2, 3}));
     }
 }

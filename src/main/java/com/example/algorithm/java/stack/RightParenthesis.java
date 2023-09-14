@@ -4,45 +4,28 @@ import java.util.Stack;
 
 public class RightParenthesis {
     boolean solution(String s) {
-        StringBuilder sb = new StringBuilder(s);
-        return isCorrect(sb);
+        return isCorrect(s);
     }
 
-    private boolean isCorrect(StringBuilder s) {
+    private boolean isCorrect(String s) {
         Stack<Character> stack = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (stack.isEmpty()) stack.push(s.charAt(i));
-            else {
-                if (s.charAt(i) == ')') {
-                    if (stack.peek() == '(') stack.pop();
-                    else {
-                        stack.push(s.charAt(i));
-                    }
-                } else {
-                    stack.push(s.charAt(i));
-                }
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(c);
+            } else if (!stack.isEmpty() && stack.peek() == '(') {
+                stack.pop();
+            } else {
+                stack.push(c);
             }
         }
         return stack.isEmpty();
     }
-    boolean solution2(String s) {
-        boolean answer = false;
-        int count = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                count++;
-            }
-            if (s.charAt(i) == ')') {
-                count--;
-            }
-            if (count < 0) {
-                break;
-            }
-        }
-        if (count == 0) {
-            answer = true;
-        }
-        return answer;
 
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertEquals(true, solution("()()"));
+    //     Assertions.assertEquals(true, solution("(())()"));
+    //     Assertions.assertEquals(false, solution(")()("));
+    //     Assertions.assertEquals(false, solution("(()("));
+    // }
 }

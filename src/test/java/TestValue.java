@@ -1,32 +1,32 @@
+import java.util.Stack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public String solution(String s, String skip, int index) {
-        StringBuilder answerBuilder = new StringBuilder();
+    boolean solution(String s) {
+        return isCorrect(s);
+    }
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            int j = 0;
-            while (j < index) {
-                c += 1;
-                if (c > 'z') {
-                    c -= 26;
-                }
-                if (skip.contains(String.valueOf(c))) {
-                    j--;
-                }
-                j++;
+    private boolean isCorrect(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(c);
+            } else if (!stack.isEmpty() && stack.peek() == '(') {
+                stack.pop();
+            } else {
+                stack.push(c);
             }
-            answerBuilder.append(c);
         }
-
-        return answerBuilder.toString();
+        return stack.isEmpty();
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals("happy",
-                solution("aukks", "wbqd", 5));
+        Assertions.assertEquals(true, solution("()()"));
+        Assertions.assertEquals(true, solution("(())()"));
+        Assertions.assertEquals(false, solution(")()("));
+        Assertions.assertEquals(false, solution("(()("));
     }
 }
