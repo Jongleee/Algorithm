@@ -1,13 +1,13 @@
 package com.example.algorithm.java.stack;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 public class StockPrice {
-    public static int[] solution(int[] prices) {
+    public int[] solution(int[] prices) {
         int n = prices.length;
-        Stack<Integer> stack = new Stack<>();
         int[] answer = new int[n];
+        Stack<Integer> stack = new Stack<>();
+
         for (int i = 0; i < n; i++) {
             while (!stack.isEmpty() && prices[i] < prices[stack.peek()]) {
                 int j = stack.pop();
@@ -15,6 +15,7 @@ public class StockPrice {
             }
             stack.push(i);
         }
+
         while (!stack.isEmpty()) {
             int j = stack.pop();
             answer[j] = n - j - 1;
@@ -23,8 +24,8 @@ public class StockPrice {
         return answer;
     }
 
-    public static void main(String[] args) {
-        int[] p1 = { 1, 2, 3, 2, 3 };
-        System.out.println(Arrays.toString(solution(p1))); // [4, 3, 1, 1, 0]
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertArrayEquals(new int[] { 4, 3, 1, 1, 0}, solution(new int[] { 1, 2, 3, 2, 3}));
+    // }
 }
