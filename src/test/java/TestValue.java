@@ -1,34 +1,89 @@
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public static int solution(int n, int[][] computers) {
-        boolean[] visited = new boolean[n];
-        int answer = 0;
+    String[] people;
+    HashMap<Character, Integer> map;
+    boolean[] visited;
+    int[] positions;
+    int count;
 
-        for (int i = 0; i < n; i++) {
-            if (!visited[i]) {
-                dfs(computers, visited, i);
-                answer++;
-            }
+    public int solution(int n, String[] data) {
+        if (data.length != n) {
+            return 0;
         }
 
-        return answer;
+        people = data;
+        map = new HashMap<>();
+        visited = new boolean[8];
+        positions = new int[8];
+        count = 0;
+
+        initializeMap();
+
+        dfs(0);
+        return count;
     }
 
-    static void dfs(int[][] computers, boolean[] visited, int start) {
-        visited[start] = true;
-        for (int i = 0; i < computers.length; i++) {
-            if (computers[start][i] == 1 && !visited[i]) {
-                dfs(computers, visited, i);
+    public void initializeMap() {
+        char[] chars = { 'A', 'C', 'F', 'J', 'M', 'N', 'R', 'T' };
+        for (int i = 0; i < chars.length; i++) {
+            map.put(chars[i], i);
+        }
+    }
+
+    public void dfs(int idx) {
+        if (idx == 8) {
+            if (isValidArrangement()) {
+                count++;
+            }
+        } else {
+            for (int i = 0; i < 8; i++) {
+                if (!visited[i]) {
+                    visited[i] = true;
+                    positions[idx] = i;
+                    dfs(idx + 1);
+                    visited[i] = false;
+                }
             }
         }
+    }
+
+    public boolean isValidArrangement() {
+        for (String condition : people) {
+            int pos1 = positions[map.get(condition.charAt(0))];
+            int pos2 = positions[map.get(condition.charAt(2))];
+            int distance = condition.charAt(4) - '0' + 1;
+            char operator = condition.charAt(3);
+
+            switch (operator) {
+                case '=':
+                    if (Math.abs(pos1 - pos2) != distance) {
+                        return false;
+                    }
+                    break;
+                case '>':
+                    if (Math.abs(pos1 - pos2) <= distance) {
+                        return false;
+                    }
+                    break;
+                case '<':
+                    if (Math.abs(pos1 - pos2) >= distance) {
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(2, solution(3, new int[][] { { 1, 1, 0 }, { 1, 1, 0 }, { 0, 0, 1 } }));
-
-        Assertions.assertEquals(1, solution(3, new int[][] { { 1, 1, 0 }, { 1, 1, 1 }, { 0, 1, 1 } }));
+        Assertions.assertEquals(3648, solution(2, new String[] { "N~F=0", "R~T>2" }));
+        Assertions.assertEquals(0, solution(2, new String[] { "M~C<2", "C~M>1" }));
     }
 }
