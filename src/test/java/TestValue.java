@@ -1,89 +1,75 @@
-import java.util.HashMap;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    String[] people;
-    HashMap<Character, Integer> map;
-    boolean[] visited;
-    int[] positions;
-    int count;
+    final int INF = 987654321;
 
-    public int solution(int n, String[] data) {
-        if (data.length != n) {
-            return 0;
-        }
-
-        people = data;
-        map = new HashMap<>();
-        visited = new boolean[8];
-        positions = new int[8];
-        count = 0;
-
-        initializeMap();
-
-        dfs(0);
-        return count;
+    public int solution(int[][] board, int[] aloc, int[] bloc) {
+        return solve(board, aloc[0], aloc[1], bloc[0], bloc[1])[1];
     }
 
-    public void initializeMap() {
-        char[] chars = { 'A', 'C', 'F', 'J', 'M', 'N', 'R', 'T' };
-        for (int i = 0; i < chars.length; i++) {
-            map.put(chars[i], i);
+    public int[] solve(int[][] board, int y1, int x1, int y2, int x2) {
+        if (isFinished(board, y1, x1)) {
+            return new int[] { 0, 0 };
         }
+
+        if (y1 == y2 && x1 == x2) {
+            return new int[] { 1, 1 };
+        }
+
+        int minTurn = INF;
+        int maxTurn = 0;
+        int canWin = 0;
+
+        int[] dy = { -1, 1, 0, 0 };
+        int[] dx = { 0, 0, -1, 1 };
+
+        for (int i = 0; i < 4; i++) {
+            int ny = y1 + dy[i];
+            int nx = x1 + dx[i];
+            if (!inRange(board, ny, nx) || board[ny][nx] == 0) {
+                continue;
+            }
+
+            board[y1][x1] = 0;
+            int[] result = solve(board, y2, x2, ny, nx);
+            board[y2][x2] = 1;
+
+            if (result[0] == 0) {
+                canWin = 1;
+                minTurn = Math.min(minTurn, result[1]);
+            } else if (canWin != 1) {
+                maxTurn = Math.max(maxTurn, result[1]);
+            }
+        }
+
+        int turn = canWin == 1 ? minTurn : maxTurn;
+
+        return new int[] { canWin, turn + 1 };
     }
 
-    public void dfs(int idx) {
-        if (idx == 8) {
-            if (isValidArrangement()) {
-                count++;
-            }
-        } else {
-            for (int i = 0; i < 8; i++) {
-                if (!visited[i]) {
-                    visited[i] = true;
-                    positions[idx] = i;
-                    dfs(idx + 1);
-                    visited[i] = false;
-                }
-            }
-        }
+    public boolean inRange(int[][] board, int y, int x) {
+        return y >= 0 && y < board.length && x >= 0 && x < board[0].length;
     }
 
-    public boolean isValidArrangement() {
-        for (String condition : people) {
-            int pos1 = positions[map.get(condition.charAt(0))];
-            int pos2 = positions[map.get(condition.charAt(2))];
-            int distance = condition.charAt(4) - '0' + 1;
-            char operator = condition.charAt(3);
+    public boolean isFinished(int[][] board, int y, int x) {
+        int[] dy = { -1, 1, 0, 0 };
+        int[] dx = { 0, 0, -1, 1 };
 
-            switch (operator) {
-                case '=':
-                    if (Math.abs(pos1 - pos2) != distance) {
-                        return false;
-                    }
-                    break;
-                case '>':
-                    if (Math.abs(pos1 - pos2) <= distance) {
-                        return false;
-                    }
-                    break;
-                case '<':
-                    if (Math.abs(pos1 - pos2) >= distance) {
-                        return false;
-                    }
-                    break;
-                default:
-                    break;
+        for (int i = 0; i < 4; i++) {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if (inRange(board, ny, nx) && board[ny][nx] != 0) {
+                return false;
             }
         }
+
         return true;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(3648, solution(2, new String[] { "N~F=0", "R~T>2" }));
-        Assertions.assertEquals(0, solution(2, new String[] { "M~C<2", "C~M>1" }));
+        Assertions.assertEquals(5, solution(new int[][] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } }, new int[] { 1, 0 }, new int[] { 1, 2 }));
+        Assertions.assertEquals(4, solution(new int[][] { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } }, new int[] { 1, 0 }, new int[] { 1, 2 }));
     }
 }
