@@ -1,12 +1,11 @@
 package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class TripDesertIsland {
-    public static int[] solution(String[] maps) {
+    public int[] solution(String[] maps) {
         boolean[][] visited = new boolean[maps.length][maps[0].length()];
         List<Integer> territories = new ArrayList<>();
 
@@ -23,22 +22,31 @@ public class TripDesertIsland {
         return territories.isEmpty() ? new int[] { -1 } : territories.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    private static int getTerritorySize(int i, int j, boolean[][] visited, String[] maps) {
-        if (i < 0 || j < 0 || i >= visited.length || j >= visited[0].length || visited[i][j]
-                || maps[i].charAt(j) == 'X') {
+    private int getTerritorySize(int row, int col, boolean[][] visited, String[] maps) {
+        if (row < 0 || col < 0 || row >= visited.length || col >= visited[0].length || visited[row][col]
+                || maps[row].charAt(col) == 'X') {
             return 0;
         }
 
-        visited[i][j] = true;
-        int territorySize = maps[i].charAt(j) - '0';
-        territorySize += getTerritorySize(i - 1, j, visited, maps);
-        territorySize += getTerritorySize(i + 1, j, visited, maps);
-        territorySize += getTerritorySize(i, j - 1, visited, maps);
-        territorySize += getTerritorySize(i, j + 1, visited, maps);
+        visited[row][col] = true;
+        int territorySize = maps[row].charAt(col) - '0';
+        int[] dr = { -1, 1, 0, 0 };
+        int[] dc = { 0, 0, -1, 1 };
+
+        for (int i = 0; i < 4; i++) {
+            int newRow = row + dr[i];
+            int newCol = col + dc[i];
+            territorySize += getTerritorySize(newRow, newCol, visited, maps);
+        }
+
         return territorySize;
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(new String[] { "X591X", "X1X5X", "X231X", "1XXX1" })));
-    }
+    // @Test
+    // public void 정답() {
+    //     Assertions.assertArrayEquals(new int[] { 1, 1, 27 },
+    //             solution(new String[] { "X591X", "X1X5X", "X231X", "1XXX1" }));
+    //     Assertions.assertArrayEquals(new int[] { -1 },
+    //             solution(new String[] { "XXX", "XXX", "XXX" }));
+    // }
 }
