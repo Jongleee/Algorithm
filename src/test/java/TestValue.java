@@ -1,75 +1,93 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    final int INF = 987654321;
+    public int solution(int n, int[][] edges) {
+        List<Integer>[] adjList = new ArrayList[n + 1];
+        for (int i = 0; i <= n; i++) {
+            adjList[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adjList[u].add(v);
+            adjList[v].add(u);
+        }
+        int[] result = bfs(adjList, 1, n);
+        int s = findStart(n, result);
+        result = bfs(adjList, s, n);
+        s = findStart(n, result);
+        int max = findMax(result);
+        int cnt = calculateCnt(result, max);
+        if (cnt >= 2) {
+            return max;
+        }
 
-    public int solution(int[][] board, int[] aloc, int[] bloc) {
-        return solve(board, aloc[0], aloc[1], bloc[0], bloc[1])[1];
+        result = bfs(adjList, s, n);
+        max = findMax(result);
+        cnt = calculateCnt(result, max);
+
+        return cnt >= 2 ? max : max - 1;
     }
 
-    public int[] solve(int[][] board, int y1, int x1, int y2, int x2) {
-        if (isFinished(board, y1, x1)) {
-            return new int[] { 0, 0 };
+    private int findStart(int n, int[] result) {
+        int s = 1;
+        for (int i = 1; i <= n; i++) {
+            if (result[i] > result[s])
+                s = i;
         }
-
-        if (y1 == y2 && x1 == x2) {
-            return new int[] { 1, 1 };
-        }
-
-        int minTurn = INF;
-        int maxTurn = 0;
-        int canWin = 0;
-
-        int[] dy = { -1, 1, 0, 0 };
-        int[] dx = { 0, 0, -1, 1 };
-
-        for (int i = 0; i < 4; i++) {
-            int ny = y1 + dy[i];
-            int nx = x1 + dx[i];
-            if (!inRange(board, ny, nx) || board[ny][nx] == 0) {
-                continue;
-            }
-
-            board[y1][x1] = 0;
-            int[] result = solve(board, y2, x2, ny, nx);
-            board[y2][x2] = 1;
-
-            if (result[0] == 0) {
-                canWin = 1;
-                minTurn = Math.min(minTurn, result[1]);
-            } else if (canWin != 1) {
-                maxTurn = Math.max(maxTurn, result[1]);
-            }
-        }
-
-        int turn = canWin == 1 ? minTurn : maxTurn;
-
-        return new int[] { canWin, turn + 1 };
+        return s;
     }
 
-    public boolean inRange(int[][] board, int y, int x) {
-        return y >= 0 && y < board.length && x >= 0 && x < board[0].length;
+    private int findMax(int[] result) {
+        int max = 0;
+        for (int i : result) {
+            max = Math.max(max, i);
+        }
+        return max;
     }
 
-    public boolean isFinished(int[][] board, int y, int x) {
-        int[] dy = { -1, 1, 0, 0 };
-        int[] dx = { 0, 0, -1, 1 };
+    private int calculateCnt(int[] result, int max) {
+        int cnt = 0;
+        for (int i : result) {
+            if (max == i)
+                cnt++;
+        }
+        return cnt;
+    }
 
-        for (int i = 0; i < 4; i++) {
-            int ny = y + dy[i];
-            int nx = x + dx[i];
-            if (inRange(board, ny, nx) && board[ny][nx] != 0) {
-                return false;
+    private int[] bfs(List<Integer>[] adjList, int start, int n) {
+        boolean[] visited = new boolean[n + 1];
+        int[] distances = new int[n + 1];
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+        visited[start] = true;
+        while (!queue.isEmpty()) {
+            int currentNode = queue.poll();
+            for (int i = 0; i < adjList[currentNode].size(); i++) {
+                int neighbor = adjList[currentNode].get(i);
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                    distances[neighbor] = distances[currentNode] + 1;
+                }
             }
         }
-
-        return true;
+        return distances;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(5, solution(new int[][] { { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 } }, new int[] { 1, 0 }, new int[] { 1, 2 }));
-        Assertions.assertEquals(4, solution(new int[][] { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } }, new int[] { 1, 0 }, new int[] { 1, 2 }));
+        int n1 = 4;
+        int[][] e1 = { { 1, 2 }, { 2, 3 }, { 3, 4 } };
+        int n2 = 5;
+        int[][] e2 = { { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 } };
+        Assertions.assertEquals(2, solution(n1, e1));
+        Assertions.assertEquals(4, solution(n2, e2));
     }
 }
