@@ -16,32 +16,37 @@ public class RicochetRobot {
         }
     }
 
-    private final int[] dx = { -1, 1, 0, 0 };
-    private final int[] dy = { 0, 0, -1, 1 };
+    private static final int[] dx = { -1, 1, 0, 0 };
+    private static final int[] dy = { 0, 0, -1, 1 };
 
     private int n;
     private int m;
 
     public int solution(String[] board) {
+        initializeDimensions(board);
+
+        Location robot = findLocation(board, 'R');
+        Location goal = findLocation(board, 'G');
+
+        return bfs(board, robot, goal);
+    }
+
+    private void initializeDimensions(String[] board) {
         n = board.length;
         m = board[0].length();
+    }
 
-        Location robot = null;
-        Location goal = null;
-
+    private Location findLocation(String[] board, char target) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 char ch = board[i].charAt(j);
 
-                if (ch == 'R') {
-                    robot = new Location(i, j, 0);
-                } else if (ch == 'G') {
-                    goal = new Location(i, j, 0);
+                if (ch == target) {
+                    return new Location(i, j, 0);
                 }
             }
         }
-
-        return bfs(board, robot, goal);
+        return null;
     }
 
     private int bfs(String[] board, Location robot, Location goal) {
@@ -85,4 +90,11 @@ public class RicochetRobot {
     private boolean inBounds(int x, int y) {
         return x >= 0 && y >= 0 && x < n && y < m;
     }
+    // @Test
+    // public void 정답() {
+    //     String[] b1 = { "...D..R", ".D.G...", "....D.D", "D....D.", "..D...." };
+    //     String[] b2 = { ".D.R", "....", ".G..", "...D" };
+    //     Assertions.assertEquals(7, solution(b1));
+    //     Assertions.assertEquals(-1, solution(b2));
+    // }
 }

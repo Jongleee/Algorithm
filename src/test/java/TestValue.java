@@ -1,93 +1,102 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int n, int[][] edges) {
-        List<Integer>[] adjList = new ArrayList[n + 1];
-        for (int i = 0; i <= n; i++) {
-            adjList[i] = new ArrayList<>();
-        }
-        for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][0];
-            int v = edges[i][1];
-            adjList[u].add(v);
-            adjList[v].add(u);
-        }
-        int[] result = bfs(adjList, 1, n);
-        int s = findStart(n, result);
-        result = bfs(adjList, s, n);
-        s = findStart(n, result);
-        int max = findMax(result);
-        int cnt = calculateCnt(result, max);
-        if (cnt >= 2) {
-            return max;
-        }
+    private static class Location {
+        final int x;
+        final int y;
+        final int depth;
 
-        result = bfs(adjList, s, n);
-        max = findMax(result);
-        cnt = calculateCnt(result, max);
-
-        return cnt >= 2 ? max : max - 1;
+        public Location(int x, int y, int depth) {
+            this.x = x;
+            this.y = y;
+            this.depth = depth;
+        }
     }
 
-    private int findStart(int n, int[] result) {
-        int s = 1;
-        for (int i = 1; i <= n; i++) {
-            if (result[i] > result[s])
-                s = i;
-        }
-        return s;
+    private static final int[] dx = { -1, 1, 0, 0 };
+    private static final int[] dy = { 0, 0, -1, 1 };
+
+    private int n;
+    private int m;
+
+    public int solution(String[] board) {
+        initializeDimensions(board);
+
+        Location robot = findLocation(board, 'R');
+        Location goal = findLocation(board, 'G');
+
+        return bfs(board, robot, goal);
     }
 
-    private int findMax(int[] result) {
-        int max = 0;
-        for (int i : result) {
-            max = Math.max(max, i);
-        }
-        return max;
+    private void initializeDimensions(String[] board) {
+        n = board.length;
+        m = board[0].length();
     }
 
-    private int calculateCnt(int[] result, int max) {
-        int cnt = 0;
-        for (int i : result) {
-            if (max == i)
-                cnt++;
-        }
-        return cnt;
-    }
+    private Location findLocation(String[] board, char target) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                char ch = board[i].charAt(j);
 
-    private int[] bfs(List<Integer>[] adjList, int start, int n) {
-        boolean[] visited = new boolean[n + 1];
-        int[] distances = new int[n + 1];
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(start);
-        visited[start] = true;
-        while (!queue.isEmpty()) {
-            int currentNode = queue.poll();
-            for (int i = 0; i < adjList[currentNode].size(); i++) {
-                int neighbor = adjList[currentNode].get(i);
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true;
-                    queue.add(neighbor);
-                    distances[neighbor] = distances[currentNode] + 1;
+                if (ch == target) {
+                    return new Location(i, j, 0);
                 }
             }
         }
-        return distances;
+        return null;
+    }
+
+    private int bfs(String[] board, Location robot, Location goal) {
+        Queue<Location> queue = new LinkedList<>();
+        queue.add(robot);
+
+        boolean[][] visited = new boolean[n][m];
+        visited[robot.x][robot.y] = true;
+
+        while (!queue.isEmpty()) {
+            Location current = queue.poll();
+
+            if (current.x == goal.x && current.y == goal.y) {
+                return current.depth;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nx = current.x;
+                int ny = current.y;
+
+                while (inBounds(nx, ny) && board[nx].charAt(ny) != 'D') {
+                    nx += dx[i];
+                    ny += dy[i];
+                }
+
+                nx -= dx[i];
+                ny -= dy[i];
+
+                if (visited[nx][ny]) {
+                    continue;
+                }
+
+                visited[nx][ny] = true;
+                queue.add(new Location(nx, ny, current.depth + 1));
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean inBounds(int x, int y) {
+        return x >= 0 && y >= 0 && x < n && y < m;
     }
 
     @Test
     public void 정답() {
-        int n1 = 4;
-        int[][] e1 = { { 1, 2 }, { 2, 3 }, { 3, 4 } };
-        int n2 = 5;
-        int[][] e2 = { { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 } };
-        Assertions.assertEquals(2, solution(n1, e1));
-        Assertions.assertEquals(4, solution(n2, e2));
+        String[] b1 = { "...D..R", ".D.G...", "....D.D", "D....D.", "..D...." };
+        String[] b2 = { ".D.R", "....", ".G..", "...D" };
+        Assertions.assertEquals(7, solution(b1));
+        Assertions.assertEquals(-1, solution(b2));
     }
 }
