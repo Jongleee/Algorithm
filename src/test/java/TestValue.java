@@ -1,92 +1,61 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    private static final int MAX = 101;
-    private boolean[][] board = new boolean[MAX][MAX];
-    private int[][] direction = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+    public int solution(int n, int[][] edge) {
+        int answer = 0;
 
-    public int solution(int[][] rectangles, int characterX, int characterY, int itemX, int itemY) {
-        initializeBoard(rectangles);
-        int startRow = characterY * 2;
-        int startCol = characterX * 2;
-        int endRow = itemY * 2;
-        int endCol = itemX * 2;
+        List<Integer>[] adj = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) {
+            adj[i] = new ArrayList<>();
+        }
 
-        int totalDistance = findDistance(startRow, startCol, startRow, startCol, new boolean[MAX][MAX], 0) + 1;
-        int distance = findDistance(startRow, startCol, endRow, endCol, new boolean[MAX][MAX], 0);
+        for (int[] e : edge) {
+            adj[e[0]].add(e[1]);
+            adj[e[1]].add(e[0]);
+        }
 
-        return Math.min(distance, totalDistance - distance) / 2;
+        int[] depths = bfs(adj);
+
+        int maxDepth = Arrays.stream(depths).max().getAsInt();
+        answer = (int) Arrays.stream(depths).filter(depth -> depth == maxDepth).count();
+
+        return answer;
     }
 
-    private void initializeBoard(int[][] rectangles) {
-        for (int[] rectangle : rectangles) {
-            int firstRow = 2 * rectangle[1];
-            int firstCol = 2 * rectangle[0];
-            int secondRow = 2 * rectangle[3];
-            int secondCol = 2 * rectangle[2];
+    private int[] bfs(List<Integer>[] adj) {
+        int n = adj.length - 1;
+        int[] depths = new int[n + 1];
+        boolean[] visited = new boolean[n + 1];
 
-            markEdge(firstRow, firstCol, secondRow, secondCol);
-        }
-        for (int[] rectangle : rectangles) {
-            int firstRow = 2 * rectangle[1];
-            int firstCol = 2 * rectangle[0];
-            int secondRow = 2 * rectangle[3];
-            int secondCol = 2 * rectangle[2];
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(1);
+        visited[1] = true;
 
-            markSpace(firstRow, firstCol, secondRow, secondCol);
-        }
-    }
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
 
-    private void markEdge(int firstRow, int firstCol, int secondRow, int secondCol) {
-        for (int row = firstRow; row <= secondRow; row++) {
-            board[row][firstCol] = true;
-        }
-        for (int col = firstCol + 1; col <= secondCol; col++) {
-            board[secondRow][col] = true;
-        }
-        for (int row = secondRow - 1; row >= firstRow; row--) {
-            board[row][secondCol] = true;
-        }
-        for (int col = secondCol - 1; col > firstCol; col--) {
-            board[firstRow][col] = true;
-        }
-    }
-
-    private void markSpace(int firstRow, int firstCol, int secondRow, int secondCol) {
-        for (int row = firstRow + 1; row < secondRow; row++) {
-            for (int col = firstCol + 1; col < secondCol; col++) {
-                board[row][col] = false;
-            }
-        }
-    }
-
-    private int findDistance(int row, int col, int dstRow, int dstCol, boolean[][] visited, int count) {
-        if (count > 0 && row == dstRow && col == dstCol) {
-            return count;
-        }
-
-        visited[row][col] = true;
-
-        for (int i = 0; i < 4; i++) {
-            int newRow = row + direction[i][0];
-            int newCol = col + direction[i][1];
-
-            if (newRow >= 0 && newRow < MAX && newCol >= 0 && newCol < MAX) {
-                if (board[newRow][newCol] && !visited[newRow][newCol]) {
-                    return findDistance(newRow, newCol, dstRow, dstCol, visited, count + 1);
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    depths[neighbor] = depths[node] + 1;
+                    queue.add(neighbor);
                 }
             }
         }
 
-        return count;
+        return depths;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(17,
-                solution(new int[][] { { 1, 1, 7, 4 }, { 3, 2, 5, 5 }, { 4, 3, 6, 9 }, { 2, 6, 8, 8 } }, 1, 3, 7, 8));
-        Assertions.assertEquals(11,
-                solution(new int[][] { { 1, 1, 8, 4 }, { 2, 2, 4, 9 }, { 3, 6, 9, 8 }, { 6, 3, 7, 7 } }, 9, 7, 6, 1));
+        Assertions.assertEquals(3,
+                solution(6, new int[][] { { 3, 6 }, { 4, 3 }, { 3, 2 }, { 1, 3 }, { 1, 2 }, { 2, 4 }, { 5, 2 } }));
     }
 }

@@ -1,54 +1,61 @@
 package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class FarthestNode {
-    static int[] visit;
-    static int depth = 0;
-    static ArrayList<Integer>[] adj;
-
     @SuppressWarnings("unchecked")
-    public static int solution(int n, int[][] edge) {
+    public int solution(int n, int[][] edge) {
         int answer = 0;
-        visit = new int[n + 1];
-        adj = new ArrayList[n + 1];
-        for (int i = 0; i <= n; i++) {
+
+        List<Integer>[] adj = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) {
             adj[i] = new ArrayList<>();
         }
-        for (int i = 0; i < edge.length; i++) {
-            adj[edge[i][0]].add(edge[i][1]);
-            adj[edge[i][1]].add(edge[i][0]);
+
+        for (int[] e : edge) {
+            adj[e[0]].add(e[1]);
+            adj[e[1]].add(e[0]);
         }
-        bfs(1, 1);
-        for (int i = 0; i <= n; i++) {
-            if (depth == visit[i]) answer += 1;
-        }
+
+        int[] depths = bfs(adj);
+
+        int maxDepth = Arrays.stream(depths).max().getAsInt();
+        answer = (int) Arrays.stream(depths).filter(depth -> depth == maxDepth).count();
+
         return answer;
     }
 
-    public static void bfs(int start, int count) {
+    private int[] bfs(List<Integer>[] adj) {
+        int n = adj.length - 1;
+        int[] depths = new int[n + 1];
+        boolean[] visited = new boolean[n + 1];
+
         Queue<Integer> queue = new LinkedList<>();
-        queue.add(start);
-        queue.add(count);
-        visit[start] = count;
+        queue.add(1);
+        visited[1] = true;
+
         while (!queue.isEmpty()) {
             int node = queue.poll();
-            int n = queue.poll();
-            if (depth < n) depth = n;
-            for (int i = 0; i < adj[node].size(); i++) {
-                int next = adj[node].get(i);
 
-                if (visit[next] != 0) continue;
-                visit[next] = n + 1;
-                queue.add(next);
-                queue.add(n + 1);
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    depths[neighbor] = depths[node] + 1;
+                    queue.add(neighbor);
+                }
             }
         }
+
+        return depths;
     }
-    public static void main(String[] args) {
-        System.out.println(solution(6,	new int[][] {{3, 6}, {4, 3}, {3, 2}, {1, 3}, {1, 2}, {2, 4}, {5, 2}}));
+
+    @Test
+    public void 정답() {
+        Assertions.assertEquals(3,
+                solution(6, new int[][] { { 3, 6 }, { 4, 3 }, { 3, 2 }, { 1, 3 }, { 1, 2 }, { 2, 4 }, { 5, 2 } }));
     }
-    //답 3
 }
