@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -8,54 +7,86 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int n, int[][] edge) {
-        int answer = 0;
-
-        List<Integer>[] adj = new ArrayList[n + 1];
-        for (int i = 1; i <= n; i++) {
-            adj[i] = new ArrayList<>();
-        }
-
-        for (int[] e : edge) {
-            adj[e[0]].add(e[1]);
-            adj[e[1]].add(e[0]);
-        }
-
-        int[] depths = bfs(adj);
-
-        int maxDepth = Arrays.stream(depths).max().getAsInt();
-        answer = (int) Arrays.stream(depths).filter(depth -> depth == maxDepth).count();
-
-        return answer;
+    public boolean solution(int n, int[][] path, int[][] order) {
+        List<List<Integer>> graph = buildGraph(n, path);
+        return canSearchAllRooms(n, graph, order);
     }
 
-    private int[] bfs(List<Integer>[] adj) {
-        int n = adj.length - 1;
-        int[] depths = new int[n + 1];
-        boolean[] visited = new boolean[n + 1];
+    private boolean canSearchAllRooms(int n, List<List<Integer>> graph, int[][] order) {
+        int[] before = new int[n];
+        int[] after = new int[n];
 
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(1);
-        visited[1] = true;
+        for (int[] arr : order) {
+            before[arr[1]] = arr[0];
+            after[arr[0]] = arr[1];
+        }
 
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
+        int numOfRoomsVisited = 0;
+        int[] visited = new int[n];
+        Queue<Integer> q = new LinkedList<>();
 
-            for (int neighbor : adj[node]) {
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true;
-                    depths[neighbor] = depths[node] + 1;
-                    queue.add(neighbor);
+        if (before[0] == 0) {
+            q.offer(0);
+            visited[0] = 2;
+        }
+
+        while (!q.isEmpty()) {
+            int curNode = q.poll();
+            numOfRoomsVisited++;
+
+            for (int nextNode : graph.get(curNode)) {
+                if (visited[nextNode] == 2) {
+                    continue;
                 }
+
+                if (visited[before[nextNode]] != 2) {
+                    visited[nextNode] = 1;
+                    continue;
+                }
+
+                q.offer(nextNode);
+                visited[nextNode] = 2;
+            }
+
+            int saveNode = after[curNode];
+
+            if (saveNode != 0 && visited[saveNode] == 1) {
+                q.offer(saveNode);
+                visited[saveNode] = 2;
             }
         }
 
-        return depths;
+        return numOfRoomsVisited == n;
+    }
+
+    private List<List<Integer>> buildGraph(int n, int[][] path) {
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int[] arr : path) {
+            graph.get(arr[0]).add(arr[1]);
+            graph.get(arr[1]).add(arr[0]);
+        }
+
+        return graph;
     }
 
     @Test
     public void 정답() {
-        Assertions.assertEquals(3,
-                solution(6, new int[][] { { 3, 6 }, { 4, 3 }, { 3, 2 }, { 1, 3 }, { 1, 2 }, { 2, 4 }, { 5, 2 } }));
+        int n1 = 9;
+        int[][] p1 = { { 0, 1 }, { 0, 3 }, { 0, 7 }, { 8, 1 }, { 3, 6 }, { 1, 2 }, { 4, 7 }, { 7, 5 } };
+        int[][] o1 = { { 8, 5 }, { 6, 7 }, { 4, 1 } };
+        int n2 = 9;
+        int[][] p2 = { { 8, 1 }, { 0, 1 }, { 1, 2 }, { 0, 7 }, { 4, 7 }, { 0, 3 }, { 7, 5 }, { 3, 6 } };
+        int[][] o2 = { { 4, 1 }, { 5, 2 } };
+        int n3 = 9;
+        int[][] p3 = { { 0, 1 }, { 0, 3 }, { 0, 7 }, { 8, 1 }, { 3, 6 }, { 1, 2 }, { 4, 7 }, { 7, 5 } };
+        int[][] o3 = { { 4, 1 }, { 8, 7 }, { 6, 5 } };
+        Assertions.assertEquals(true, solution(n1, p1, o1));
+        Assertions.assertEquals(true, solution(n2, p2, o2));
+        Assertions.assertEquals(false, solution(n3, p3, o3));
     }
 }
