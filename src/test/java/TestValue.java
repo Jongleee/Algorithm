@@ -1,92 +1,110 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public boolean solution(int n, int[][] path, int[][] order) {
-        List<List<Integer>> graph = buildGraph(n, path);
-        return canSearchAllRooms(n, graph, order);
+    static class Position {
+        int x;
+        int y;
+        int level;
+
+        public Position(int x, int y, int level) {
+            this.x = x;
+            this.y = y;
+            this.level = level;
+        }
     }
 
-    private boolean canSearchAllRooms(int n, List<List<Integer>> graph, int[][] order) {
-        int[] before = new int[n];
-        int[] after = new int[n];
+    char[][] map;
+    boolean[][] visited;
+    int[] dx = { -1, 0, 1, 0 };
+    int[] dy = { 0, 1, 0, -1 };
 
-        for (int[] arr : order) {
-            before[arr[1]] = arr[0];
-            after[arr[0]] = arr[1];
+    public int solution(String[] maps) {
+        int row = maps.length;
+        int col = maps[0].length();
+
+        map = new char[row][col];
+        visited = new boolean[row][col];
+
+        Position startPosition = new Position(0, 0, 0);
+        Position leverPosition = new Position(0, 0, 0);
+        Position endPosition = new Position(0, 0, 0);
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                char c = maps[i].charAt(j);
+
+                if (c == 'S') {
+                    startPosition = new Position(i, j, 0);
+                }
+                if (c == 'L') {
+                    leverPosition = new Position(i, j, 0);
+                }
+                if (c == 'E') {
+                    endPosition = new Position(i, j, 0);
+                }
+
+                map[i][j] = c;
+            }
         }
 
-        int numOfRoomsVisited = 0;
-        int[] visited = new int[n];
-        Queue<Integer> q = new LinkedList<>();
+        int answer = bfs(startPosition.x, startPosition.y, leverPosition.x, leverPosition.y, row, col);
 
-        if (before[0] == 0) {
-            q.offer(0);
-            visited[0] = 2;
+        if (answer == -1) {
+            return -1;
         }
+
+        visited = new boolean[row][col];
+        int temp = bfs(leverPosition.x, leverPosition.y, endPosition.x, endPosition.y, row, col);
+
+        if (temp == -1) {
+            return -1;
+        }
+
+        return answer + temp;
+    }
+
+    public int bfs(int startX, int startY, int endX, int endY, int height, int width) {
+        Queue<Position> q = new LinkedList<>();
+        q.add(new Position(startX, startY, 0));
+        visited[startX][startY] = true;
 
         while (!q.isEmpty()) {
-            int curNode = q.poll();
-            numOfRoomsVisited++;
+            Position now = q.poll();
+            int x = now.x;
+            int y = now.y;
+            int level = now.level;
 
-            for (int nextNode : graph.get(curNode)) {
-                if (visited[nextNode] == 2) {
+            if (x == endX && y == endY) {
+                return level;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nowX = x + dx[i];
+                int nowY = y + dy[i];
+
+                if (nowX < 0 || nowX >= height || nowY < 0 || nowY >= width) {
                     continue;
                 }
 
-                if (visited[before[nextNode]] != 2) {
-                    visited[nextNode] = 1;
-                    continue;
+                if (!visited[nowX][nowY] && map[nowX][nowY] != 'X') {
+                    q.add(new Position(nowX, nowY, level + 1));
+                    visited[nowX][nowY] = true;
                 }
-
-                q.offer(nextNode);
-                visited[nextNode] = 2;
-            }
-
-            int saveNode = after[curNode];
-
-            if (saveNode != 0 && visited[saveNode] == 1) {
-                q.offer(saveNode);
-                visited[saveNode] = 2;
             }
         }
 
-        return numOfRoomsVisited == n;
-    }
-
-    private List<List<Integer>> buildGraph(int n, int[][] path) {
-        List<List<Integer>> graph = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>());
-        }
-
-        for (int[] arr : path) {
-            graph.get(arr[0]).add(arr[1]);
-            graph.get(arr[1]).add(arr[0]);
-        }
-
-        return graph;
+        return -1;
     }
 
     @Test
     public void 정답() {
-        int n1 = 9;
-        int[][] p1 = { { 0, 1 }, { 0, 3 }, { 0, 7 }, { 8, 1 }, { 3, 6 }, { 1, 2 }, { 4, 7 }, { 7, 5 } };
-        int[][] o1 = { { 8, 5 }, { 6, 7 }, { 4, 1 } };
-        int n2 = 9;
-        int[][] p2 = { { 8, 1 }, { 0, 1 }, { 1, 2 }, { 0, 7 }, { 4, 7 }, { 0, 3 }, { 7, 5 }, { 3, 6 } };
-        int[][] o2 = { { 4, 1 }, { 5, 2 } };
-        int n3 = 9;
-        int[][] p3 = { { 0, 1 }, { 0, 3 }, { 0, 7 }, { 8, 1 }, { 3, 6 }, { 1, 2 }, { 4, 7 }, { 7, 5 } };
-        int[][] o3 = { { 4, 1 }, { 8, 7 }, { 6, 5 } };
-        Assertions.assertEquals(true, solution(n1, p1, o1));
-        Assertions.assertEquals(true, solution(n2, p2, o2));
-        Assertions.assertEquals(false, solution(n3, p3, o3));
+        String[] m1 = { "SOOOL", "XXXXO", "OOOOO", "OXXXX", "OOOOE" };
+        String[] m2 = { "LOOXS", "OOOOX", "OOOOO", "OOOOO", "EOOOO" };
+        Assertions.assertEquals(16, solution(m1));
+        Assertions.assertEquals(-1, solution(m2));
     }
 }

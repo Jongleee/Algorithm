@@ -24,7 +24,7 @@ public class ReturnToBase {
         }
         return answer;
     }
-
+    @SuppressWarnings("unchecked")
     private void initializeGraph(int n, int[][] roads) {
         routes = new ArrayList[n + 1];
         for (int i = 0; i <= n; i++) {
@@ -57,9 +57,10 @@ public class ReturnToBase {
 
     // @Test
     // public void 정답() {
-    //     Assertions.assertArrayEquals(new int[] { 2, -1, 0 },
-    //             solution(3, new int[][] { { 1, 2 }, { 2, 3 } }, new int[] { 2, 3 }, 1));
-    //     Assertions.assertArrayEquals(new int[] { 2, -1, 0 },
-    //             solution(5, new int[][] { { 1, 2 }, { 1, 4 }, { 2, 4 }, { 2, 5 }, { 4, 5 } }, new int[] { 1, 3, 5 }, 5));
+    // Assertions.assertArrayEquals(new int[] { 2, -1, 0 },
+    // solution(3, new int[][] { { 1, 2 }, { 2, 3 } }, new int[] { 2, 3 }, 1));
+    // Assertions.assertArrayEquals(new int[] { 2, -1, 0 },
+    // solution(5, new int[][] { { 1, 2 }, { 1, 4 }, { 2, 4 }, { 2, 5 }, { 4, 5 } },
+    // new int[] { 1, 3, 5 }, 5));
     // }
 }
