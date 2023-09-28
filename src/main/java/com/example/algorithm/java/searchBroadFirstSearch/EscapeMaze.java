@@ -16,13 +16,12 @@ public class EscapeMaze {
         }
     }
 
-    static char[][] map;
-    static boolean[][] visited;
-    static int[] dx = { -1, 0, 1, 0 };
-    static int[] dy = { 0, 1, 0, -1 };
+    char[][] map;
+    boolean[][] visited;
+    int[] dx = { -1, 0, 1, 0 };
+    int[] dy = { 0, 1, 0, -1 };
 
-    public static int solution(String[] maps) {
-        int answer = 0;
+    public int solution(String[] maps) {
         int row = maps.length;
         int col = maps[0].length();
 
@@ -51,24 +50,23 @@ public class EscapeMaze {
             }
         }
 
-        answer = bfs(startPosition.x, startPosition.y, leverPosition.x, leverPosition.y, maps.length, maps[0].length());
+        int answer = bfs(startPosition.x, startPosition.y, leverPosition.x, leverPosition.y, row, col);
 
-        return answer == -1 ? -1 : toEnd(maps, answer, leverPosition, endPosition);
-    }
+        if (answer == -1) {
+            return -1;
+        }
 
-    private static int toEnd(String[] maps, int answer, Position leverPosition, Position endPosition) {
-        visited = new boolean[map.length][map[0].length];
-        int temp = bfs(leverPosition.x, leverPosition.y, endPosition.x, endPosition.y, maps.length, maps[0].length());
+        visited = new boolean[row][col];
+        int temp = bfs(leverPosition.x, leverPosition.y, endPosition.x, endPosition.y, row, col);
 
         if (temp == -1) {
-            answer = -1;
-        } else {
-            answer += temp;
+            return -1;
         }
-        return answer;
+
+        return answer + temp;
     }
 
-    public static int bfs(int startX, int startY, int endX, int endY, int height, int width) {
+    public int bfs(int startX, int startY, int endX, int endY, int height, int width) {
         Queue<Position> q = new LinkedList<>();
         q.add(new Position(startX, startY, 0));
         visited[startX][startY] = true;
@@ -101,9 +99,11 @@ public class EscapeMaze {
         return -1;
     }
 
-    public static void main(String[] args) {
-        String[] m = { "LOOXS", "OOOOX", "OOOOO", "OOOOO", "EOOOO" };
-        System.out.println(solution(m));
-    }
-
+    // @Test
+    // public void 정답() {
+    //     String[] m1 = { "SOOOL", "XXXXO", "OOOOO", "OXXXX", "OOOOE" };
+    //     String[] m2 = { "LOOXS", "OOOOX", "OOOOO", "OOOOO", "EOOOO" };
+    //     Assertions.assertEquals(16, solution(m1));
+    //     Assertions.assertEquals(-1, solution(m2));
+    // }
 }

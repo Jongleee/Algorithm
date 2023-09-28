@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 
 public class ExploreCave {
-    @SuppressWarnings("Unchecked")
     public boolean solution(int n, int[][] path, int[][] order) {
         List<List<Integer>> graph = buildGraph(n, path);
         return canSearchAllRooms(n, graph, order);
