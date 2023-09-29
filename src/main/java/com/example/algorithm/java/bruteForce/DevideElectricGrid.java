@@ -1,10 +1,9 @@
+package com.example.algorithm.java.bruteForce;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class TestValue {
+public class DevideElectricGrid {
     private int[][] adjacencyMatrix;
 
     public int solution(int n, int[][] wires) {
@@ -69,11 +68,11 @@ public class TestValue {
         return Math.abs(n - 2 * cnt);
     }
 
-    @Test
-    public void 정답() {
-        int[][] w1 = { {1,3},{2,3},{3,4},{4,5},{4,6},{4,7},{7,8},{7,9}};
-        int[][] w2 = { {1,2},{2,3},{3,4}};
-        Assertions.assertEquals(3, solution(9,w1));
-        Assertions.assertEquals(0, solution(4,w2));
-    }
+    // @Test
+    // public void 정답() {
+    //     int[][] w1 = { {1,3},{2,3},{3,4},{4,5},{4,6},{4,7},{7,8},{7,9}};
+    //     int[][] w2 = { {1,2},{2,3},{3,4}};
+    //     Assertions.assertEquals(3, solution(9,w1));
+    //     Assertions.assertEquals(0, solution(4,w2));
+    // }
 }
