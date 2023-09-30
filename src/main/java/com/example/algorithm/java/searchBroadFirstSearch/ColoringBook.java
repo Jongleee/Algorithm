@@ -1,6 +1,5 @@
 package com.example.algorithm.java.searchBroadFirstSearch;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -8,26 +7,27 @@ public class ColoringBook {
     static class Point {
         private int x;
         private int y;
-    
+
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
-    
+
         public int getX() {
             return x;
         }
-    
+
         public int getY() {
             return y;
         }
     }
-    private static final int[] DX = { -1, 0, 1, 0 };
-    private static final int[] DY = { 0, 1, 0, -1 };
 
-    private static boolean[][] visited;
+    private final int[] DX = { -1, 0, 1, 0 };
+    private final int[] DY = { 0, 1, 0, -1 };
 
-    public static int[] solution(int m, int n, int[][] picture) {
+    private boolean[][] visited;
+
+    public int[] solution(int m, int n, int[][] picture) {
         int numberOfArea = 0;
         int maxSizeOfOneArea = 0;
         visited = new boolean[m][n];
@@ -45,7 +45,7 @@ public class ColoringBook {
         return new int[] { numberOfArea, maxSizeOfOneArea };
     }
 
-    private static int bfs(int m, int n, int x, int y, int[][] picture) {
+    private int bfs(int m, int n, int x, int y, int[][] picture) {
         int size = 1;
         int target = picture[x][y];
         Queue<Point> queue = new LinkedList<>();
@@ -71,12 +71,8 @@ public class ColoringBook {
         return size;
     }
 
-    private static boolean onPicture(int m, int n, int nx, int ny) {
+    private boolean onPicture(int m, int n, int nx, int ny) {
         return nx >= 0 && nx < m && ny >= 0 && ny < n;
     }
 
-    public static void main(String[] args) {
-        int[][] p1 = { { 1, 1, 1, 0 }, { 1, 2, 2, 0 }, { 1, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 3 }, { 0, 0, 0, 3 } };
-        System.out.println(Arrays.toString(solution(6, 4, p1)));
-    }
 }
