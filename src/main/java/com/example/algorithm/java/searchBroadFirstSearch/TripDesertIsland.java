@@ -46,7 +46,4 @@ public class TripDesertIsland {
     // public void 정답() {
     //     Assertions.assertArrayEquals(new int[] { 1, 1, 27 },
     //             solution(new String[] { "X591X", "X1X5X", "X231X", "1XXX1" }));
-    //     Assertions.assertArrayEquals(new int[] { -1 },
-    //             solution(new String[] { "XXX", "XXX", "XXX" }));
-    // }
 }
