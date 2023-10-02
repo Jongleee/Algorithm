@@ -4,27 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class ColoringBook {
-    static class Point {
-        private int x;
-        private int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-    }
-
-    private final int[] DX = { -1, 0, 1, 0 };
-    private final int[] DY = { 0, 1, 0, -1 };
-
+    private final int[] dx = { -1, 0, 1, 0 };
+    private final int[] dy = { 0, 1, 0, -1 };
     private boolean[][] visited;
 
     public int[] solution(int m, int n, int[][] picture) {
@@ -45,24 +26,24 @@ public class ColoringBook {
         return new int[] { numberOfArea, maxSizeOfOneArea };
     }
 
-    private int bfs(int m, int n, int x, int y, int[][] picture) {
+    private int bfs(int m, int n, int startX, int startY, int[][] picture) {
         int size = 1;
-        int target = picture[x][y];
+        int targetColor = picture[startX][startY];
         Queue<Point> queue = new LinkedList<>();
-
-        visited[x][y] = true;
-        queue.offer(new Point(x, y));
+        visited[startX][startY] = true;
+        queue.offer(new Point(startX, startY));
 
         while (!queue.isEmpty()) {
-            Point p = queue.poll();
+            Point currentPoint = queue.poll();
 
             for (int i = 0; i < 4; i++) {
-                int nx = p.getX() + DX[i];
-                int ny = p.getY() + DY[i];
+                int nextX = currentPoint.getX() + dx[i];
+                int nextY = currentPoint.getY() + dy[i];
 
-                if (onPicture(m, n, nx, ny) && picture[nx][ny] == target && !visited[nx][ny]) {
-                    queue.offer(new Point(nx, ny));
-                    visited[nx][ny] = true;
+                if (isValidPosition(m, n, nextX, nextY) && picture[nextX][nextY] == targetColor
+                        && !visited[nextX][nextY]) {
+                    queue.offer(new Point(nextX, nextY));
+                    visited[nextX][nextY] = true;
                     size++;
                 }
             }
@@ -71,8 +52,31 @@ public class ColoringBook {
         return size;
     }
 
-    private boolean onPicture(int m, int n, int nx, int ny) {
-        return nx >= 0 && nx < m && ny >= 0 && ny < n;
+    private boolean isValidPosition(int m, int n, int x, int y) {
+        return x >= 0 && x < m && y >= 0 && y < n;
     }
 
+    private static class Point {
+        private int x;
+        private int y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+    }
+
+    // @Test
+    // public void 정답() {
+    //     int[][] p1 = { { 1, 1, 1, 0 }, { 1, 2, 2, 0 }, { 1, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 3 }, { 0, 0, 0, 3 } };
+    //     Assertions.assertArrayEquals(new int[] { 4, 5 }, solution(6, 4, p1));
+    // }
 }
