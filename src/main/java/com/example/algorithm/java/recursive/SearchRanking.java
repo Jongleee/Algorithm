@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchRanking {
-    static Map<String, List<Integer>> map = new HashMap<>();
+    private Map<String, List<Integer>> map = new HashMap<>();
 
     public int[] solution(String[] info, String[] query) {
         int[] answer = new int[query.length];
+
         for (String inf : info) {
-            dfs("", inf.split(" "), 0);
+            String[] infoParts = inf.split(" ");
+            int score = Integer.parseInt(infoParts[4]);
+            generateCombinations(infoParts, 0, "", score);
         }
 
         for (List<Integer> list : map.values()) {
@@ -20,12 +23,22 @@ public class SearchRanking {
         }
 
         for (int i = 0; i < query.length; i++) {
-            String[] temp = query[i].replace(" and ", "").split(" ");
-            int score = Integer.parseInt(temp[1]);
-            answer[i] = binarySearch(temp[0], score);
+            String[] queryParts = query[i].replace(" and ", "").split(" ");
+            int score = Integer.parseInt(queryParts[1]);
+            answer[i] = binarySearch(queryParts[0], score);
         }
 
         return answer;
+    }
+
+    private void generateCombinations(String[] infoParts, int depth, String prefix, int score) {
+        if (depth == 4) {
+            map.computeIfAbsent(prefix, k -> new ArrayList<>()).add(score);
+            return;
+        }
+
+        generateCombinations(infoParts, depth + 1, prefix + infoParts[depth], score);
+        generateCombinations(infoParts, depth + 1, prefix + "-", score);
     }
 
     private int binarySearch(String key, int score) {
@@ -54,14 +67,14 @@ public class SearchRanking {
         return 0;
     }
 
-    private void dfs(String prefix, String[] info, int depth) {
-        if (depth == 4) {
-            int score = Integer.parseInt(info[4]);
-            map.computeIfAbsent(prefix, k -> new ArrayList<>()).add(score);
-            return;
-        }
-
-        dfs(prefix + "-", info, depth + 1);
-        dfs(prefix + info[depth], info, depth + 1);
-    }
+    // @Test
+    // public void 정답() {
+    //     String[] info = { "java backend junior pizza 150", "python frontend senior chicken 210",
+    //             "python frontend senior chicken 150", "cpp backend senior pizza 260", "java backend junior chicken 80",
+    //             "python backend senior chicken 50" };
+    //     String[] query = { "java and backend and junior and pizza 100",
+    //             "python and frontend and senior and chicken 200", "cpp and - and senior and pizza 250",
+    //             "- and backend and senior and - 150", "- and - and - and chicken 100", "- and - and - and - 150" };
+    //     Assertions.assertArrayEquals(new int[] { 1, 1, 1, 1, 2, 4 }, solution(info, query));
+    // }
 }
