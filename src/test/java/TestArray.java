@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -8,74 +9,74 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestArray {
-    private Map<String, List<Integer>> map = new HashMap<>();
+    private List<String> answerList;
+    private Map<String, Integer> hashMap;
 
-    public int[] solution(String[] info, String[] query) {
-        int[] answer = new int[query.length];
-
-        for (String inf : info) {
-            String[] infoParts = inf.split(" ");
-            int score = Integer.parseInt(infoParts[4]);
-            generateCombinations(infoParts, 0, "", score);
-        }
-
-        for (List<Integer> list : map.values()) {
-            Collections.sort(list);
-        }
-
-        for (int i = 0; i < query.length; i++) {
-            String[] queryParts = query[i].replace(" and ", "").split(" ");
-            int score = Integer.parseInt(queryParts[1]);
-            answer[i] = binarySearch(queryParts[0], score);
-        }
-
-        return answer;
+    public String[] solution(String[] orders, int[] course) {
+        answerList = new ArrayList<>();
+        hashMap = new HashMap<>();
+        preprocessOrders(orders);
+        generateCombinations(orders, course);
+        return getAnswer();
     }
 
-    private void generateCombinations(String[] infoParts, int depth, String prefix, int score) {
-        if (depth == 4) {
-            map.computeIfAbsent(prefix, k -> new ArrayList<>()).add(score);
+    private void preprocessOrders(String[] orders) {
+        for (int i = 0; i < orders.length; i++) {
+            char[] arr = orders[i].toCharArray();
+            Arrays.sort(arr);
+            orders[i] = String.valueOf(arr);
+        }
+    }
+
+    private void generateCombinations(String[] orders, int[] course) {
+        for (int courseLength : course) {
+            for (String order : orders) {
+                generateCombination("", order, courseLength);
+            }
+            checkAndAddValidCombinations();
+            hashMap.clear();
+        }
+    }
+
+    private void generateCombination(String current, String remaining, int count) {
+        if (count == 0) {
+            hashMap.put(current, hashMap.getOrDefault(current, 0) + 1);
             return;
         }
 
-        generateCombinations(infoParts, depth + 1, prefix + infoParts[depth], score);
-        generateCombinations(infoParts, depth + 1, prefix + "-", score);
+        for (int i = 0; i < remaining.length(); i++) {
+            generateCombination(current + remaining.charAt(i), remaining.substring(i + 1), count - 1);
+        }
     }
 
-    private int binarySearch(String key, int score) {
-        if (map.containsKey(key)) {
-            List<Integer> list = map.get(key);
-            int left = 0;
-            int right = list.size() - 1;
+    private void checkAndAddValidCombinations() {
+        if (!hashMap.isEmpty()) {
+            int maxFrequency = Collections.max(hashMap.values());
 
-            if (list.get(right) < score) {
-                return 0;
-            }
-
-            while (left < right) {
-                int mid = (left + right) / 2;
-
-                if (list.get(mid) < score) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
+            if (maxFrequency > 1) {
+                for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                    if (entry.getValue() == maxFrequency) {
+                        answerList.add(entry.getKey());
+                    }
                 }
             }
-
-            return list.size() - left;
         }
+    }
 
-        return 0;
+    private String[] getAnswer() {
+        Collections.sort(answerList);
+        return answerList.toArray(new String[0]);
     }
 
     @Test
     public void 정답() {
-        String[] info = { "java backend junior pizza 150", "python frontend senior chicken 210",
-                "python frontend senior chicken 150", "cpp backend senior pizza 260", "java backend junior chicken 80",
-                "python backend senior chicken 50" };
-        String[] query = { "java and backend and junior and pizza 100",
-                "python and frontend and senior and chicken 200", "cpp and - and senior and pizza 250",
-                "- and backend and senior and - 150", "- and - and - and chicken 100", "- and - and - and - 150" };
-        Assertions.assertArrayEquals(new int[] { 1, 1, 1, 1, 2, 4 }, solution(info, query));
+        String[] o1 = { "ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH" };
+        int[] c1 = { 2, 3, 4 };
+        Assertions.assertArrayEquals(new String[] { "AC", "ACDE", "BCFG", "CDE" }, solution(o1, c1));
+        String[] o2 = { "ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD" };
+        int[] c2 = { 2, 3, 5 };
+        Assertions.assertArrayEquals(new String[] { "ACD", "AD", "ADE", "CD", "XYZ" }, solution(o2, c2));
+        String[] o3 = { "XYZ", "XWY", "WXA" };
+        Assertions.assertArrayEquals(new String[] { "WX", "XY" }, solution(o3, c1));
     }
 }
