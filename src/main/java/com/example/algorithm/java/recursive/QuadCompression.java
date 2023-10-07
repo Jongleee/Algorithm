@@ -1,30 +1,30 @@
 package com.example.algorithm.java.recursive;
 
 public class QuadCompression {
-
     private int[] answer;
 
     public int[] solution(int[][] arr) {
         answer = new int[2];
-        quad(arr, 0, 0, arr.length);
+        countQuads(arr, 0, 0, arr.length);
         return answer;
     }
 
-    private void quad(int[][] arr, int x, int y, int size) {
-        if (zip(arr, x, y, size, arr[x][y])) {
-            if (arr[x][y] == 1)
-                answer[1]++;
-            else
-                answer[0]++;
+    private void countQuads(int[][] arr, int x, int y, int size) {
+        int val = arr[x][y];
+
+        if (isUniform(arr, x, y, size, val)) {
+            answer[val]++;
             return;
         }
-        quad(arr, x, y, size / 2);
-        quad(arr, x, y + size / 2, size / 2);
-        quad(arr, x + size / 2, y, size / 2);
-        quad(arr, x + size / 2, y + size / 2, size / 2);
+
+        int halfSize = size / 2;
+        countQuads(arr, x, y, halfSize);
+        countQuads(arr, x, y + halfSize, halfSize);
+        countQuads(arr, x + halfSize, y, halfSize);
+        countQuads(arr, x + halfSize, y + halfSize, halfSize);
     }
 
-    private boolean zip(int[][] arr, int x, int y, int size, int val) {
+    private boolean isUniform(int[][] arr, int x, int y, int size, int val) {
         for (int i = x; i < x + size; i++) {
             for (int j = y; j < y + size; j++) {
                 if (arr[i][j] != val) {
@@ -34,4 +34,14 @@ public class QuadCompression {
         }
         return true;
     }
+
+    // @Test
+    // public void 정답() {
+    //     int[][] a1 = { { 1, 1, 0, 0 }, { 1, 0, 0, 0 }, { 1, 0, 0, 1 }, { 1, 1, 1, 1 } };
+    //     Assertions.assertArrayEquals(new int[] { 4, 9 }, solution(a1));
+    //     int[][] a2 = { { 1, 1, 1, 1, 1, 1, 1, 1 }, { 0, 1, 1, 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 1, 1, 1, 1 },
+    //             { 0, 1, 0, 0, 1, 1, 1, 1 }, { 0, 0, 0, 0, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0, 0, 0, 1 },
+    //             { 0, 0, 0, 0, 1, 0, 0, 1 }, { 0, 0, 0, 0, 1, 1, 1, 1 } };
+    //     Assertions.assertArrayEquals(new int[] { 10, 15 }, solution(a2));
+    // }
 }
