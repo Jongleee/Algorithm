@@ -2,40 +2,55 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestValue {
-    public int solution(int[] cards) {
-        int[] maxCircuitSizes = { 0, 0 };
+    public static int solution(int[] arrayA, int[] arrayB) {
+        int gcdA = calculateGCD(arrayA);
+        int gcdB = calculateGCD(arrayB);
 
-        for (int i = 0; i < cards.length; i++) {
-            if (cards[i] == -1) {
-                continue;
-            }
-            int currentCircuitSize = calculateCircuitSize(cards, i);
-            if (currentCircuitSize > maxCircuitSizes[0]) {
-                maxCircuitSizes[1] = maxCircuitSizes[0];
-                maxCircuitSizes[0] = currentCircuitSize;
-            } else if (currentCircuitSize > maxCircuitSizes[1]) {
-                maxCircuitSizes[1] = currentCircuitSize;
-            }
-            if (maxCircuitSizes[0] == cards.length) {
-                return 0;
-            }
+        gcdA = updateGCD(gcdA, arrayB);
+        gcdB = updateGCD(gcdB, arrayA);
+
+        if (gcdA == gcdB) {
+            return 0;
+        } else {
+            return Math.max(gcdA, gcdB);
         }
-
-        return maxCircuitSizes[0] * maxCircuitSizes[1];
     }
 
-    private int calculateCircuitSize(int[] cards, int index) {
-        if (cards[index] == -1) {
-            return 0;
+    public static int calculateGCD(int[] arr) {
+        int gcd = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            gcd = calculateGCD(gcd, arr[i]);
         }
-        int nextIndex = cards[index] - 1;
-        cards[index] = -1;
-        return calculateCircuitSize(cards, nextIndex) + 1;
+        return gcd;
+    }
+
+    public static int calculateGCD(int a, int b) {
+        if (a == 0) {
+            return b;
+        }
+        return calculateGCD(b % a, a);
+    }
+
+    public static int updateGCD(int gcd, int[] arr) {
+        for (int i = arr.length - 1; i >= 0; i--) {
+            if (arr[i] % gcd == 0) {
+                gcd = 1;
+                break;
+            }
+        }
+        return gcd;
     }
 
     @Test
-    public void 정답() {
-        int[] c1 = { 8, 6, 3, 7, 2, 5, 1, 4 };
-        Assertions.assertEquals(12, solution(c1));
+    void 정답() {
+        int[] a1 = { 10, 17 };
+        int[] b1 = { 5, 20 };
+        int[] a2 = { 10, 20 };
+        int[] b2 = { 5, 17 };
+        int[] a3 = { 14, 35, 119 };
+        int[] b3 = { 18, 30, 102 };
+        Assertions.assertEquals(0, solution(a1, b1));
+        Assertions.assertEquals(10, solution(a2, b2));
+        Assertions.assertEquals(7, solution(a3, b3));
     }
 }

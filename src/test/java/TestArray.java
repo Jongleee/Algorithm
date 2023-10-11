@@ -4,7 +4,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestArray {
+class TestArray {
     private static class Emoticon {
         private double price;
         private double discount;
@@ -85,7 +85,7 @@ public class TestArray {
     }
 
     @Test
-    public void 정답() {
+    void 정답() {
         int[][] u1 = { { 40, 10000 }, { 25, 10000 } };
         int[] e1 = { 7000, 9000 };
         int[][] u2 = { { 40, 2900 }, { 23, 10000 }, { 11, 5200 }, { 5, 5900 }, { 40, 3100 }, { 27, 9200 },
