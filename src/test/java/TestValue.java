@@ -1,56 +1,82 @@
+import java.util.Stack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestValue {
-    public static int solution(int[] arrayA, int[] arrayB) {
-        int gcdA = calculateGCD(arrayA);
-        int gcdB = calculateGCD(arrayB);
+class TestValue {
+    public String solution(String p) {
+        return dfs(p);
+    }
 
-        gcdA = updateGCD(gcdA, arrayB);
-        gcdB = updateGCD(gcdB, arrayA);
+    private String dfs(String w) {
+        if (w.isEmpty()) {
+            return "";
+        }
 
-        if (gcdA == gcdB) {
-            return 0;
+        int splitIndex = findSplitIndex(w);
+        String u = w.substring(0, splitIndex + 1);
+        String v = w.substring(splitIndex + 1);
+
+        if (isCorrect(u)) {
+            return u + dfs(v);
         } else {
-            return Math.max(gcdA, gcdB);
+            StringBuilder result = new StringBuilder("(");
+            result.append(dfs(v));
+            result.append(")");
+
+            u = u.substring(1, u.length() - 1);
+
+            for (char ch : u.toCharArray()) {
+                if (ch == '(') {
+                    result.append(')');
+                } else {
+                    result.append('(');
+                }
+            }
+
+            return result.toString();
         }
     }
 
-    public static int calculateGCD(int[] arr) {
-        int gcd = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            gcd = calculateGCD(gcd, arr[i]);
-        }
-        return gcd;
-    }
+    private int findSplitIndex(String w) {
+        int lcnt = 0;
+        int rcnt = 0;
 
-    public static int calculateGCD(int a, int b) {
-        if (a == 0) {
-            return b;
-        }
-        return calculateGCD(b % a, a);
-    }
+        for (int i = 0; i < w.length(); i++) {
+            if (w.charAt(i) == '(') {
+                lcnt++;
+            } else {
+                rcnt++;
+            }
 
-    public static int updateGCD(int gcd, int[] arr) {
-        for (int i = arr.length - 1; i >= 0; i--) {
-            if (arr[i] % gcd == 0) {
-                gcd = 1;
-                break;
+            if (lcnt == rcnt) {
+                return i;
             }
         }
-        return gcd;
+
+        return -1;
+    }
+
+    private boolean isCorrect(String str) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : str.toCharArray()) {
+            if (ch == '(') {
+                stack.push(ch);
+            } else {
+                if (stack.isEmpty() || stack.pop() != '(') {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     @Test
     void 정답() {
-        int[] a1 = { 10, 17 };
-        int[] b1 = { 5, 20 };
-        int[] a2 = { 10, 20 };
-        int[] b2 = { 5, 17 };
-        int[] a3 = { 14, 35, 119 };
-        int[] b3 = { 18, 30, 102 };
-        Assertions.assertEquals(0, solution(a1, b1));
-        Assertions.assertEquals(10, solution(a2, b2));
-        Assertions.assertEquals(7, solution(a3, b3));
+        Assertions.assertEquals("(()())()", solution("(()())()"));
+        Assertions.assertEquals("()", solution(")("));
+        Assertions.assertEquals("()(())()", solution("()))((()"));
     }
 }
