@@ -1,25 +1,35 @@
 package com.example.algorithm.java.recursive;
 
 public class CantorSetBitstring {
-    public static int solution(int n, long l, long r) {
-        return countOne(n, l, r, 1);
+    public int solution(int n, long l, long r) {
+        return countOnesInRange(n, l, r, 1);
     }
 
-    public static int countOne(int n, long s, long e, long idx) {
+    public int countOnesInRange(int n, long start, long end, long index) {
         if (n == 0) {
             return 1;
         }
+
         int numOnes = 0;
         long subIntervalSize = (long) Math.pow(5, (double) n - 1);
+
         for (int i = 0; i < 5; i++) {
-            if (i == 2 || e < (idx + subIntervalSize * i) || (idx + subIntervalSize * (i + 1) - 1) < s) {
+            long subStart = index + subIntervalSize * i;
+            long subEnd = index + subIntervalSize * (i + 1) - 1;
+
+            if (i == 2 || end < subStart || start > subEnd) {
                 continue;
             }
-            numOnes += countOne(n - 1, s, e, idx + subIntervalSize * i);
+
+            numOnes += countOnesInRange(n - 1, start, end, subStart);
         }
+
         return numOnes;
     }
-    public static void main(String[] args) {
-        System.out.println(solution(2,	4,	17	));//8
-    }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(8, solution(2,4,17));
+    //     Assertions.assertEquals(7, solution(2,4,16));
+    // }
 }
