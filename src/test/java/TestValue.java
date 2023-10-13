@@ -1,82 +1,36 @@
-import java.util.Stack;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public String solution(String p) {
-        return dfs(p);
+    public int solution(int n, long l, long r) {
+        return countOnesInRange(n, l, r, 1);
     }
 
-    private String dfs(String w) {
-        if (w.isEmpty()) {
-            return "";
+    public int countOnesInRange(int n, long start, long end, long index) {
+        if (n == 0) {
+            return 1;
         }
 
-        int splitIndex = findSplitIndex(w);
-        String u = w.substring(0, splitIndex + 1);
-        String v = w.substring(splitIndex + 1);
+        int numOnes = 0;
+        long subIntervalSize = (long) Math.pow(5, (double) n - 1);
 
-        if (isCorrect(u)) {
-            return u + dfs(v);
-        } else {
-            StringBuilder result = new StringBuilder("(");
-            result.append(dfs(v));
-            result.append(")");
+        for (int i = 0; i < 5; i++) {
+            long subStart = index + subIntervalSize * i;
+            long subEnd = index + subIntervalSize * (i + 1) - 1;
 
-            u = u.substring(1, u.length() - 1);
-
-            for (char ch : u.toCharArray()) {
-                if (ch == '(') {
-                    result.append(')');
-                } else {
-                    result.append('(');
-                }
+            if (i == 2 || end < subStart || start > subEnd) {
+                continue;
             }
 
-            return result.toString();
-        }
-    }
-
-    private int findSplitIndex(String w) {
-        int lcnt = 0;
-        int rcnt = 0;
-
-        for (int i = 0; i < w.length(); i++) {
-            if (w.charAt(i) == '(') {
-                lcnt++;
-            } else {
-                rcnt++;
-            }
-
-            if (lcnt == rcnt) {
-                return i;
-            }
+            numOnes += countOnesInRange(n - 1, start, end, subStart);
         }
 
-        return -1;
-    }
-
-    private boolean isCorrect(String str) {
-        Stack<Character> stack = new Stack<>();
-
-        for (char ch : str.toCharArray()) {
-            if (ch == '(') {
-                stack.push(ch);
-            } else {
-                if (stack.isEmpty() || stack.pop() != '(') {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return numOnes;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals("(()())()", solution("(()())()"));
-        Assertions.assertEquals("()", solution(")("));
-        Assertions.assertEquals("()(())()", solution("()))((()"));
+        Assertions.assertEquals(8, solution(2, 4, 17));
+        Assertions.assertEquals(7, solution(2, 4, 16));
     }
 }
