@@ -1,28 +1,28 @@
 package com.example.algorithm.java.recursive;
 
 import java.util.HashSet;
+import java.util.Set;
 
-@SuppressWarnings("all")
 public class CandidateKey {
-    static String[][] relation;
-    static HashSet<String> set;
+    private String[][] relation;
+    private Set<String> candidateKeys;
 
-    public static int solution(String[][] input) {
+    public int solution(String[][] input) {
         relation = input;
+        candidateKeys = new HashSet<>();
 
-        set = new HashSet<>();
+        int columnCount = relation[0].length;
 
-        for (int i = 1; i <= relation[0].length; i++) {
-            boolean[] selected = new boolean[relation[0].length];
-            dfs(0, 0, i, selected);
+        for (int i = 1; i <= columnCount; i++) {
+            boolean[] selected = new boolean[columnCount];
+            generateCandidateKeys(0, 0, i, selected);
         }
 
-        return set.size();
+        return candidateKeys.size();
     }
 
-    public static void dfs(int idx, int cnt, int max, boolean[] selected) {
-        if (cnt == max) {
-
+    private void generateCandidateKeys(int idx, int count, int max, boolean[] selected) {
+        if (count == max) {
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < selected.length; i++) {
@@ -33,7 +33,7 @@ public class CandidateKey {
 
             String cols = sb.toString();
             if (isCandidateKey(cols, selected)) {
-                set.add(cols);
+                candidateKeys.add(cols);
             }
             return;
         }
@@ -42,33 +42,34 @@ public class CandidateKey {
             return;
 
         selected[idx] = true;
-        dfs(idx + 1, cnt + 1, max, selected);
+        generateCandidateKeys(idx + 1, count + 1, max, selected);
 
         selected[idx] = false;
-        dfs(idx + 1, cnt, max, selected);
+        generateCandidateKeys(idx + 1, count, max, selected);
     }
 
-    public static boolean isCandidateKey(String candidate, boolean[] selected) {
-        for (String s : set) {
-            boolean flag = true;
-            for (int i = 0; i < s.length(); i++) {
-                if (!candidate.contains(s.charAt(i) + "")) {
-                    flag = false;
+    private boolean isCandidateKey(String candidate, boolean[] selected) {
+        for (String key : candidateKeys) {
+            boolean containsAllChars = true;
+            for (int i = 0; i < key.length(); i++) {
+                if (!candidate.contains(String.valueOf(key.charAt(i)))) {
+                    containsAllChars = false;
+                    break;
                 }
             }
 
-            if (flag) {
+            if (containsAllChars) {
                 return false;
             }
         }
 
-        HashSet<String> values = new HashSet<>();
-        int[] columnIndex = makeIndex(candidate, selected);
+        Set<String> values = new HashSet<>();
+        int[] columnIndex = makeColumnIndices(candidate, selected);
 
-        for (int i = 0; i < relation.length; i++) {
+        for (String[] row : relation) {
             StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < columnIndex.length; j++) {
-                sb.append(relation[i][columnIndex[j]]);
+            for (int index : columnIndex) {
+                sb.append(row[index]);
             }
             String value = sb.toString();
             if (values.contains(value)) {
@@ -81,7 +82,7 @@ public class CandidateKey {
         return true;
     }
 
-    private static int[] makeIndex(String candidate, boolean[] selected) {
+    private int[] makeColumnIndices(String candidate, boolean[] selected) {
         int[] columnIndices = new int[candidate.length()];
         int index = 0;
         for (int i = 0; i < selected.length; i++) {
@@ -93,10 +94,11 @@ public class CandidateKey {
         return columnIndices;
     }
 
-    public static void main(String[] args) {
-        String[][] r1 = { { "100", "ryan", "music", "2" }, { "200", "apeach", "math", "2" },
-                { "300", "tube", "computer", "3" }, { "400", "con", "computer", "4" }, { "500", "muzi", "music", "3" },
-                { "600", "apeach", "music", "2" } };
-        System.out.println(solution(r1));
-    }
+    // @Test
+    // void 정답() {
+    //     String[][] r1 = { { "100", "ryan", "music", "2" }, { "200", "apeach", "math", "2" },
+    //             { "300", "tube", "computer", "3" }, { "400", "con", "computer", "4" }, { "500", "muzi", "music", "3" },
+    //             { "600", "apeach", "music", "2" } };
+    //     Assertions.assertEquals(2, solution(r1));
+    // }
 }
