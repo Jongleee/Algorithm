@@ -19,13 +19,12 @@ public class TestRandom {
                         break;
                     List<Integer> numbers = new ArrayList<>();
                     if (num < 10)
-                        numbers = random.ints(6, 1, num + 1)
+                        numbers = random.ints(6, 0, num + 1)
                                 .boxed()
                                 .toList();
                     else {
-                        numbers = random.ints(1, num + 1)
+                        numbers = random.ints(6,1, num + 1)
                                 .distinct()
-                                .limit(6)
                                 .sorted()
                                 .boxed()
                                 .toList();

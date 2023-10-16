@@ -1,97 +1,57 @@
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private static class Emoticon {
-        private double price;
-        private double discount;
+    private int[] result;
+    private int[] lion;
+    private int maxScoreDifference;
 
-        public Emoticon(double price, double discount) {
-            this.price = price;
-            this.discount = discount;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public double getDiscount() {
-            return discount;
-        }
+    public int[] solution(int n, int[] info) {
+        result = new int[] { -1 };
+        lion = new int[11];
+        maxScoreDifference = 0;
+        calculateOptimalLionDistribution(info, 1, n);
+        return result;
     }
 
-    private int maxJoin = Integer.MIN_VALUE;
-    private int maxPrice = Integer.MIN_VALUE;
-
-    public int[] solution(int[][] users, int[] emoticons) {
-        List<Emoticon> emoticonList = new ArrayList<>();
-        double[] discounts = { 0.1, 0.2, 0.3, 0.4 };
-
-        generateEmoticons(0, users, emoticonList, emoticons, discounts);
-
-        return new int[] { maxJoin, maxPrice };
-    }
-
-    private void generateEmoticons(int depth, int[][] users, List<Emoticon> emoticons, int[] emoticonPrices,
-            double[] discounts) {
-        if (depth == emoticonPrices.length) {
-            int totalJoinedUsers = 0;
-            int totalSales = 0;
-
-            for (int[] user : users) {
-                int userDiscount = user[0];
-                int userPrice = user[1];
-                int userSum = calculateUserSum(emoticons, userDiscount);
-
-                if (userSum >= userPrice) {
-                    totalJoinedUsers++;
-                } else {
-                    totalSales += userSum;
+    public void calculateOptimalLionDistribution(int[] info, int count, int n) {
+        if (count == n + 1) {
+            int apeachPoint = 0;
+            int lionPoint = 0;
+            for (int i = 0; i <= 10; i++) {
+                int score = 10 - i;
+                if (info[i] + lion[i] != 0) {
+                    if (info[i] < lion[i]) {
+                        lionPoint += score;
+                    } else {
+                        apeachPoint += score;
+                    }
                 }
             }
-
-            if (totalJoinedUsers > maxJoin) {
-                maxJoin = totalJoinedUsers;
-                maxPrice = totalSales;
-            } else if (totalJoinedUsers == maxJoin && totalSales > maxPrice) {
-                maxPrice = totalSales;
+            if (isBetterDistribution(apeachPoint, lionPoint)) {
+                result = lion.clone();
+                maxScoreDifference = lionPoint - apeachPoint;
             }
-
             return;
         }
-
-        for (double discount : discounts) {
-            Emoticon emoticon = new Emoticon((1 - discount) * emoticonPrices[depth], discount * 100);
-            emoticons.add(emoticon);
-            generateEmoticons(depth + 1, users, emoticons, emoticonPrices, discounts);
-            emoticons.remove(emoticon);
+        for (int j = 0; j <= 10 && lion[j] <= info[j]; j++) {
+            lion[j]++;
+            calculateOptimalLionDistribution(info, count + 1, n);
+            lion[j]--;
         }
     }
 
-    private int calculateUserSum(List<Emoticon> emoticons, int userDiscount) {
-        int sum = 0;
-        for (Emoticon emoticon : emoticons) {
-            double emoticonPrice = emoticon.getPrice();
-            double emoticonDiscount = emoticon.getDiscount();
-
-            if (emoticonDiscount >= userDiscount) {
-                sum += emoticonPrice;
-            }
-        }
-        return sum;
+    private boolean isBetterDistribution(int apeachPoint, int lionPoint) {
+        return lionPoint > apeachPoint && lionPoint - apeachPoint >= maxScoreDifference;
     }
 
     @Test
     void 정답() {
-        int[][] u1 = { { 40, 10000 }, { 25, 10000 } };
-        int[] e1 = { 7000, 9000 };
-        int[][] u2 = { { 40, 2900 }, { 23, 10000 }, { 11, 5200 }, { 5, 5900 }, { 40, 3100 }, { 27, 9200 },
-                { 32, 6900 } };
-        int[] e2 = { 1300, 1500, 1600, 4900 };
-        Assertions.assertArrayEquals(new int[] { 1, 5400 }, solution(u1, e1));
-        Assertions.assertArrayEquals(new int[] { 4, 13860 }, solution(u2, e2));
+        int[] i1 = { 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3 };
+        int[] i2 = { 0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1 };
+        int[] i3 = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        Assertions.assertArrayEquals(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2 }, solution(10, i1));
+        Assertions.assertArrayEquals(new int[] { 1, 1, 2, 0, 1, 2, 2, 0, 0, 0, 0 }, solution(9, i2));
+        Assertions.assertArrayEquals(new int[] { -1 }, solution(1, i3));
     }
 }

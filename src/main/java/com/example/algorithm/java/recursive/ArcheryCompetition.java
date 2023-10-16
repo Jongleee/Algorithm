@@ -1,20 +1,20 @@
 package com.example.algorithm.java.recursive;
 
-import java.util.Arrays;
-
 public class ArcheryCompetition {
-    static int[] res = { -1 };
-    static int[] lion;
-    static int diff = 0;
+    private int[] result;
+    private int[] lion;
+    private int maxScoreDifference;
 
-    public static int[] solution(int n, int[] info) {
+    public int[] solution(int n, int[] info) {
+        result = new int[] { -1 };
         lion = new int[11];
-        dfs(info, 1, n);
-        return res;
+        maxScoreDifference = 0;
+        calculateOptimalLionDistribution(info, 1, n);
+        return result;
     }
 
-    public static void dfs(int[] info, int cnt, int n) {
-        if (cnt == n + 1) {
+    public void calculateOptimalLionDistribution(int[] info, int count, int n) {
+        if (count == n + 1) {
             int apeachPoint = 0;
             int lionPoint = 0;
             for (int i = 0; i <= 10; i++) {
@@ -27,24 +27,30 @@ public class ArcheryCompetition {
                     }
                 }
             }
-            if (updateCondition(apeachPoint, lionPoint)) {
-                res = lion.clone();
-                diff = lionPoint - apeachPoint;
+            if (isBetterDistribution(apeachPoint, lionPoint)) {
+                result = lion.clone();
+                maxScoreDifference = lionPoint - apeachPoint;
             }
             return;
         }
         for (int j = 0; j <= 10 && lion[j] <= info[j]; j++) {
             lion[j]++;
-            dfs(info, cnt + 1, n);
+            calculateOptimalLionDistribution(info, count + 1, n);
             lion[j]--;
         }
     }
 
-    private static boolean updateCondition(int apeachPoint, int lionPoint) {
-        return lionPoint > apeachPoint && lionPoint - apeachPoint >= diff;
+    private boolean isBetterDistribution(int apeachPoint, int lionPoint) {
+        return lionPoint > apeachPoint && lionPoint - apeachPoint >= maxScoreDifference;
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(10, new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3 })));// [1,1,1,1,1,1,1,1,0,0,2]
-    }
+    // @Test
+    // void 정답() {
+    //     int[] i1 = { 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3 };
+    //     int[] i2 = { 0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1 };
+    //     int[] i3 = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    //     Assertions.assertArrayEquals(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2 }, solution(10, i1));
+    //     Assertions.assertArrayEquals(new int[] { 1, 1, 2, 0, 1, 2, 2, 0, 0, 0, 0 }, solution(9, i2));
+    //     Assertions.assertArrayEquals(new int[] { -1 }, solution(1, i3));
+    // }
 }
