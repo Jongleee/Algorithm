@@ -1,66 +1,74 @@
 package com.example.algorithm.java.queue;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
 public class WorkAssignment {
-    public static String[] solution(String[][] plans) {
+    public String[] solution(String[][] plans) {
         String[] answer = new String[plans.length];
-        Stack<String[]> working = new Stack<>();
-        Queue<String[]> wait = new LinkedList<>();
+        Stack<String[]> workingStack = new Stack<>();
+        Queue<String[]> waitQueue = new ArrayDeque<>();
         int index = 0;
 
-        Arrays.sort(plans, (a, b) -> {
-            int aStart = Integer.parseInt(a[1].split(":")[0]) * 60 + Integer.parseInt(a[1].split(":")[1]);
-            int bStart = Integer.parseInt(b[1].split(":")[0]) * 60 + Integer.parseInt(b[1].split(":")[1]);
-            return Integer.compare(aStart, bStart);
-        });
+        Arrays.sort(plans, (a, b) -> compareTimes(a[1], b[1]));
 
-        for (String[] s : plans) {
-            wait.add(s);
+        for (String[] plan : plans) {
+            waitQueue.offer(plan);
         }
 
-        while (!wait.isEmpty()) {
-            working.push(wait.poll());
+        while (!waitQueue.isEmpty()) {
+            workingStack.push(waitQueue.poll());
 
-            if (wait.isEmpty()) {
-                while (!working.isEmpty()) {
-                    answer[index] = working.pop()[0];
-                    index++;
+            if (waitQueue.isEmpty()) {
+                while (!workingStack.isEmpty()) {
+                    answer[index++] = workingStack.pop()[0];
                 }
                 break;
             }
 
-            int term = calculateTerm(wait.peek()[1], working.peek()[1]);
+            int term = calculateTimeDifference(waitQueue.peek()[1], workingStack.peek()[1]);
 
-            while (!working.isEmpty() && term >= Integer.parseInt(working.peek()[2])) {
-                answer[index] = working.peek()[0];
-                term -= Integer.parseInt(working.pop()[2]);
-                index++;
+            while (!workingStack.isEmpty() && term >= Integer.parseInt(workingStack.peek()[2])) {
+                String[] completed = workingStack.pop();
+                answer[index++] = completed[0];
+                term -= Integer.parseInt(completed[2]);
             }
 
-            if (!working.isEmpty()) {
-                String[] work = working.pop();
-                work[2] = String.valueOf((Integer.parseInt(work[2]) - term));
-                working.push(work);
+            if (!workingStack.isEmpty()) {
+                String[] currentWorking = workingStack.pop();
+                currentWorking[2] = String.valueOf(Integer.parseInt(currentWorking[2]) - term);
+                workingStack.push(currentWorking);
             }
         }
 
         return answer;
     }
 
-    private static int calculateTerm(String wait, String working) {
-        int waitMin = Integer.parseInt(wait.split(":")[0]) * 60 + Integer.parseInt(wait.split(":")[1]);
-        int workMin = Integer.parseInt(working.split(":")[0]) * 60 + Integer.parseInt(working.split(":")[1]);
-        return waitMin - workMin;
+    private int compareTimes(String timeA, String timeB) {
+        int minutesA = calculateMinutes(timeA);
+        int minutesB = calculateMinutes(timeB);
+        return Integer.compare(minutesA, minutesB);
     }
 
-    public static void main(String[] args) {
-        String[][] p1 = new String[][] { { "science", "12:40", "50" }, { "music", "12:20", "40" },
-                { "history", "14:00", "30" }, { "computer", "12:30", "100" } };
-
-        System.out.println(Arrays.toString(solution(p1))); // "science", "history", "computer", "music"
+    private int calculateTimeDifference(String startTime, String endTime) {
+        int startMinutes = calculateMinutes(startTime);
+        int endMinutes = calculateMinutes(endTime);
+        return startMinutes - endMinutes;
     }
+
+    private int calculateMinutes(String time) {
+        String[] parts = time.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+        return hours * 60 + minutes;
+    }
+
+    // @Test
+    // void 정답() {
+    //     String[][] p1 = new String[][] { { "science", "12:40", "50" }, { "music", "12:20", "40" },
+    //             { "history", "14:00", "30" }, { "computer", "12:30", "100" } };
+    //     Assertions.assertArrayEquals(new String[] {"science", "history", "computer", "music" }, solution(p1));
+    // }
 }

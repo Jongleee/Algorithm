@@ -1,57 +1,75 @@
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Queue;
+import java.util.Stack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private int[] result;
-    private int[] lion;
-    private int maxScoreDifference;
+    public String[] solution(String[][] plans) {
+        String[] answer = new String[plans.length];
+        Stack<String[]> workingStack = new Stack<>();
+        Queue<String[]> waitQueue = new ArrayDeque<>();
+        int index = 0;
 
-    public int[] solution(int n, int[] info) {
-        result = new int[] { -1 };
-        lion = new int[11];
-        maxScoreDifference = 0;
-        calculateOptimalLionDistribution(info, 1, n);
-        return result;
-    }
+        Arrays.sort(plans, (a, b) -> compareTimes(a[1], b[1]));
 
-    public void calculateOptimalLionDistribution(int[] info, int count, int n) {
-        if (count == n + 1) {
-            int apeachPoint = 0;
-            int lionPoint = 0;
-            for (int i = 0; i <= 10; i++) {
-                int score = 10 - i;
-                if (info[i] + lion[i] != 0) {
-                    if (info[i] < lion[i]) {
-                        lionPoint += score;
-                    } else {
-                        apeachPoint += score;
-                    }
+        for (String[] plan : plans) {
+            waitQueue.offer(plan);
+        }
+
+        while (!waitQueue.isEmpty()) {
+            workingStack.push(waitQueue.poll());
+
+            if (waitQueue.isEmpty()) {
+                while (!workingStack.isEmpty()) {
+                    answer[index++] = workingStack.pop()[0];
                 }
+                break;
             }
-            if (isBetterDistribution(apeachPoint, lionPoint)) {
-                result = lion.clone();
-                maxScoreDifference = lionPoint - apeachPoint;
+
+            int term = calculateTimeDifference(waitQueue.peek()[1], workingStack.peek()[1]);
+
+            while (!workingStack.isEmpty() && term >= Integer.parseInt(workingStack.peek()[2])) {
+                String[] completed = workingStack.pop();
+                answer[index++] = completed[0];
+                term -= Integer.parseInt(completed[2]);
             }
-            return;
+
+            if (!workingStack.isEmpty()) {
+                String[] currentWorking = workingStack.pop();
+                currentWorking[2] = String.valueOf(Integer.parseInt(currentWorking[2]) - term);
+                workingStack.push(currentWorking);
+            }
         }
-        for (int j = 0; j <= 10 && lion[j] <= info[j]; j++) {
-            lion[j]++;
-            calculateOptimalLionDistribution(info, count + 1, n);
-            lion[j]--;
-        }
+
+        return answer;
     }
 
-    private boolean isBetterDistribution(int apeachPoint, int lionPoint) {
-        return lionPoint > apeachPoint && lionPoint - apeachPoint >= maxScoreDifference;
+    private int compareTimes(String timeA, String timeB) {
+        int minutesA = calculateMinutes(timeA);
+        int minutesB = calculateMinutes(timeB);
+        return Integer.compare(minutesA, minutesB);
+    }
+
+    private int calculateTimeDifference(String startTime, String endTime) {
+        int startMinutes = calculateMinutes(startTime);
+        int endMinutes = calculateMinutes(endTime);
+        return startMinutes - endMinutes;
+    }
+
+    private int calculateMinutes(String time) {
+        String[] parts = time.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+        return hours * 60 + minutes;
     }
 
     @Test
     void 정답() {
-        int[] i1 = { 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3 };
-        int[] i2 = { 0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1 };
-        int[] i3 = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        Assertions.assertArrayEquals(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 2 }, solution(10, i1));
-        Assertions.assertArrayEquals(new int[] { 1, 1, 2, 0, 1, 2, 2, 0, 0, 0, 0 }, solution(9, i2));
-        Assertions.assertArrayEquals(new int[] { -1 }, solution(1, i3));
+        String[][] p1 = new String[][] { { "science", "12:40", "50" }, { "music", "12:20", "40" },
+                { "history", "14:00", "30" }, { "computer", "12:30", "100" } };
+        Assertions.assertArrayEquals(new String[] {"science", "history", "computer", "music" }, solution(p1));
     }
 }
