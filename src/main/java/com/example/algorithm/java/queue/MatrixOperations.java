@@ -1,28 +1,41 @@
 package com.example.algorithm.java.queue;
 
 import java.util.ArrayDeque;
-import java.util.Arrays;
 
 public class MatrixOperations {
-    static int numRows;
-    static int numCols;
-    static ArrayDeque<Integer> leftCol;
-    static ArrayDeque<Integer> rightCol;
-    static ArrayDeque<ArrayDeque<Integer>> middleRows;
+    private int numRows;
+    private int numCols;
+    private ArrayDeque<Integer> leftCol;
+    private ArrayDeque<Integer> rightCol;
+    private ArrayDeque<ArrayDeque<Integer>> middleRows;
 
-    private static void init(int[][] rc) {
+    public int[][] solution(int[][] rc, String[] operations) {
+        initialize(rc);
+
+        for (String op : operations) {
+            if (op.charAt(0) == 'R') {
+                rotate();
+            }
+            if (op.charAt(0) == 'S') {
+                shiftRow();
+            }
+        }
+
+        return getSolution();
+    }
+
+    private void initialize(int[][] rc) {
         numRows = rc.length;
         numCols = rc[0].length;
 
         leftCol = new ArrayDeque<>();
         rightCol = new ArrayDeque<>();
+        middleRows = new ArrayDeque<>();
+
         for (int i = 0; i < numRows; i++) {
             leftCol.add(rc[i][0]);
             rightCol.add(rc[i][numCols - 1]);
-        }
 
-        middleRows = new ArrayDeque<>();
-        for (int i = 0; i < numRows; i++) {
             ArrayDeque<Integer> tmp = new ArrayDeque<>();
             for (int j = 1; j < numCols - 1; j++) {
                 tmp.add(rc[i][j]);
@@ -31,12 +44,13 @@ public class MatrixOperations {
         }
     }
 
-    private static int[][] getAnswer() {
+    private int[][] getSolution() {
         int[][] ans = new int[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             ans[i][0] = leftCol.pollFirst();
             ans[i][numCols - 1] = rightCol.pollFirst();
         }
+
         int i = 0;
         for (ArrayDeque<Integer> row : middleRows) {
             for (int j = 1; j < numCols - 1; j++) {
@@ -47,39 +61,36 @@ public class MatrixOperations {
         return ans;
     }
 
-    private static void rotate() {
+    private void rotate() {
         if (numCols == 2) {
             rightCol.addFirst(leftCol.pollFirst());
             leftCol.addLast(rightCol.pollLast());
             return;
         }
-        middleRows.peekFirst().addFirst(leftCol.pollFirst());
-        rightCol.addFirst(middleRows.peekFirst().pollLast());
-        middleRows.peekLast().addLast(rightCol.pollLast());
-        leftCol.addLast(middleRows.peekLast().pollFirst());
+
+        ArrayDeque<Integer> firstRow = middleRows.peekFirst();
+        ArrayDeque<Integer> lastRow = middleRows.peekLast();
+        firstRow.addFirst(leftCol.pollFirst());
+        rightCol.addFirst(firstRow.pollLast());
+
+        lastRow.addLast(rightCol.pollLast());
+        leftCol.addLast(lastRow.pollFirst());
     }
 
-    private static void shiftRow() {
-        middleRows.addFirst(middleRows.pollLast());
+    private void shiftRow() {
+        ArrayDeque<Integer> firstRow = middleRows.pollLast();
         leftCol.addFirst(leftCol.pollLast());
         rightCol.addFirst(rightCol.pollLast());
+        middleRows.addFirst(firstRow);
     }
 
-    public static int[][] solution(int[][] rc, String[] operations) {
-        init(rc);
-        for (String op : operations) {
-            if (op.charAt(0) == 'R')
-                rotate();
-            if (op.charAt(0) == 'S')
-                shiftRow();
-        }
-
-        return getAnswer();
-    }
-
-    public static void main(String[] args) {
-        int[][] rc1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-        String[] o1 = { "Rotate", "ShiftRow" };
-        System.out.println(Arrays.deepToString(solution(rc1, o1)));
-    }
+    // @Test
+    // void 정답() {
+    //     int[][] rc1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+    //     String[] o1 = { "Rotate", "ShiftRow" };
+    //     Assertions.assertArrayEquals(new int[][] { { 8, 9, 6 }, { 4, 1, 2 }, { 7, 5, 3 } }, solution(rc1, o1));
+    //     int[][] rc2 = { { 8, 6, 3 }, { 3, 3, 7 }, { 8, 4, 9 } };
+    //     String[] o2 = { "Rotate", "ShiftRow", "ShiftRow" };
+    //     Assertions.assertArrayEquals(new int[][] { { 8, 3, 3 }, { 4, 9, 7 }, { 3, 8, 6 } }, solution(rc2, o2));
+    // }
 }
