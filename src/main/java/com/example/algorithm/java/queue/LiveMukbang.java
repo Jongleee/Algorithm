@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class LiveMukbang {
-    static class Food {
+    class Food {
         private final int index;
         private int time;
 
@@ -29,7 +29,7 @@ public class LiveMukbang {
         }
     }
 
-    public static int solution(int[] foodTimes, long k) {
+    public int solution(int[] foodTimes, long k) {
         Queue<Food> q = new PriorityQueue<>(Comparator.comparingInt(Food::getTime).thenComparingInt(Food::getIndex));
 
         for (int i = 0; i < foodTimes.length; i++) {
@@ -70,7 +70,7 @@ public class LiveMukbang {
         return remainingFoods.get(index).getIndex();
     }
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         int[] f1 = { 3, 1, 2 };
         int k1 = 5;
         System.out.println(solution(f1, k1));

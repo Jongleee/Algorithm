@@ -1,52 +1,76 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] priorities, int location) {
-        Queue<Integer> queue = new LinkedList<>();
-        int[] counts = new int[10];
-        int answer = 0;
+    class Food {
+        private final int index;
+        private int time;
 
-        for (int i = 0; i < priorities.length; i++) {
-            queue.offer(i);
-            counts[priorities[i]]++;
+        public Food(int index, int time) {
+            this.index = index;
+            this.time = time;
         }
 
-        int priority = 9;
+        public int getIndex() {
+            return index;
+        }
 
-        while (!queue.isEmpty()) {
-            int currentDoc = queue.poll();
+        public int getTime() {
+            return time;
+        }
 
-            while (counts[priority] == 0) {
-                priority--;
-            }
+        public void setTime(int time) {
+            this.time = time;
+        }
+    }
 
-            if (currentDoc == location && priority == priorities[currentDoc]) {
-                answer++;
+    public int solution(int[] foodTimes, long k) {
+        Queue<Food> foodQueue = new PriorityQueue<>(
+                Comparator.comparingInt(Food::getTime).thenComparingInt(Food::getIndex));
+
+        for (int i = 0; i < foodTimes.length; i++) {
+            foodQueue.add(new Food(i + 1, foodTimes[i]));
+        }
+
+        int prevTime = 0;
+        int n = foodTimes.length;
+
+        while (!foodQueue.isEmpty()) {
+            Food food = foodQueue.peek();
+            int diff = food.getTime() - prevTime;
+            long totalTime = (long) diff * n;
+
+            if (totalTime <= k) {
+                k -= totalTime;
+                prevTime = food.getTime();
+                foodQueue.poll();
+                n--;
+            } else {
                 break;
             }
-
-            if (priorities[currentDoc] < priority) {
-                queue.offer(currentDoc);
-            } else {
-                answer++;
-                counts[priorities[currentDoc]]--;
-            }
         }
 
-        return answer;
+        if (foodQueue.isEmpty()) {
+            return -1;
+        }
+
+        List<Food> remainingFoods = new ArrayList<>(foodQueue);
+        remainingFoods.sort(Comparator.comparingInt(Food::getIndex));
+
+        int index = (int) (k % n);
+        return remainingFoods.get(index).getIndex();
     }
 
     @Test
     void 정답() {
-        int[] p1 = { 2, 1, 3, 2 };
-        int l1 = 2;
-        int[] p2 = { 1, 1, 9, 1, 1, 1 };
-        int l2 = 0;
-        Assertions.assertEquals(1, solution(p1, l1));
-        Assertions.assertEquals(5, solution(p2, l2));
+        int[] f1 = { 3, 1, 2 };
+        int k1 = 5;
+        Assertions.assertEquals(1, solution(f1, k1));
     }
 }
