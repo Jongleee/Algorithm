@@ -30,50 +30,46 @@ public class LiveMukbang {
     }
 
     public int solution(int[] foodTimes, long k) {
-        Queue<Food> q = new PriorityQueue<>(Comparator.comparingInt(Food::getTime).thenComparingInt(Food::getIndex));
+        Queue<Food> foodQueue = new PriorityQueue<>(
+                Comparator.comparingInt(Food::getTime).thenComparingInt(Food::getIndex));
 
         for (int i = 0; i < foodTimes.length; i++) {
-            q.add(new Food(i + 1, foodTimes[i]));
+            foodQueue.add(new Food(i + 1, foodTimes[i]));
         }
 
         int prevTime = 0;
         int n = foodTimes.length;
 
-        while (!q.isEmpty()) {
-            Food food = q.peek();
+        while (!foodQueue.isEmpty()) {
+            Food food = foodQueue.peek();
             int diff = food.getTime() - prevTime;
             long totalTime = (long) diff * n;
 
             if (totalTime <= k) {
                 k -= totalTime;
                 prevTime = food.getTime();
-                q.poll();
+                foodQueue.poll();
                 n--;
             } else {
                 break;
             }
         }
 
-        if (q.isEmpty()) {
+        if (foodQueue.isEmpty()) {
             return -1;
         }
 
-        List<Food> remainingFoods = new ArrayList<>();
-
-        while (!q.isEmpty()) {
-            remainingFoods.add(q.poll());
-        }
-
+        List<Food> remainingFoods = new ArrayList<>(foodQueue);
         remainingFoods.sort(Comparator.comparingInt(Food::getIndex));
 
         int index = (int) (k % n);
         return remainingFoods.get(index).getIndex();
     }
 
-    public void main(String[] args) {
-        int[] f1 = { 3, 1, 2 };
-        int k1 = 5;
-        System.out.println(solution(f1, k1));
-    }
-
+    // @Test
+    // void 정답() {
+    //     int[] f1 = { 3, 1, 2 };
+    //     int k1 = 5;
+    //     Assertions.assertEquals(1, solution(f1, k1));
+    // }
 }
