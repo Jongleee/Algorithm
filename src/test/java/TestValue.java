@@ -1,76 +1,66 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    class Food {
-        private final int index;
-        private int time;
+    public int solution(int[] queue1, int[] queue2) {
+        Queue<Integer> q1 = new ArrayDeque<>();
+        Queue<Integer> q2 = new ArrayDeque<>();
+        long sum1 = 0;
+        long sum2 = 0;
 
-        public Food(int index, int time) {
-            this.index = index;
-            this.time = time;
+        for (int tmp : queue1) {
+            q1.add(tmp);
+            sum1 += tmp;
         }
 
-        public int getIndex() {
-            return index;
+        for (int tmp : queue2) {
+            q2.add(tmp);
+            sum2 += tmp;
         }
 
-        public int getTime() {
-            return time;
-        }
-
-        public void setTime(int time) {
-            this.time = time;
-        }
-    }
-
-    public int solution(int[] foodTimes, long k) {
-        Queue<Food> foodQueue = new PriorityQueue<>(
-                Comparator.comparingInt(Food::getTime).thenComparingInt(Food::getIndex));
-
-        for (int i = 0; i < foodTimes.length; i++) {
-            foodQueue.add(new Food(i + 1, foodTimes[i]));
-        }
-
-        int prevTime = 0;
-        int n = foodTimes.length;
-
-        while (!foodQueue.isEmpty()) {
-            Food food = foodQueue.peek();
-            int diff = food.getTime() - prevTime;
-            long totalTime = (long) diff * n;
-
-            if (totalTime <= k) {
-                k -= totalTime;
-                prevTime = food.getTime();
-                foodQueue.poll();
-                n--;
-            } else {
-                break;
-            }
-        }
-
-        if (foodQueue.isEmpty()) {
+        long totalSum = sum1 + sum2;
+        if (totalSum % 2 != 0) {
             return -1;
         }
 
-        List<Food> remainingFoods = new ArrayList<>(foodQueue);
-        remainingFoods.sort(Comparator.comparingInt(Food::getIndex));
+        long targetSum = totalSum / 2;
+        int cnt1 = 0;
+        int cnt2 = 0;
+        int limit = queue1.length * 2;
 
-        int index = (int) (k % n);
-        return remainingFoods.get(index).getIndex();
+        while (cnt1 <= limit && cnt2 <= limit) {
+            if (sum1 == targetSum) {
+                return cnt1 + cnt2;
+            }
+
+            if (sum1 > targetSum) {
+                int temp = q1.poll();
+                sum1 -= temp;
+                sum2 += temp;
+                q2.add(temp);
+                cnt1++;
+            } else {
+                int temp = q2.poll();
+                sum2 -= temp;
+                sum1 += temp;
+                q1.add(temp);
+                cnt2++;
+            }
+        }
+
+        return -1;
     }
 
     @Test
     void 정답() {
-        int[] f1 = { 3, 1, 2 };
-        int k1 = 5;
-        Assertions.assertEquals(1, solution(f1, k1));
+        int[] qf1 = { 1, 1 };
+        int[] qs1 = { 1, 5 };
+        Assertions.assertEquals(-1, solution(qf1, qs1));
+        int[] qf2 = { 3, 2, 7, 2 };
+        int[] qs2 = { 4, 6, 5, 1 };
+        Assertions.assertEquals(2, solution(qf2, qs2));
     }
 }
