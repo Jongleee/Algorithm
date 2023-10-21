@@ -4,12 +4,11 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class EqualSumQueues {
-    public static int solution(int[] queue1, int[] queue2) {
+    public int solution(int[] queue1, int[] queue2) {
         Queue<Integer> q1 = new ArrayDeque<>();
         Queue<Integer> q2 = new ArrayDeque<>();
         long sum1 = 0;
         long sum2 = 0;
-        long sum;
 
         for (int tmp : queue1) {
             q1.add(tmp);
@@ -21,20 +20,22 @@ public class EqualSumQueues {
             sum2 += tmp;
         }
 
-        sum = sum1 + sum2;
-        if (sum % 2 == 1)
+        long totalSum = sum1 + sum2;
+        if (totalSum % 2 != 0) {
             return -1;
+        }
 
-        sum /= 2;
+        long targetSum = totalSum / 2;
         int cnt1 = 0;
         int cnt2 = 0;
         int limit = queue1.length * 2;
 
         while (cnt1 <= limit && cnt2 <= limit) {
-            if (sum1 == sum)
+            if (sum1 == targetSum) {
                 return cnt1 + cnt2;
+            }
 
-            if (sum1 > sum) {
+            if (sum1 > targetSum) {
                 int temp = q1.poll();
                 sum1 -= temp;
                 sum2 += temp;
@@ -52,7 +53,13 @@ public class EqualSumQueues {
         return -1;
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution(new int[] { 1, 1 }, new int[] { 1, 5 }));
-    }
+    // @Test
+    // void 정답() {
+    //     int[] qf1 = { 1, 1 };
+    //     int[] qs1 = { 1, 5 };
+    //     Assertions.assertEquals(-1, solution(qf1, qs1));
+    //     int[] qf2 = { 3, 2, 7, 2 };
+    //     int[] qs2 = { 4, 6, 5, 1 };
+    //     Assertions.assertEquals(2, solution(qf2, qs2));
+    // }
 }
