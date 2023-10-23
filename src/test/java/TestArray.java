@@ -1,97 +1,55 @@
-import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private int numRows;
-    private int numCols;
-    private ArrayDeque<Integer> leftCol;
-    private ArrayDeque<Integer> rightCol;
-    private ArrayDeque<ArrayDeque<Integer>> middleRows;
+    public int[] solution(int[] progresses, int[] speeds) {
+        Queue<Integer> daysToComplete = new LinkedList<>();
 
-    public int[][] solution(int[][] rc, String[] operations) {
-        initialize(rc);
-
-        for (String op : operations) {
-            if (op.charAt(0) == 'R') {
-                rotate();
+        for (int i = 0; i < speeds.length; i++) {
+            int remainingDays = (100 - progresses[i]) / speeds[i];
+            if ((100 - progresses[i]) % speeds[i] != 0) {
+                remainingDays++;
             }
-            if (op.charAt(0) == 'S') {
-                shiftRow();
+            daysToComplete.offer(remainingDays);
+        }
+
+        List<Integer> resultList = new ArrayList<>();
+        int currentTask = daysToComplete.poll();
+        int count = 1;
+
+        while (!daysToComplete.isEmpty()) {
+            int nextTask = daysToComplete.poll();
+            if (currentTask >= nextTask) {
+                count++;
+            } else {
+                resultList.add(count);
+                count = 1;
+                currentTask = nextTask;
             }
         }
 
-        return getSolution();
-    }
+        resultList.add(count);
 
-    private void initialize(int[][] rc) {
-        numRows = rc.length;
-        numCols = rc[0].length;
-
-        leftCol = new ArrayDeque<>();
-        rightCol = new ArrayDeque<>();
-        middleRows = new ArrayDeque<>();
-
-        for (int i = 0; i < numRows; i++) {
-            leftCol.add(rc[i][0]);
-            rightCol.add(rc[i][numCols - 1]);
-
-            ArrayDeque<Integer> tmp = new ArrayDeque<>();
-            for (int j = 1; j < numCols - 1; j++) {
-                tmp.add(rc[i][j]);
-            }
-            middleRows.add(tmp);
-        }
-    }
-
-    private int[][] getSolution() {
-        int[][] ans = new int[numRows][numCols];
-        for (int i = 0; i < numRows; i++) {
-            ans[i][0] = leftCol.pollFirst();
-            ans[i][numCols - 1] = rightCol.pollFirst();
+        int[] result = new int[resultList.size()];
+        for (int i = 0; i < resultList.size(); i++) {
+            result[i] = resultList.get(i);
         }
 
-        int i = 0;
-        for (ArrayDeque<Integer> row : middleRows) {
-            for (int j = 1; j < numCols - 1; j++) {
-                ans[i][j] = row.pollFirst();
-            }
-            i++;
-        }
-        return ans;
-    }
-
-    private void rotate() {
-        if (numCols == 2) {
-            rightCol.addFirst(leftCol.pollFirst());
-            leftCol.addLast(rightCol.pollLast());
-            return;
-        }
-
-        ArrayDeque<Integer> firstRow = middleRows.peekFirst();
-        ArrayDeque<Integer> lastRow = middleRows.peekLast();
-        firstRow.addFirst(leftCol.pollFirst());
-        rightCol.addFirst(firstRow.pollLast());
-
-        lastRow.addLast(rightCol.pollLast());
-        leftCol.addLast(lastRow.pollFirst());
-    }
-
-    private void shiftRow() {
-        ArrayDeque<Integer> firstRow = middleRows.pollLast();
-        leftCol.addFirst(leftCol.pollLast());
-        rightCol.addFirst(rightCol.pollLast());
-        middleRows.addFirst(firstRow);
+        return result;
     }
 
     @Test
     void 정답() {
-        int[][] rc1 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-        String[] o1 = { "Rotate", "ShiftRow" };
-        Assertions.assertArrayEquals(new int[][] { { 8, 9, 6 }, { 4, 1, 2 }, { 7, 5, 3 } }, solution(rc1, o1));
-        int[][] rc2 = { { 8, 6, 3 }, { 3, 3, 7 }, { 8, 4, 9 } };
-        String[] o2 = { "Rotate", "ShiftRow", "ShiftRow" };
-        Assertions.assertArrayEquals(new int[][] { { 8, 3, 3 }, { 4, 9, 7 }, { 3, 8, 6 } }, solution(rc2, o2));
+        int[] p1 = { 93, 30, 55 };
+        int[] s1 = { 1, 30, 5 };
+        Assertions.assertArrayEquals(new int[] { 2, 1 }, solution(p1, s1));
+        int[] p2 = { 95, 90, 99, 99, 80, 99 };
+        int[] s2 = { 1, 1, 1, 1, 1, 1 };
+        Assertions.assertArrayEquals(new int[] { 1, 3, 2 }, solution(p2, s2));
     }
 }
