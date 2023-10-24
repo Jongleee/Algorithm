@@ -1,66 +1,49 @@
-import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] queue1, int[] queue2) {
-        Queue<Integer> q1 = new ArrayDeque<>();
-        Queue<Integer> q2 = new ArrayDeque<>();
-        long sum1 = 0;
-        long sum2 = 0;
-
-        for (int tmp : queue1) {
-            q1.add(tmp);
-            sum1 += tmp;
+    public int solution(int bridgeLength, int weight, int[] truckWeights) {
+        Queue<Integer> waitingTrucks = new LinkedList<>();
+        for (int truckWeight : truckWeights) {
+            waitingTrucks.add(truckWeight);
         }
 
-        for (int tmp : queue2) {
-            q2.add(tmp);
-            sum2 += tmp;
-        }
+        int elapsedTime = 0;
+        int currentBridgeWeight = 0;
+        Queue<Integer> trucksOnBridge = new LinkedList<>();
+        Queue<Integer> enteredTimes = new LinkedList<>();
 
-        long totalSum = sum1 + sum2;
-        if (totalSum % 2 != 0) {
-            return -1;
-        }
+        while (!waitingTrucks.isEmpty() || !trucksOnBridge.isEmpty()) {
+            elapsedTime++;
 
-        long targetSum = totalSum / 2;
-        int cnt1 = 0;
-        int cnt2 = 0;
-        int limit = queue1.length * 2;
-
-        while (cnt1 <= limit && cnt2 <= limit) {
-            if (sum1 == targetSum) {
-                return cnt1 + cnt2;
+            if (!trucksOnBridge.isEmpty() && elapsedTime - enteredTimes.peek() >= bridgeLength) {
+                currentBridgeWeight -= trucksOnBridge.poll();
+                enteredTimes.poll();
             }
 
-            if (sum1 > targetSum) {
-                int temp = q1.poll();
-                sum1 -= temp;
-                sum2 += temp;
-                q2.add(temp);
-                cnt1++;
-            } else {
-                int temp = q2.poll();
-                sum2 -= temp;
-                sum1 += temp;
-                q1.add(temp);
-                cnt2++;
+            if (!waitingTrucks.isEmpty() && currentBridgeWeight + waitingTrucks.peek() <= weight) {
+                int currentTruckWeight = waitingTrucks.poll();
+                currentBridgeWeight += currentTruckWeight;
+                trucksOnBridge.add(currentTruckWeight);
+                enteredTimes.add(elapsedTime);
             }
         }
 
-        return -1;
+        return elapsedTime;
     }
 
     @Test
     void 정답() {
-        int[] qf1 = { 1, 1 };
-        int[] qs1 = { 1, 5 };
-        Assertions.assertEquals(-1, solution(qf1, qs1));
-        int[] qf2 = { 3, 2, 7, 2 };
-        int[] qs2 = { 4, 6, 5, 1 };
-        Assertions.assertEquals(2, solution(qf2, qs2));
+        int l1 = 100;
+        int w1 = 100;
+        int[] tw1 = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+        Assertions.assertEquals(110, solution(l1, w1, tw1));
+        int l2 = 2;
+        int w2 = 10;
+        int[] tw2 = { 7, 4, 5, 6 };
+        Assertions.assertEquals(8, solution(l2, w2, tw2));
     }
 }

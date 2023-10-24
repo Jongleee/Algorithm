@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BridgeTruck {
-    public static int solution(int bridgeLength, int weight, int[] truckWeights) {
+    public int solution(int bridgeLength, int weight, int[] truckWeights) {
         Queue<Integer> waitingTrucks = new LinkedList<>();
         for (int truckWeight : truckWeights) {
             waitingTrucks.add(truckWeight);
@@ -34,15 +34,15 @@ public class BridgeTruck {
         return elapsedTime;
     }
 
-    public static void main(String[] args) {
-        int l1 = 100;
-        int w1 = 100;
-        int[] tw1 = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };// 110
-        System.out.println(solution(l1, w1, tw1));
-        int l2 = 2;
-        int w2 = 10;
-        int[] tw2 = { 7, 4, 5, 6 };// 8
-        System.out.println(solution(l2, w2, tw2));
-
-    }
+    // @Test
+    // void 정답() {
+    //     int l1 = 100;
+    //     int w1 = 100;
+    //     int[] tw1 = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+    //     Assertions.assertEquals(110, solution(l1, w1, tw1));
+    //     int l2 = 2;
+    //     int w2 = 10;
+    //     int[] tw2 = { 7, 4, 5, 6 };
+    //     Assertions.assertEquals(8, solution(l2, w2, tw2));
+    // }
 }
