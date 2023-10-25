@@ -1,55 +1,38 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(int[] progresses, int[] speeds) {
-        Queue<Integer> daysToComplete = new LinkedList<>();
+    public long[] solution(long k, long[] roomNumbers) {
+        int n = roomNumbers.length;
+        if (n > k)
+            return new long[] { -1 };
 
-        for (int i = 0; i < speeds.length; i++) {
-            int remainingDays = (100 - progresses[i]) / speeds[i];
-            if ((100 - progresses[i]) % speeds[i] != 0) {
-                remainingDays++;
-            }
-            daysToComplete.offer(remainingDays);
+        Map<Long, Long> nextRoomMap = new HashMap<>();
+        long[] assignedRooms = new long[n];
+
+        for (int i = 0; i < n; i++) {
+            assignedRooms[i] = getEmptyRoom(roomNumbers[i], nextRoomMap);
+            nextRoomMap.put(roomNumbers[i], assignedRooms[i] + 1);
         }
 
-        List<Integer> resultList = new ArrayList<>();
-        int currentTask = daysToComplete.poll();
-        int count = 1;
+        return assignedRooms;
+    }
 
-        while (!daysToComplete.isEmpty()) {
-            int nextTask = daysToComplete.poll();
-            if (currentTask >= nextTask) {
-                count++;
-            } else {
-                resultList.add(count);
-                count = 1;
-                currentTask = nextTask;
-            }
+    private long getEmptyRoom(long roomNumber, Map<Long, Long> nextRoomMap) {
+        if (!nextRoomMap.containsKey(roomNumber)) {
+            nextRoomMap.computeIfAbsent(roomNumber, a -> a + 1);
+            return roomNumber;
         }
-
-        resultList.add(count);
-
-        int[] result = new int[resultList.size()];
-        for (int i = 0; i < resultList.size(); i++) {
-            result[i] = resultList.get(i);
-        }
-
-        return result;
+        long emptyRoom = getEmptyRoom(nextRoomMap.get(roomNumber), nextRoomMap);
+        nextRoomMap.put(roomNumber, emptyRoom + 1);
+        return emptyRoom;
     }
 
     @Test
     void 정답() {
-        int[] p1 = { 93, 30, 55 };
-        int[] s1 = { 1, 30, 5 };
-        Assertions.assertArrayEquals(new int[] { 2, 1 }, solution(p1, s1));
-        int[] p2 = { 95, 90, 99, 99, 80, 99 };
-        int[] s2 = { 1, 1, 1, 1, 1, 1 };
-        Assertions.assertArrayEquals(new int[] { 1, 3, 2 }, solution(p2, s2));
+        Assertions.assertArrayEquals(new long[] { 1, 3, 4, 2, 5, 6 }, solution(10, new long[] { 1, 3, 4, 1, 3, 1 }));
     }
 }
