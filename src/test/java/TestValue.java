@@ -1,49 +1,46 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int bridgeLength, int weight, int[] truckWeights) {
-        Queue<Integer> waitingTrucks = new LinkedList<>();
-        for (int truckWeight : truckWeights) {
-            waitingTrucks.add(truckWeight);
+    public int solution(String[][] bookTimeSlots) {
+        int[] roomUsage = new int[1449];
+        for (String[] timeSlot : bookTimeSlots) {
+            int startTime = convertToMinutes(timeSlot[0]);
+            int endTime = convertToMinutes(timeSlot[1]) + 9;
+            incrementRoomUsage(roomUsage, startTime, endTime);
         }
 
-        int elapsedTime = 0;
-        int currentBridgeWeight = 0;
-        Queue<Integer> trucksOnBridge = new LinkedList<>();
-        Queue<Integer> enteredTimes = new LinkedList<>();
+        return maxRoomUsage(roomUsage);
+    }
 
-        while (!waitingTrucks.isEmpty() || !trucksOnBridge.isEmpty()) {
-            elapsedTime++;
+    public int convertToMinutes(String time) {
+        int hours = Integer.parseInt(time.substring(0, 2));
+        int minutes = Integer.parseInt(time.substring(3, 5));
+        int totalMinutes = (hours * 60) + minutes;
+        return totalMinutes;
+    }
 
-            if (!trucksOnBridge.isEmpty() && elapsedTime - enteredTimes.peek() >= bridgeLength) {
-                currentBridgeWeight -= trucksOnBridge.poll();
-                enteredTimes.poll();
-            }
-
-            if (!waitingTrucks.isEmpty() && currentBridgeWeight + waitingTrucks.peek() <= weight) {
-                int currentTruckWeight = waitingTrucks.poll();
-                currentBridgeWeight += currentTruckWeight;
-                trucksOnBridge.add(currentTruckWeight);
-                enteredTimes.add(elapsedTime);
-            }
+    public void incrementRoomUsage(int[] roomUsage, int startTime, int endTime) {
+        for (int i = startTime; i <= endTime; i++) {
+            roomUsage[i]++;
         }
+    }
 
-        return elapsedTime;
+    public int maxRoomUsage(int[] roomUsage) {
+        return Arrays.stream(roomUsage).max().getAsInt();
     }
 
     @Test
     void 정답() {
-        int l1 = 100;
-        int w1 = 100;
-        int[] tw1 = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
-        Assertions.assertEquals(110, solution(l1, w1, tw1));
-        int l2 = 2;
-        int w2 = 10;
-        int[] tw2 = { 7, 4, 5, 6 };
-        Assertions.assertEquals(8, solution(l2, w2, tw2));
+        String[][] b1 = { { "15:00", "17:00" }, { "16:40", "18:20" }, { "14:20", "15:20" }, { "14:10", "19:20" },
+                { "18:20", "21:20" } };
+        String[][] b2 = { { "09:10", "10:10" }, { "10:20", "12:20" } };
+        String[][] b3 = { { "10:20", "12:30" }, { "10:20", "12:30" }, { "10:20", "12:30" } };
+
+        Assertions.assertEquals(3, solution(b1));
+        Assertions.assertEquals(1, solution(b2));
+        Assertions.assertEquals(3, solution(b3));
     }
 }

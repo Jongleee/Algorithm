@@ -4,25 +4,43 @@ import java.util.Arrays;
 
 public class RentHotel {
     public int solution(String[][] bookTimeSlots) {
-        int[] roomUsage = new int[1449]; 
+        int[] roomUsage = new int[1449];
         for (String[] timeSlot : bookTimeSlots) {
-            int startTime = timeToMinutes(timeSlot[0], false);
-            int endTime = timeToMinutes(timeSlot[1], true);
-            for (int i = startTime; i <= endTime; i++) {
-                roomUsage[i]++;
-            }
+            int startTime = convertToMinutes(timeSlot[0]);
+            int endTime = convertToMinutes(timeSlot[1]) + 9;
+            incrementRoomUsage(roomUsage, startTime, endTime);
         }
 
+        return maxRoomUsage(roomUsage);
+    }
+
+    public int convertToMinutes(String time) {
+        int hours = Integer.parseInt(time.substring(0, 2));
+        int minutes = Integer.parseInt(time.substring(3, 5));
+        return (hours * 60) + minutes;
+    }
+
+    public void incrementRoomUsage(int[] roomUsage, int startTime, int endTime) {
+        for (int i = startTime; i <= endTime; i++) {
+            roomUsage[i]++;
+        }
+    }
+
+    public int maxRoomUsage(int[] roomUsage) {
         return Arrays.stream(roomUsage).max().getAsInt();
     }
 
-    public int timeToMinutes(String time, boolean isEnd) {
-        int hours = Integer.parseInt(time.substring(0, 2));
-        int minutes = Integer.parseInt(time.substring(3, 5));
-        int totalMinutes = hours * 60 + minutes;
-        if (isEnd) {
-            totalMinutes += 9;
-        }
-        return totalMinutes;
-    }
+    // @Test
+    // void 정답() {
+    // String[][] b1 = { { "15:00", "17:00" }, { "16:40", "18:20" }, { "14:20",
+    // "15:20" }, { "14:10", "19:20" },
+    // { "18:20", "21:20" } };
+    // String[][] b2 = { { "09:10", "10:10" }, { "10:20", "12:20" } };
+    // String[][] b3 = { { "10:20", "12:30" }, { "10:20", "12:30" }, { "10:20",
+    // "12:30" } };
+
+    // Assertions.assertEquals(3, solution(b1));
+    // Assertions.assertEquals(1, solution(b2));
+    // Assertions.assertEquals(3, solution(b3));
+    // }
 }
