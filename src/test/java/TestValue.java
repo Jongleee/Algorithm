@@ -1,46 +1,87 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(String[][] bookTimeSlots) {
-        int[] roomUsage = new int[1449];
-        for (String[] timeSlot : bookTimeSlots) {
-            int startTime = convertToMinutes(timeSlot[0]);
-            int endTime = convertToMinutes(timeSlot[1]) + 9;
-            incrementRoomUsage(roomUsage, startTime, endTime);
+    public int solution(int n, int[][] data) {
+        int[][] compressedData = compressCoordinates(n, data);
+        int[][] prefixSum = calculatePrefixSum(n, compressedData);
+
+        int answer = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (compressedData[i][0] == compressedData[j][0] || compressedData[i][1] == compressedData[j][1]) {
+                    continue;
+                }
+
+                int startX = Math.min(compressedData[i][0], compressedData[j][0]);
+                int startY = Math.min(compressedData[i][1], compressedData[j][1]);
+                int endX = Math.max(compressedData[i][0], compressedData[j][0]);
+                int endY = Math.max(compressedData[i][1], compressedData[j][1]);
+
+                int cnt = calculateRectangleArea(startX, startY, endX, endY, prefixSum);
+                if (cnt == 0) {
+                    answer++;
+                }
+            }
         }
 
-        return maxRoomUsage(roomUsage);
+        return answer;
     }
 
-    public int convertToMinutes(String time) {
-        int hours = Integer.parseInt(time.substring(0, 2));
-        int minutes = Integer.parseInt(time.substring(3, 5));
-        int totalMinutes = (hours * 60) + minutes;
-        return totalMinutes;
-    }
+    private int[][] compressCoordinates(int n, int[][] data) {
+        HashSet<Integer> uniqueXSet = new HashSet<>();
+        HashSet<Integer> uniqueYSet = new HashSet<>();
 
-    public void incrementRoomUsage(int[] roomUsage, int startTime, int endTime) {
-        for (int i = startTime; i <= endTime; i++) {
-            roomUsage[i]++;
+        for (int i = 0; i < n; i++) {
+            uniqueXSet.add(data[i][0]);
+            uniqueYSet.add(data[i][1]);
         }
+
+        ArrayList<Integer> uniqueXList = new ArrayList<>(uniqueXSet);
+        ArrayList<Integer> uniqueYList = new ArrayList<>(uniqueYSet);
+
+        Collections.sort(uniqueXList);
+        Collections.sort(uniqueYList);
+
+        int[][] compressedData = new int[n][2];
+
+        for (int i = 0; i < n; i++) {
+            compressedData[i][0] = uniqueXList.indexOf(data[i][0]);
+            compressedData[i][1] = uniqueYList.indexOf(data[i][1]);
+        }
+
+        return compressedData;
     }
 
-    public int maxRoomUsage(int[] roomUsage) {
-        return Arrays.stream(roomUsage).max().getAsInt();
+    private int[][] calculatePrefixSum(int n, int[][] compressedData) {
+        int[][] prefixSum = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            prefixSum[compressedData[i][0]][compressedData[i][1]] = 1;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                prefixSum[i][j] += (i - 1 >= 0 ? prefixSum[i - 1][j] : 0)
+                        + (j - 1 >= 0 ? prefixSum[i][j - 1] : 0)
+                        - (i - 1 >= 0 && j - 1 >= 0 ? prefixSum[i - 1][j - 1] : 0);
+            }
+        }
+        return prefixSum;
+    }
+
+    private int calculateRectangleArea(int startX, int startY, int endX, int endY, int[][] prefixSum) {
+        if (startX + 1 > endX - 1 || startY + 1 > endY - 1) {
+            return 0;
+        }
+        return prefixSum[endX - 1][endY - 1] - prefixSum[endX - 1][startY] - prefixSum[startX][endY - 1]
+                + prefixSum[startX][startY];
     }
 
     @Test
     void 정답() {
-        String[][] b1 = { { "15:00", "17:00" }, { "16:40", "18:20" }, { "14:20", "15:20" }, { "14:10", "19:20" },
-                { "18:20", "21:20" } };
-        String[][] b2 = { { "09:10", "10:10" }, { "10:20", "12:20" } };
-        String[][] b3 = { { "10:20", "12:30" }, { "10:20", "12:30" }, { "10:20", "12:30" } };
-
-        Assertions.assertEquals(3, solution(b1));
-        Assertions.assertEquals(1, solution(b2));
-        Assertions.assertEquals(3, solution(b3));
+        Assertions.assertEquals(3, solution(4, new int[][] { { 0, 0 }, { 1, 1 }, { 0, 2 }, { 2, 0 } }));
     }
 }
