@@ -1,15 +1,18 @@
 package com.example.algorithm.java.practice;
 
 public class UnspoiledBuilding {
-    static int[][] sum;
-    static int n;
-    static int m;
+    public int solution(int[][] board, int[][] skill) {
+        int n = board.length;
+        int m = board[0].length;
 
-    public static int solution(int[][] board, int[][] skill) {
-        n = board.length;
-        m = board[0].length;
+        int[][] sum = calculateSkillSum(n, m, skill);
 
-        sum = new int[n + 1][m + 1];
+        return updateBoardAndGetCount(board, sum, n, m);
+    }
+
+    private int[][] calculateSkillSum(int n, int m, int[][] skill) {
+        int[][] sum = new int[n + 1][m + 1];
+
         for (int[] s : skill) {
             int y1 = s[1];
             int x1 = s[2];
@@ -18,35 +21,49 @@ public class UnspoiledBuilding {
             int durability = (s[0] == 1 ? -s[5] : s[5]);
 
             sum[y1][x1] += durability;
-            sum[y1][x2 + 1] += (durability * -1);
-            sum[y2 + 1][x1] += (durability * -1);
+            sum[y1][x2 + 1] += (-durability);
+            sum[y2 + 1][x1] += (-durability);
             sum[y2 + 1][x2 + 1] += durability;
         }
+
+        return sum;
+    }
+
+    private int updateBoardAndGetCount(int[][] board, int[][] sum, int n, int m) {
         for (int y = 1; y < n; y++) {
             for (int x = 0; x < m; x++) {
                 sum[y][x] += sum[y - 1][x];
             }
         }
+
         for (int x = 1; x < m; x++) {
             for (int y = 0; y < n; y++) {
                 sum[y][x] += sum[y][x - 1];
             }
         }
+
         int answer = 0;
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 board[i][j] += sum[i][j];
-                if (board[i][j] > 0)
+                if (board[i][j] > 0) {
                     answer++;
+                }
             }
         }
+
         return answer;
     }
 
-    public static void main(String[] args) {
-        System.out.println(
-                solution(new int[][] { { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 } },
-                        new int[][] { { 1, 0, 0, 3, 4, 4 }, { 1, 2, 0, 2, 3, 2 }, { 2, 1, 0, 3, 1, 2 },
-                                { 1, 0, 1, 3, 3, 1 } }));
-    }
+    // @Test
+    // void 정답() {
+    //     int[][] b1 = { { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 } };
+    //     int[][] s1 = { { 1, 0, 0, 3, 4, 4 }, { 1, 2, 0, 2, 3, 2 }, { 2, 1, 0, 3, 1, 2 },
+    //             { 1, 0, 1, 3, 3, 1 } };
+    //     Assertions.assertEquals(10, solution(b1, s1));
+    //     int[][] b2 = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+    //     int[][] s2 = { { 1, 1, 1, 2, 2, 4 }, { 1, 0, 0, 1, 1, 2 }, { 2, 2, 0, 2, 0, 100 } };
+    //     Assertions.assertEquals(6, solution(b2, s2));
+    // }
 }
