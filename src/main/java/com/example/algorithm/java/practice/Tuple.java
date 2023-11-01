@@ -1,25 +1,43 @@
 package com.example.algorithm.java.practice;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Tuple {
-    public static int[] solution(String s) {
-        String[] temp = s.substring(2, s.length() - 2).split("},\\{");
-        ArrayList<String> result = new ArrayList<>();
-        Arrays.sort(temp, (s1, s2) -> s1.length() - s2.length());
-        for (int i = 0; i < temp.length; i++) {
-            for (String string : temp[i].split(",")) {
-                if (!result.contains(string))
-                    result.add(string);
+    public int[] solution(String s) {
+        String[] elements = extractElements(s);
+        List<Integer> resultList = new ArrayList<>();
+
+        Arrays.sort(elements, (s1, s2) -> s1.length() - s2.length());
+
+        for (String element : elements) {
+            String[] values = element.split(",");
+            for (String value : values) {
+                int intValue = Integer.parseInt(value);
+                if (!resultList.contains(intValue)) {
+                    resultList.add(intValue);
+                }
             }
         }
-        int[] answer = new int[result.size()];
-        for (int i = 0; i < result.size(); i++)
-            answer[i] = Integer.parseInt(result.get(i));
 
-        return answer;
+        return resultList.stream().mapToInt(Integer::intValue).toArray();
     }
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution("{{4,2,3},{3},{2,3,4,1},{2,3}}")));
+
+    private String[] extractElements(String s) {
+        String[] parts = s.substring(2, s.length() - 2).split("},\\{");
+        return parts;
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertArrayEquals(new int[] { 2, 1, 3, 4 },
+    //             solution("{{2},{2,1},{2,1,3},{2,1,3,4}}"));
+    //     Assertions.assertArrayEquals(new int[] { 2, 1, 3, 4 },
+    //             solution("{{1,2,3},{2,1},{1,2,4,3},{2}}"));
+    //     Assertions.assertArrayEquals(new int[] { 123 },
+    //             solution("{{123}}"));
+    //     Assertions.assertArrayEquals(new int[] { 3, 2, 4, 1, },
+    //             solution("{{4,2,3},{3},{2,3,4,1},{2,3}}"));
+    // }
 }
