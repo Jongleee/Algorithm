@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice;
+package com.example.algorithm.java.implement;
 
 public class UnspoiledBuilding {
     public int solution(int[][] board, int[][] skill) {

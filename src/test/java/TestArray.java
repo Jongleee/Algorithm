@@ -26,8 +26,7 @@ class TestArray {
     }
 
     private String[] extractElements(String s) {
-        String[] parts = s.substring(2, s.length() - 2).split("},\\{");
-        return parts;
+        return s.substring(2, s.length() - 2).split("},\\{");
     }
 
     @Test
