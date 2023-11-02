@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice;
+package com.example.algorithm.java.dynamicProgramming;
 
 public class TwinBuilding {
     public int solution(int n, int count) {
