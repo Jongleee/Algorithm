@@ -2,31 +2,39 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] sticker) {
-        int len = sticker.length;
+    public int solution(int[] a) {
+        int[] count = new int[a.length];
+        int answer = 0;
 
-        if (len == 1)
-            return sticker[0];
+        for (int num : a)
+            count[num]++;
 
-        int[] withFirst = new int[len];
-        int[] withoutFirst = new int[len];
+        for (int i = 0; i < a.length; i++) {
+            if (count[i] == 0)
+                continue;
 
-        withFirst[0] = sticker[0];
-        withFirst[1] = sticker[0];
-        withoutFirst[0] = 0;
-        withoutFirst[1] = sticker[1];
+            if (count[i] <= answer)
+                continue;
 
-        for (int i = 2; i < len; i++) {
-            withFirst[i] = Math.max(withFirst[i - 1], withFirst[i - 2] + sticker[i]);
-            withoutFirst[i] = Math.max(withoutFirst[i - 1], withoutFirst[i - 2] + sticker[i]);
+            int length = 0;
+            for (int j = 0; j < a.length - 1; j++) {
+                if (a[j] != i && a[j + 1] != i)
+                    continue;
+                if (a[j] == a[j + 1])
+                    continue;
+                length++;
+                j++;
+            }
+            answer = Math.max(length, answer);
         }
 
-        return Math.max(withFirst[len - 2], withoutFirst[len - 1]);
+        return answer * 2;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(36, solution(new int[] { 14, 6, 5, 11, 3, 9, 2, 10 }));
-        Assertions.assertEquals(8, solution(new int[] { 1, 3, 2, 5, 4 }));
+        Assertions.assertEquals(0, solution(new int[] { 0 }));
+        Assertions.assertEquals(4, solution(new int[] { 5, 2, 3, 3, 5, 3 }));
+        Assertions.assertEquals(8, solution(new int[] { 0, 3, 3, 0, 7, 2, 0, 2, 2, 0 }));
     }
 }

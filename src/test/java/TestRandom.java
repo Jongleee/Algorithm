@@ -23,8 +23,9 @@ public class TestRandom {
                                 .boxed()
                                 .toList();
                     else {
-                        numbers = random.ints(6,1, num + 1)
+                        numbers = random.ints(10,1, num + 1)
                                 .distinct()
+                                .limit(6)
                                 .sorted()
                                 .boxed()
                                 .toList();
