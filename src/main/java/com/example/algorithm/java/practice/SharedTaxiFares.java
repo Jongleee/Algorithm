@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class SharedTaxiFares {
-    static class Edge implements Comparable<Edge> {
+    class Edge implements Comparable<Edge> {
         int index;
         int cost;
 
@@ -20,11 +20,11 @@ public class SharedTaxiFares {
         }
     }
 
-    static final int MAX = 20000001;
-    static ArrayList<ArrayList<Edge>> graph;
+    private int max = 20000001;
+    ArrayList<ArrayList<Edge>> graph;
 
-    public static int solution(int n, int s, int a, int b, int[][] fares) {
-        int answer = MAX;
+    public int solution(int n, int s, int a, int b, int[][] fares) {
+        int answer = max;
 
         graph = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
@@ -36,24 +36,19 @@ public class SharedTaxiFares {
             graph.get(i[1]).add(new Edge(i[0], i[2]));
         }
 
-        int[] startA = new int[n + 1];
-        int[] startB = new int[n + 1];
-        int[] start = new int[n + 1];
-
-        Arrays.fill(startA, MAX);
-        Arrays.fill(startB, MAX);
-        Arrays.fill(start, MAX);
-
-        startA = dijkstra(a, startA);
-        startB = dijkstra(b, startB);
-        start = dijkstra(s, start);
+        int[] startA = dijkstra(a, n);
+        int[] startB = dijkstra(b, n);
+        int[] start = dijkstra(s, n);
 
         for (int i = 1; i <= n; i++)
             answer = Math.min(answer, startA[i] + startB[i] + start[i]);
         return answer;
     }
 
-    static int[] dijkstra(int start, int[] costs) {
+    int[] dijkstra(int start, int n) {
+        int[] costs = new int[n + 1];
+        Arrays.fill(costs, max);
+
         PriorityQueue<Edge> pq = new PriorityQueue<>();
         pq.offer(new Edge(start, 0));
         costs[start] = 0;
@@ -76,8 +71,16 @@ public class SharedTaxiFares {
         }
         return costs;
     }
-    public static void main(String[] args) {
-        System.out.println(solution(6, 4, 6, 2, new int[][] { { 4, 1, 10 }, { 3, 5, 24 }, { 5, 6, 2 }, { 3, 1, 41 },
-                { 5, 1, 24 }, { 4, 6, 50 }, { 2, 4, 66 }, { 2, 3, 22 }, { 1, 6, 25 } }));
-    }
+
+    // @Test
+    // void 정답() {
+    //     int[][] f1 = { { 4, 1, 10 }, { 3, 5, 24 }, { 5, 6, 2 }, { 3, 1, 41 },
+    //             { 5, 1, 24 }, { 4, 6, 50 }, { 2, 4, 66 }, { 2, 3, 22 }, { 1, 6, 25 } };
+    //     int[][] f2 = { { 5, 7, 9 }, { 4, 6, 4 }, { 3, 6, 1 }, { 3, 2, 3 }, { 2, 1, 6 } };
+    //     int[][] f3 = { { 2, 6, 6 }, { 6, 3, 7 }, { 4, 6, 7 }, { 6, 5, 11 }, { 2, 5, 12 }, { 5, 3, 20 }, { 2, 4, 8 },
+    //             { 4, 3, 9 } };
+    //     Assertions.assertEquals(82, solution(6, 4, 6, 2, f1));
+    //     Assertions.assertEquals(14, solution(7, 3, 4, 1, f2));
+    //     Assertions.assertEquals(18, solution(6, 4, 5, 6, f3));
+    // }
 }
