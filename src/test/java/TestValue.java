@@ -1,29 +1,28 @@
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] a) {
-        int answer = 0;
-        int leftMin = 1000000001;
-        int rightMin = 1000000001;
-        int n = a.length;
+    public int solution(int[][] scores) {
+        int[] standard = scores[0];
+        Arrays.sort(scores, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
 
-        for (int i = 0; i < n; i++) {
-            if (a[i] < leftMin) {
-                leftMin = a[i];
-                answer++;
-            }
-            if (a[n - i - 1] < rightMin) {
-                rightMin = a[n - i - 1];
-                answer++;
-            }
-            if (leftMin == rightMin) {
-                break;
-            }
-        }
+        int answer = 1;
+        int temp = 0;
+        int standardScore = standard[0] + standard[1];
 
-        if (leftMin == rightMin) {
-            answer--;
+        for (int[] score : scores) {
+            if (score[1] < temp) {
+                if (Arrays.equals(score, standard)) {
+                    return -1;
+                }
+            } else {
+                temp = Math.max(temp, score[1]);
+                if (score[0] + score[1] > standardScore) {
+                    answer++;
+                }
+            }
         }
 
         return answer;
@@ -31,9 +30,6 @@ class TestValue {
 
     @Test
     void 정답() {
-        int[] a1 = { 9, -1, -5 };
-        int[] a2 = { -16, 27, 65, -2, 58, -92, -71, -68, -61, -33 };
-        Assertions.assertEquals(3, solution(a1));
-        Assertions.assertEquals(6, solution(a2));
+        Assertions.assertEquals(4, solution(new int[][] { { 2, 2 }, { 1, 4 }, { 3, 2 }, { 3, 2 }, { 2, 1 } }));
     }
 }

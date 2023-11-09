@@ -3,9 +3,7 @@ package com.example.algorithm.java.practice;
 import java.util.Arrays;
 
 public class PerformanceAppraisal {
-
-    public static int solution(int[][] scores) {
-
+    public int solution(int[][] scores) {
         int[] standard = scores[0];
         Arrays.sort(scores, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
 
@@ -15,19 +13,22 @@ public class PerformanceAppraisal {
 
         for (int[] score : scores) {
             if (score[1] < temp) {
-                if (Arrays.equals(score, standard))
+                if (Arrays.equals(score, standard)) {
                     return -1;
+                }
             } else {
                 temp = Math.max(temp, score[1]);
-                if (score[0] + score[1] > standardScore)
+                if (score[0] + score[1] > standardScore) {
                     answer++;
+                }
             }
-
         }
+
         return answer;
     }
-    public static void main(String[] args) {
-        System.out.println(solution(new int [][]{{2,2},{1,4},{3,2},{3,2},{2,1}}));
-    }
-    //	4
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(4, solution(new int[][] { { 2, 2 }, { 1, 4 }, { 3, 2 }, { 3, 2 }, { 2, 1 } }));
+    // }
 }
