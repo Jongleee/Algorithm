@@ -1,16 +1,9 @@
 package com.example.algorithm.java.practice;
 
 public class PassengerHeaven {
-
-    static int mod = 20170805;
-
-    public static void main(String[] args) {
-        System.out.println(
-                solution(3, 6, new int[][] { { 0, 2, 0, 0, 0, 2 }, { 0, 0, 2, 0, 1, 0 }, { 1, 0, 0, 2, 2, 0 } }));
-    }
-
-    public static int solution(int m, int n, int[][] cityMap) {
+    public int solution(int m, int n, int[][] cityMap) {
         int[][][] dp = new int[m + 1][n + 1][2];
+        final int mod = 20170805;
         dp[0][0][0] = 1;
 
         for (int i = 0; i < m; i++) {
@@ -31,4 +24,12 @@ public class PassengerHeaven {
         }
         return (dp[m - 1][n - 1][0] + dp[m - 1][n - 1][1]) % mod;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[][] c1 = { { 0, 2, 0, 0, 0, 2 }, { 0, 0, 2, 0, 1, 0 }, { 1, 0, 0, 2, 2, 0 } };
+    //     Assertions.assertEquals(2, solution(3, 6, c1));
+    //     int[][] c2 = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+    //     Assertions.assertEquals(6, solution(3, 3, c2));
+    // }
 }
