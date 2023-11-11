@@ -1,36 +1,61 @@
+import java.util.Stack;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int m, int n, int[][] cityMap) {
-        int[][][] dp = new int[m + 1][n + 1][2];
-        final int mod = 20170805;
-        dp[0][0][0] = 1;
+    public int solution(String s) {
+        int answer = 0;
+        for (int i = 0; i < s.length(); i++) {
+            StringBuilder sb = new StringBuilder(s);
+            String substring = s.substring(0, i);
+            sb.delete(0, i);
+            sb.append(substring);
+            if (isCorrect(sb.toString())) {
+                answer += 1;
+            }
+        }
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                switch (cityMap[i][j]) {
-                    case 0:
-                        dp[i + 1][j][0] += (dp[i][j][0] + dp[i][j][1]) % mod;
-                        dp[i][j + 1][1] += (dp[i][j][0] + dp[i][j][1]) % mod;
+        return answer;
+    }
+
+    private boolean isCorrect(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (stack.isEmpty()) {
+                stack.push(c);
+            } else {
+                switch (c) {
+                    case ']':
+                        popCondition(stack, '[');
                         break;
-                    case 2:
-                        dp[i + 1][j][0] += dp[i][j][0] % mod;
-                        dp[i][j + 1][1] += dp[i][j][1] % mod;
+                    case '}':
+                        popCondition(stack, '{');
+                        break;
+                    case ')':
+                        popCondition(stack, '(');
                         break;
                     default:
-                        break;
+                        stack.push(c);
                 }
             }
         }
-        return (dp[m - 1][n - 1][0] + dp[m - 1][n - 1][1]) % mod;
+        return stack.isEmpty();
+    }
+
+    private void popCondition(Stack<Character> stack, char openingBracket) {
+        if (!stack.isEmpty() && stack.peek() == openingBracket) {
+            stack.pop();
+        } else {
+            stack.push(openingBracket == '(' ? ')' : (openingBracket == '{' ? '}' : ']'));
+        }
     }
 
     @Test
     void 정답() {
-        int[][] c1 = { { 0, 2, 0, 0, 0, 2 }, { 0, 0, 2, 0, 1, 0 }, { 1, 0, 0, 2, 2, 0 } };
-        Assertions.assertEquals(2, solution(3, 6, c1));
-        int[][] c2 = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
-        Assertions.assertEquals(6, solution(3, 3, c2));
+        Assertions.assertEquals(3, solution("[](){}"));
+        Assertions.assertEquals(2, solution("}]()[{"));
+        Assertions.assertEquals(0, solution("[)(]"));
+        Assertions.assertEquals(0, solution("}}}"));
     }
 }
