@@ -1,61 +1,30 @@
-import java.util.Stack;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(String s) {
+    public int solution(int[] a, int[] b) {
         int answer = 0;
-        for (int i = 0; i < s.length(); i++) {
-            StringBuilder sb = new StringBuilder(s);
-            String substring = s.substring(0, i);
-            sb.delete(0, i);
-            sb.append(substring);
-            if (isCorrect(sb.toString())) {
-                answer += 1;
+        Arrays.sort(a);
+        Arrays.sort(b);
+        int indexB = a.length - 1;
+        for (int i = a.length - 1; i >= 0; i--) {
+            if (a[i] < b[indexB]) {
+                answer++;
+                indexB--;
             }
         }
-
         return answer;
-    }
-
-    private boolean isCorrect(String s) {
-        Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (stack.isEmpty()) {
-                stack.push(c);
-            } else {
-                switch (c) {
-                    case ']':
-                        popCondition(stack, '[');
-                        break;
-                    case '}':
-                        popCondition(stack, '{');
-                        break;
-                    case ')':
-                        popCondition(stack, '(');
-                        break;
-                    default:
-                        stack.push(c);
-                }
-            }
-        }
-        return stack.isEmpty();
-    }
-
-    private void popCondition(Stack<Character> stack, char openingBracket) {
-        if (!stack.isEmpty() && stack.peek() == openingBracket) {
-            stack.pop();
-        } else {
-            stack.push(openingBracket == '(' ? ')' : (openingBracket == '{' ? '}' : ']'));
-        }
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(3, solution("[](){}"));
-        Assertions.assertEquals(2, solution("}]()[{"));
-        Assertions.assertEquals(0, solution("[)(]"));
-        Assertions.assertEquals(0, solution("}}}"));
+        int[] a1 = { 5, 1, 3, 7 };
+        int[] b1 = { 2, 2, 6, 8 };
+        int[] a2 = { 2, 2, 2, 2 };
+        int[] b2 = { 1, 1, 1, 1 };
+        Assertions.assertEquals(3, solution(a1, b1));
+        Assertions.assertEquals(0, solution(a2, b2));
     }
 }
