@@ -2,10 +2,20 @@ package com.example.algorithm.java.practice;
 
 public class NextBiggerNumber {
     public int solution(int n) {
-        int num=Integer.bitCount(n);
-        for (int i = n+1; i <= 1000000 ; i++) {
-            if (Integer.bitCount(i)==num) return i;
+        int targetBitCount = Integer.bitCount(n);
+
+        for (int i = n + 1; i <= 1000000; i++) {
+            if (Integer.bitCount(i) == targetBitCount) {
+                return i;
+            }
         }
-        return num;
+
+        return targetBitCount;
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(83, solution(78));
+    //     Assertions.assertEquals(23, solution(15));
+    // }
 }
