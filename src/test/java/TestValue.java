@@ -1,56 +1,67 @@
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public String solution(int n, int m, int x, int y, int r, int c, int k) {
-        int distance = Math.abs(x - r) + Math.abs(c - y);
-        k -= distance;
+    private int[] visit;
+    private long[] temp;
+    private ArrayList<Integer>[] adj;
+    private long answer;
 
-        if (k < 0 || k % 2 != 0 || m < y) {
-            return "impossible";
+    public long solution(int[] a, int[][] edges) {
+        int sum = 0;
+        int n = a.length;
+        visit = new int[n];
+        adj = new ArrayList[n];
+        temp = new long[n];
+        answer = 0;
+
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
+            sum += a[i];
+            temp[i] = a[i];
         }
 
-        return calculateMovements(n, m, x, r, y, c, k);
+        if (sum != 0) {
+            return -1;
+        }
+
+        buildGraph(edges);
+
+        dfs(0);
+
+        return answer;
     }
 
-    private String calculateMovements(int n, int m, int x, int r, int y, int c, int k) {
-        int[] movements = new int[4];
-        StringBuilder moves = new StringBuilder();
-        if (x - r > 0) {
-            movements[1] = x - r;
-        } else {
-            movements[0] = r - x;
+    private void buildGraph(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adj[u].add(v);
+            adj[v].add(u);
         }
+    }
 
-        if (y - c > 0) {
-            movements[2] = y - c;
-        } else {
-            movements[3] = c - y;
+    private long dfs(int i) {
+        visit[i] = 1;
+        for (int j = 0; j < adj[i].size(); j++) {
+            int next = adj[i].get(j);
+            if (visit[next] == 0) {
+                temp[i] += dfs(next);
+            }
         }
-        int down = movements[0];
-        moves.append("d".repeat(down));
-        down = Math.min(k / 2, n - (x + down));
-        moves.append("d".repeat(down));
-        int up = movements[1] + down;
-        k -= 2 * down;
-
-        int left = movements[2];
-        moves.append("l".repeat(left));
-        left = Math.min(k / 2, y - left - 1);
-        moves.append("l".repeat(left));
-        int right = movements[3] + left;
-        k -= 2 * left;
-
-        moves.append("rl".repeat(k / 2));
-        moves.append("r".repeat(right));
-        moves.append("u".repeat(up));
-
-        return moves.toString();
+        answer += Math.abs(temp[i]);
+        return temp[i];
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals("dllrl", solution(3, 4, 2, 3, 3, 1, 5));
-        Assertions.assertEquals("dr", solution(2, 2, 1, 1, 2, 2, 2));
+        int[] a1 = { -5, 0, 2, 1, 2 };
+        int[][] e1 = { { 0, 1 }, { 3, 4 }, { 2, 3 }, { 0, 3 } };
+        int[] a2 = { 0, 1, 0 };
+        int[][] e2 = { { 0, 1 }, { 1, 2 } };
+        Assertions.assertEquals(9, solution(a1, e1));
+        Assertions.assertEquals(-1, solution(a2, e2));
     }
 }
