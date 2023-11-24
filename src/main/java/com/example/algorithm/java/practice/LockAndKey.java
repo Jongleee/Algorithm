@@ -1,27 +1,15 @@
 package com.example.algorithm.java.practice;
 
 public class LockAndKey {
-    public static void main(String[] args) {
-        System.out.println(
-                solution(new int[][] { { 0, 0, 0 }, { 1, 0, 0 }, { 0, 1, 1 } },
-                        new int[][] { { 1, 1, 1 }, { 1, 1, 0 }, { 1, 0, 1 } }));
-    }
-
-    public static boolean solution(int[][] key, int[][] lock) {
+    public boolean solution(int[][] key, int[][] lock) {
         int m = key.length;
         int n = lock.length;
 
         int len = n + m * 2 - 2;
-        int[][] map = new int[len][len];
-
-        for (int i = m - 1; i < m + n - 1; i++) {
-            for (int j = m - 1; j < m + n - 1; j++) {
-                map[i][j] = lock[i - (m - 1)][j - (m - 1)];
-            }
-        }
+        int[][] extendedMap = extendMap(lock, m, n, len);
 
         for (int i = 0; i < 4; i++) {
-            if (check(map, key, n)) {
+            if (check(extendedMap, key, n)) {
                 return true;
             }
             rotate(key);
@@ -30,47 +18,57 @@ public class LockAndKey {
         return false;
     }
 
-    public static boolean check(int[][] map, int[][] key, int lockLen) {
+    private int[][] extendMap(int[][] lock, int m, int n, int len) {
+        int[][] extendedMap = new int[len][len];
+
+        for (int i = m - 1; i < m + n - 1; i++) {
+            for (int j = m - 1; j < m + n - 1; j++) {
+                extendedMap[i][j] = lock[i - (m - 1)][j - (m - 1)];
+            }
+        }
+
+        return extendedMap;
+    }
+
+    private boolean check(int[][] map, int[][] key, int lockLen) {
         int keyLen = key.length;
         int mapLen = map.length;
+
         for (int i = 0; i < mapLen - keyLen + 1; i++) {
             for (int j = 0; j < mapLen - keyLen + 1; j++) {
 
-                for (int k = 0; k < keyLen; k++) {
-                    for (int l = 0; l < keyLen; l++) {
-                        map[i + k][j + l] += key[k][l];
-                    }
-                }
+                addKey(map, key, keyLen, i, j);
 
-                boolean flag = true;
-                flag = checkKey(map, lockLen, keyLen, flag);
-
-                if (flag)
+                if (checkKey(map, keyLen, lockLen))
                     return true;
 
                 removeKey(map, key, keyLen, i, j);
-
             }
         }
 
         return false;
     }
 
-    private static boolean checkKey(int[][] map, int lockLen, int keyLen, boolean flag) {
+    private void addKey(int[][] map, int[][] key, int keyLen, int i, int j) {
+        for (int k = 0; k < keyLen; k++) {
+            for (int l = 0; l < keyLen; l++) {
+                map[i + k][j + l] += key[k][l];
+            }
+        }
+    }
+
+    private boolean checkKey(int[][] map, int keyLen, int lockLen) {
         for (int k = keyLen - 1; k < keyLen + lockLen - 1; k++) {
             for (int l = keyLen - 1; l < keyLen + lockLen - 1; l++) {
                 if (map[k][l] != 1) {
-                    flag = false;
-                    break;
+                    return false;
                 }
             }
-            if (!flag)
-                break;
         }
-        return flag;
+        return true;
     }
 
-    private static void removeKey(int[][] map, int[][] key, int keyLen, int i, int j) {
+    private void removeKey(int[][] map, int[][] key, int keyLen, int i, int j) {
         for (int k = 0; k < keyLen; k++) {
             for (int l = 0; l < keyLen; l++) {
                 map[i + k][j + l] -= key[k][l];
@@ -78,7 +76,7 @@ public class LockAndKey {
         }
     }
 
-    public static void rotate(int[][] key) {
+    private void rotate(int[][] key) {
         int len = key.length;
         int[][] temp = new int[len][len];
 
@@ -93,6 +91,12 @@ public class LockAndKey {
                 key[i][j] = temp[i][j];
             }
         }
-
     }
+
+    // @Test
+    // void 정답() {
+    //     int[][] key = { { 0, 0, 0 }, { 1, 0, 0 }, { 0, 1, 1 } };
+    //     int[][] lock = { { 1, 1, 1 }, { 1, 1, 0 }, { 1, 0, 1 } };
+    //     Assertions.assertEquals(true, solution(key, lock));
+    // }
 }
