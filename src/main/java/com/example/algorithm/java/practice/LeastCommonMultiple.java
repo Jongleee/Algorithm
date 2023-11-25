@@ -4,11 +4,13 @@ public class LeastCommonMultiple {
     public int solution(int[] arr) {
         int answer = arr[0];
         for (int i = 1; i < arr.length; i++) {
-            int gcd = gcd(answer, arr[i]);
-            answer = answer * arr[i] / gcd;
+            answer = lcm(answer, arr[i]);
         }
-
         return answer;
+    }
+
+    public int lcm(int x, int y) {
+        return x * y / gcd(x, y);
     }
 
     public int gcd(int x, int y) {
@@ -21,4 +23,12 @@ public class LeastCommonMultiple {
         }
         return b;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] arr1 = { 2,6,8,14 };
+    //     int[] arr2 = { 1,2,3};
+    //     Assertions.assertEquals(168, solution(arr1));
+    //     Assertions.assertEquals(6, solution(arr2));
+    // }
 }
