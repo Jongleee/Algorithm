@@ -1,35 +1,27 @@
 package com.example.algorithm.java.practice;
 
-import java.util.Arrays;
-
 public class InstallColumnBeam {
-    public static void main(String[] args) {
-        System.out.println(
-                Arrays.deepToString(solution(5, new int[][] { { 1, 0, 0, 1 }, { 1, 1, 1, 1 }, { 2, 1, 0, 1 },
-                        { 2, 2, 1, 1 }, { 5, 0, 0, 1 }, { 5, 1, 0, 1 }, { 4, 2, 1, 1 }, { 3, 2, 1, 1 } })));
-    }
+    private boolean[][] pillar;
+    private boolean[][] bar;
 
-    static boolean[][] pillar;
-    static boolean[][] bar;
-
-    public static int[][] solution(int n, int[][] buildFrame) {
+    public int[][] solution(int n, int[][] buildFrame) {
         pillar = new boolean[n + 1][n + 1];
         bar = new boolean[n + 1][n + 1];
 
         int count = 0;
-        for (int i = 0; i < buildFrame.length; i++) {
-            int x = buildFrame[i][0];
-            int y = buildFrame[i][1];
-            int type = buildFrame[i][2];
-            int action = buildFrame[i][3];
+        for (int[] build : buildFrame) {
+            int x = build[0];
+            int y = build[1];
+            int type = build[2];
+            int action = build[3];
 
             switch (type) {
                 case 0:
-                    count = pillarCount(n, count, x, y, action);
+                    count = processPillar(n, count, x, y, action);
                     break;
 
                 case 1:
-                    count = barCount(n, count, x, y, action);
+                    count = processBar(n, count, x, y, action);
                     break;
 
                 default:
@@ -37,32 +29,16 @@ public class InstallColumnBeam {
             }
         }
 
-        int[][] result = new int[count][3];
-        int idx = 0;
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= n; j++) {
-                if (pillar[i][j]) {
-                    result[idx][0] = i;
-                    result[idx][1] = j;
-                    result[idx++][2] = 0;
-                }
-                if (bar[i][j]) {
-                    result[idx][0] = i;
-                    result[idx][1] = j;
-                    result[idx++][2] = 1;
-                }
-            }
-        }
-        return result;
+        return getResultArray(count);
     }
 
-    private static int barCount(int n, int count, int x, int y, int action) {
+    private int processBar(int n, int count, int x, int y, int action) {
         if (action == 1) {
-            if (checkBar(x, y)) { 
+            if (checkBar(x, y)) {
                 bar[x][y] = true;
                 count++;
             }
-        } else { 
+        } else {
             bar[x][y] = false;
             if (!canDelete(n))
                 bar[x][y] = true;
@@ -72,7 +48,7 @@ public class InstallColumnBeam {
         return count;
     }
 
-    private static int pillarCount(int n, int count, int x, int y, int action) {
+    private int processPillar(int n, int count, int x, int y, int action) {
         if (action == 1) {
             if (checkPillar(x, y)) {
                 pillar[x][y] = true;
@@ -88,11 +64,33 @@ public class InstallColumnBeam {
         return count;
     }
 
-    public static boolean canDelete(int n) {
+    private int[][] getResultArray(int count) {
+        int[][] result = new int[count][3];
+        int idx = 0;
+
+        for (int i = 0; i < pillar.length; i++) {
+            for (int j = 0; j < pillar[i].length; j++) {
+                if (pillar[i][j]) {
+                    result[idx][0] = i;
+                    result[idx][1] = j;
+                    result[idx++][2] = 0;
+                }
+                if (bar[i][j]) {
+                    result[idx][0] = i;
+                    result[idx][1] = j;
+                    result[idx++][2] = 1;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private boolean canDelete(int n) {
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= n; j++) {
                 if (pillar[i][j] && !checkPillar(i, j))
-                    return false; 
+                    return false;
                 if (bar[i][j] && !checkBar(i, j))
                     return false;
             }
@@ -100,11 +98,33 @@ public class InstallColumnBeam {
         return true;
     }
 
-    public static boolean checkPillar(int x, int y) {
-        return (y == 0)||(y > 0 && pillar[x][y - 1])||(x > 0 && bar[x - 1][y] || bar[x][y]);
+    private boolean checkPillar(int x, int y) {
+        return (y == 0) || (y > 0 && pillar[x][y - 1]) || (x > 0 && bar[x - 1][y] || bar[x][y]);
     }
 
-    public static boolean checkBar(int x, int y) {
-        return (y > 0 && pillar[x][y - 1] || pillar[x + 1][y - 1])||(x > 0 && bar[x - 1][y] && bar[x + 1][y]);
+    private boolean checkBar(int x, int y) {
+        return (y > 0 && pillar[x][y - 1] || pillar[x + 1][y - 1]) || (x > 0 && bar[x - 1][y] && bar[x + 1][y]);
     }
+
+    // @Test
+    // void 정답() {
+    //     int[][] b1 = {
+    //             { 1, 0, 0, 1 }, { 1, 1, 1, 1 }, { 2, 1, 0, 1 }, { 2, 2, 1, 1 },
+    //             { 5, 0, 0, 1 }, { 5, 1, 0, 1 }, { 4, 2, 1, 1 }, { 3, 2, 1, 1 }
+    //     };
+    //     int[][] r1 = {
+    //             { 1, 0, 0 }, { 1, 1, 1 }, { 2, 1, 0 }, { 2, 2, 1 },
+    //             { 3, 2, 1 }, { 4, 2, 1 }, { 5, 0, 0 }, { 5, 1, 0 }
+    //     };
+    //     int[][] b2 = {
+    //             { 0, 0, 0, 1 }, { 2, 0, 0, 1 }, { 4, 0, 0, 1 }, { 0, 1, 1, 1 },
+    //             { 1, 1, 1, 1 }, { 2, 1, 1, 1 }, { 3, 1, 1, 1 }, { 2, 0, 0, 0 }, { 1, 1, 1, 0 }, { 2, 2, 0, 1 }
+    //     };
+    //     int[][] r2 = {
+    //             { 0, 0, 0 }, { 0, 1, 1 }, { 1, 1, 1 },
+    //             { 2, 1, 1 }, { 3, 1, 1 }, { 4, 0, 0 }
+    //     };
+    //     Assertions.assertArrayEquals(r1, solution(5,b1));
+    //     Assertions.assertArrayEquals(r2, solution(5,b2));
+    // }
 }
