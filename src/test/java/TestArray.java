@@ -1,53 +1,131 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(String[] gems) {
-        Map<String, Integer> gemCount = new HashMap<>();
-        Set<String> uniqueGems = new HashSet<>();
-        Queue<String> gemQueue = new LinkedList<>();
+    private boolean[][] pillar;
+    private boolean[][] bar;
 
-        int minLength = gems.length + 1;
-        int start = 0;
-        int startIndex = 0;
+    public int[][] solution(int n, int[][] buildFrame) {
+        pillar = new boolean[n + 1][n + 1];
+        bar = new boolean[n + 1][n + 1];
 
-        uniqueGems.addAll(Arrays.asList(gems));
+        int count = 0;
+        for (int[] build : buildFrame) {
+            int x = build[0];
+            int y = build[1];
+            int type = build[2];
+            int action = build[3];
 
-        for (int i = 0; i < gems.length; i++) {
-            gemCount.put(gems[i], gemCount.getOrDefault(gems[i], 0) + 1);
-            gemQueue.add(gems[i]);
+            switch (type) {
+                case 0:
+                    count = processPillar(n, count, x, y, action);
+                    break;
 
-            while (gemCount.get(gemQueue.peek()) > 1) {
-                gemCount.put(gemQueue.peek(), gemCount.get(gemQueue.poll()) - 1);
-                startIndex++;
-            }
+                case 1:
+                    count = processBar(n, count, x, y, action);
+                    break;
 
-            if (gemCount.size() == uniqueGems.size() && minLength > (i - startIndex)) {
-                minLength = i - startIndex;
-                start = startIndex + 1;
+                default:
+                    break;
             }
         }
 
-        return new int[] { start, start + minLength };
+        return getResultArray(count);
+    }
+
+    private int processBar(int n, int count, int x, int y, int action) {
+        if (action == 1) {
+            if (checkBar(x, y)) {
+                bar[x][y] = true;
+                count++;
+            }
+        } else {
+            bar[x][y] = false;
+            if (!canDelete(n))
+                bar[x][y] = true;
+            else
+                count--;
+        }
+        return count;
+    }
+
+    private int processPillar(int n, int count, int x, int y, int action) {
+        if (action == 1) {
+            if (checkPillar(x, y)) {
+                pillar[x][y] = true;
+                count++;
+            }
+        } else {
+            pillar[x][y] = false;
+            if (!canDelete(n))
+                pillar[x][y] = true;
+            else
+                count--;
+        }
+        return count;
+    }
+
+    private int[][] getResultArray(int count) {
+        int[][] result = new int[count][3];
+        int idx = 0;
+
+        for (int i = 0; i < pillar.length; i++) {
+            for (int j = 0; j < pillar[i].length; j++) {
+                if (pillar[i][j]) {
+                    result[idx][0] = i;
+                    result[idx][1] = j;
+                    result[idx++][2] = 0;
+                }
+                if (bar[i][j]) {
+                    result[idx][0] = i;
+                    result[idx][1] = j;
+                    result[idx++][2] = 1;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private boolean canDelete(int n) {
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (pillar[i][j] && !checkPillar(i, j))
+                    return false;
+                if (bar[i][j] && !checkBar(i, j))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkPillar(int x, int y) {
+        return (y == 0) || (y > 0 && pillar[x][y - 1]) || (x > 0 && bar[x - 1][y] || bar[x][y]);
+    }
+
+    private boolean checkBar(int x, int y) {
+        return (y > 0 && pillar[x][y - 1] || pillar[x + 1][y - 1]) || (x > 0 && bar[x - 1][y] && bar[x + 1][y]);
     }
 
     @Test
     void 정답() {
-        String[] g1 = { "DIA", "RUBY", "RUBY", "DIA", "DIA", "EMERALD", "SAPPHIRE", "DIA" };
-        String[] g2 = { "AA", "AB", "AC", "AA", "AC" };
-        String[] g3 = { "XYZ", "XYZ", "XYZ" };
-        String[] g4 = { "ZZZ", "YYY", "NNNN", "YYY", "BBB" };
-        Assertions.assertArrayEquals(new int[] { 3, 7 }, solution(g1));
-        Assertions.assertArrayEquals(new int[] { 1, 3 }, solution(g2));
-        Assertions.assertArrayEquals(new int[] { 1, 1 }, solution(g3));
-        Assertions.assertArrayEquals(new int[] { 1, 5 }, solution(g4));
+        int[][] b1 = {
+                { 1, 0, 0, 1 }, { 1, 1, 1, 1 }, { 2, 1, 0, 1 }, { 2, 2, 1, 1 },
+                { 5, 0, 0, 1 }, { 5, 1, 0, 1 }, { 4, 2, 1, 1 }, { 3, 2, 1, 1 }
+        };
+        int[][] r1 = {
+                { 1, 0, 0 }, { 1, 1, 1 }, { 2, 1, 0 }, { 2, 2, 1 },
+                { 3, 2, 1 }, { 4, 2, 1 }, { 5, 0, 0 }, { 5, 1, 0 }
+        };
+        int[][] b2 = {
+                { 0, 0, 0, 1 }, { 2, 0, 0, 1 }, { 4, 0, 0, 1 }, { 0, 1, 1, 1 },
+                { 1, 1, 1, 1 }, { 2, 1, 1, 1 }, { 3, 1, 1, 1 }, { 2, 0, 0, 0 }, { 1, 1, 1, 0 }, { 2, 2, 0, 1 }
+        };
+        int[][] r2 = {
+                { 0, 0, 0 }, { 0, 1, 1 }, { 1, 1, 1 },
+                { 2, 1, 1 }, { 3, 1, 1 }, { 4, 0, 0 }
+        };
+        Assertions.assertArrayEquals(r1, solution(5,b1));
+        Assertions.assertArrayEquals(r2, solution(5,b2));
     }
 }
