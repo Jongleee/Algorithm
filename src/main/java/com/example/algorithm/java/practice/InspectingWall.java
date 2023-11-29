@@ -1,15 +1,12 @@
 package com.example.algorithm.java.practice;
 
 public class InspectingWall {
-    public static void main(String[] args) {
-        System.out.println(solution(12, new int[] { 1, 5, 6, 10 }, new int[] { 1, 2, 3, 4 }));
-    }
+    private int ans;
+    private int[] spreadWeak;
+    private int weakCnt;
 
-    static int ans = -1;
-    static int[] spreadWeak;
-    static int weakCnt;
-
-    public static int solution(int n, int[] weak, int[] dist) {
+    public int solution(int n, int[] weak, int[] dist) {
+        ans = -1;
         weakCnt = weak.length;
         spreadWeak = spreadPoint(n, weak);
 
@@ -20,7 +17,7 @@ public class InspectingWall {
         return ans;
     }
 
-    private static void perm(int depth, int cnt, int[] dist, boolean[] visit, int[] res) {
+    private void perm(int depth, int cnt, int[] dist, boolean[] visit, int[] res) {
         if (ans != -1) {
             return;
         }
@@ -40,7 +37,7 @@ public class InspectingWall {
         }
     }
 
-    private static void check(int[] res) {
+    private void check(int[] res) {
         outer: for (int i = 0; i < weakCnt; i++) {
             int start = i;
             int f = 0;
@@ -58,16 +55,23 @@ public class InspectingWall {
         }
     }
 
-    private static int[] spreadPoint(int n, int[] weak) {
+    private int[] spreadPoint(int n, int[] weak) {
         int[] spread = new int[weak.length * 2 - 1];
-        for (int i = 0; i < weak.length; i++) {
-            if (i <= weak.length)
-                spread[i] = weak[i];
-        }
+        System.arraycopy(weak, 0, spread, 0, weak.length);
         for (int i = 0; i < weak.length - 1; i++) {
             spread[i + weak.length] = weak[i] + n;
         }
 
         return spread;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] w1 = { 1, 5, 6, 10 };
+    //     int[] d1 = { 1, 2, 3, 4 };
+    //     int[] w2 = { 1, 3, 4, 9, 10 };
+    //     int[] d2 = { 3, 5, 7 };
+    //     Assertions.assertEquals(2, solution(12, w1, d1));
+    //     Assertions.assertEquals(1, solution(12, w2, d2));
+    // }
 }
