@@ -2,77 +2,78 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    private int ans;
-    private int[] spreadWeak;
-    private int weakCnt;
+    public String solution(String playTime, String advTime, String[] logs) {
+        int playTimeSeconds = timeToInt(playTime);
+        int advTimeSeconds = timeToInt(advTime);
 
-    public int solution(int n, int[] weak, int[] dist) {
-        ans = -1;
-        weakCnt = weak.length;
-        spreadWeak = spreadPoint(n, weak);
+        int[] accumulatedTime = new int[playTimeSeconds + 1];
 
-        for (int i = 1; i <= dist.length; i++) {
-            perm(0, i, dist, new boolean[dist.length], new int[i]);
-        }
-
-        return ans;
-    }
-
-    private void perm(int depth, int cnt, int[] dist, boolean[] visit, int[] res) {
-        if (ans != -1) {
-            return;
-        }
-        if (depth == cnt) {
-            check(res);
-            return;
-        }
-
-        for (int i = 0; i < dist.length; i++) {
-            if (visit[i]) {
-                continue;
+        for (String log : logs) {
+            String[] l = log.split("-");
+            int start = timeToInt(l[0]);
+            int end = timeToInt(l[1]);
+            for (int i = start; i < end; i++) {
+                accumulatedTime[i]++;
             }
-            res[depth] = dist[i];
-            visit[i] = true;
-            perm(depth + 1, cnt, dist, visit, res);
-            visit[i] = false;
         }
+
+        int optimalStartTime = findOptimalStartTime(accumulatedTime, advTimeSeconds);
+
+        return timeToString(optimalStartTime);
     }
 
-    private void check(int[] res) {
-        outer: for (int i = 0; i < weakCnt; i++) {
-            int start = i;
-            int f = 0;
-            for (int j = i; j < i + weakCnt; j++) {
-                if (spreadWeak[j] - spreadWeak[start] > res[f]) {
-                    start = j;
-                    f++;
-                }
-                if (f == res.length) {
-                    continue outer;
-                }
+    private int timeToInt(String time) {
+        String[] times = time.split(":");
+        int toSec = 3600;
+        int totalTime = 0;
+
+        for (String t : times) {
+            int num = Integer.parseInt(t);
+            totalTime += num * toSec;
+            toSec /= 60;
+        }
+
+        return totalTime;
+    }
+
+    private String timeToString(int time) {
+        int hour = time / 3600;
+        int minute = (time % 3600) / 60;
+        int second = time % 60;
+
+        return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
+
+    private int findOptimalStartTime(int[] accumulatedTime, int advTimeSeconds) {
+        long maxSum = 0;
+        long sum = 0;
+        int optimalStartTime = 0;
+
+        for (int i = 0; i < advTimeSeconds; i++) {
+            sum += accumulatedTime[i];
+        }
+        maxSum = sum;
+
+        for (int i = advTimeSeconds; i < accumulatedTime.length; i++) {
+            sum += accumulatedTime[i] - accumulatedTime[i - advTimeSeconds];
+
+            if (sum > maxSum) {
+                maxSum = sum;
+                optimalStartTime = i - advTimeSeconds + 1;
             }
-            ans = res.length;
-            return;
-        }
-    }
-
-    private int[] spreadPoint(int n, int[] weak) {
-        int[] spread = new int[weak.length * 2 - 1];
-        System.arraycopy(weak, 0, spread, 0, weak.length);
-        for (int i = 0; i < weak.length - 1; i++) {
-            spread[i + weak.length] = weak[i] + n;
         }
 
-        return spread;
+        return optimalStartTime;
     }
 
     @Test
     void 정답() {
-        int[] w1 = { 1, 5, 6, 10 };
-        int[] d1 = { 1, 2, 3, 4 };
-        int[] w2 = { 1, 3, 4, 9, 10 };
-        int[] d2 = { 3, 5, 7 };
-        Assertions.assertEquals(2, solution(12, w1, d1));
-        Assertions.assertEquals(1, solution(12, w2, d2));
+        String[] l1 = { "01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29",
+                "01:37:44-02:02:30" };
+        String[] l2 = { "69:59:59-89:59:59", "01:00:00-21:00:00", "79:59:59-99:59:59", "11:00:00-31:00:00" };
+        String[] l3 = { "15:36:51-38:21:49", "10:14:18-15:36:51", "38:21:49-42:51:45" };
+        Assertions.assertEquals("01:30:59", solution("02:03:55", "00:14:15", l1));
+        Assertions.assertEquals("01:00:00", solution("99:59:59", "25:00:00", l2));
+        Assertions.assertEquals("00:00:00", solution("50:00:00", "50:00:00", l3));
     }
 }
