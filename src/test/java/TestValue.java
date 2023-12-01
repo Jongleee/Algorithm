@@ -1,79 +1,97 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public String solution(String playTime, String advTime, String[] logs) {
-        int playTimeSeconds = timeToInt(playTime);
-        int advTimeSeconds = timeToInt(advTime);
+    private int[] scores;
+    private int[] externalCnt;
+    private Map<String, List<Integer>> externalUrl;
+    private Map<Integer, String> url;
 
-        int[] accumulatedTime = new int[playTimeSeconds + 1];
+    public int solution(String word, String[] pages) {
+        initializeDataStructures(pages.length);
+        word = word.toLowerCase();
 
-        for (String log : logs) {
-            String[] l = log.split("-");
-            int start = timeToInt(l[0]);
-            int end = timeToInt(l[1]);
-            for (int i = start; i < end; i++) {
-                accumulatedTime[i]++;
+        for (int i = 0; i < pages.length; i++) {
+            String page = pages[i].toLowerCase();
+            setUrl(page, word, i);
+        }
+
+        return calculatePageRank();
+    }
+
+    private void initializeDataStructures(int size) {
+        scores = new int[size];
+        externalCnt = new int[size];
+        externalUrl = new HashMap<>();
+        url = new HashMap<>();
+    }
+
+    private void setUrl(String page, String word, int index) {
+        String urlPattern = "<meta property=\"og:url\" content=\"";
+        int urlStart = page.indexOf(urlPattern) + urlPattern.length();
+        int urlEnd = page.indexOf("\"/>", urlStart);
+        String currentUrl = page.substring(urlStart, urlEnd);
+        url.put(index, currentUrl);
+
+        String[] aHerf = page.split("<a href=\"");
+        for (int a = 1; a < aHerf.length; a++) {
+            String linkedUrl = aHerf[a].substring(0, aHerf[a].indexOf("\""));
+            externalUrl.computeIfAbsent(linkedUrl, k -> new ArrayList<>()).add(index);
+        }
+
+        externalCnt[index] = aHerf.length - 1;
+
+        page = page.replaceAll("[^a-zA-Z]", " ");
+        scores[index] = countWord(page.split(" "), word);
+    }
+
+    private int countWord(String[] words, String word) {
+        int cnt = 0;
+        for (String w : words) {
+            if (w.equals(word)) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    private int calculatePageRank() {
+        int answer = 0;
+        double maxScore = 0;
+
+        for (int i = 0; i < scores.length; i++) {
+            double scoreNow = scores[i];
+
+            if (externalUrl.containsKey(url.get(i))) {
+                for (int extIdx : externalUrl.get(url.get(i))) {
+                    scoreNow += (double) scores[extIdx] / (double) externalCnt[extIdx];
+                }
+            }
+
+            if (maxScore < scoreNow) {
+                answer = i;
+                maxScore = scoreNow;
             }
         }
 
-        int optimalStartTime = findOptimalStartTime(accumulatedTime, advTimeSeconds);
-
-        return timeToString(optimalStartTime);
-    }
-
-    private int timeToInt(String time) {
-        String[] times = time.split(":");
-        int toSec = 3600;
-        int totalTime = 0;
-
-        for (String t : times) {
-            int num = Integer.parseInt(t);
-            totalTime += num * toSec;
-            toSec /= 60;
-        }
-
-        return totalTime;
-    }
-
-    private String timeToString(int time) {
-        int hour = time / 3600;
-        int minute = (time % 3600) / 60;
-        int second = time % 60;
-
-        return String.format("%02d:%02d:%02d", hour, minute, second);
-    }
-
-    private int findOptimalStartTime(int[] accumulatedTime, int advTimeSeconds) {
-        long maxSum = 0;
-        long sum = 0;
-        int optimalStartTime = 0;
-
-        for (int i = 0; i < advTimeSeconds; i++) {
-            sum += accumulatedTime[i];
-        }
-        maxSum = sum;
-
-        for (int i = advTimeSeconds; i < accumulatedTime.length; i++) {
-            sum += accumulatedTime[i] - accumulatedTime[i - advTimeSeconds];
-
-            if (sum > maxSum) {
-                maxSum = sum;
-                optimalStartTime = i - advTimeSeconds + 1;
-            }
-        }
-
-        return optimalStartTime;
+        return answer;
     }
 
     @Test
     void 정답() {
-        String[] l1 = { "01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29",
-                "01:37:44-02:02:30" };
-        String[] l2 = { "69:59:59-89:59:59", "01:00:00-21:00:00", "79:59:59-99:59:59", "11:00:00-31:00:00" };
-        String[] l3 = { "15:36:51-38:21:49", "10:14:18-15:36:51", "38:21:49-42:51:45" };
-        Assertions.assertEquals("01:30:59", solution("02:03:55", "00:14:15", l1));
-        Assertions.assertEquals("01:00:00", solution("99:59:59", "25:00:00", l2));
-        Assertions.assertEquals("00:00:00", solution("50:00:00", "50:00:00", l3));
+        String[] p1 = {
+                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://a.com\"/>\n</head>  \n<body>\nBlind Lorem Blind ipsum dolor Blind test sit amet, consectetur adipiscing elit. \n<a href=\"https://b.com\"> Link to b </a>\n</body>\n</html>",
+                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://b.com\"/>\n</head>  \n<body>\nSuspendisse potenti. Vivamus venenatis tellus non turpis bibendum, \n<a href=\"https://a.com\"> Link to a </a>\nblind sed congue urna varius. Suspendisse feugiat nisl ligula, quis malesuada felis hendrerit ut.\n<a href=\"https://c.com\"> Link to c </a>\n</body>\n</html>",
+                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://c.com\"/>\n</head>  \n<body>\nUt condimentum urna at felis sodales rutrum. Sed dapibus cursus diam, non interdum nulla tempor nec. Phasellus rutrum enim at orci consectetu blind\n<a href=\"https://a.com\"> Link to a </a>\n</body>\n</html>" };
+        String[] p2 = {
+                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://careers.kakao.com/interview/list\"/>\n</head>  \n<body>\n<a href=\"https://programmers.co.kr/learn/courses/4673\"></a>#!MuziMuzi!)jayg07con&&\n\n</body>\n</html>",
+                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://www.kakaocorp.com\"/>\n</head>  \n<body>\ncon%\tmuzI92apeach&2<a href=\"https://hashcode.co.kr/tos\"></a>\n\n\t^\n</body>\n</html>" };
+        Assertions.assertEquals(0, solution("blind", p1));
+        Assertions.assertEquals(1, solution("Muzi", p2));
     }
 }
