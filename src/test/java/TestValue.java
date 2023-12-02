@@ -1,97 +1,97 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    private int[] scores;
-    private int[] externalCnt;
-    private Map<String, List<Integer>> externalUrl;
-    private Map<Integer, String> url;
+    static class Node {
+        int pre;
+        int cur;
+        int nxt;
 
-    public int solution(String word, String[] pages) {
-        initializeDataStructures(pages.length);
-        word = word.toLowerCase();
-
-        for (int i = 0; i < pages.length; i++) {
-            String page = pages[i].toLowerCase();
-            setUrl(page, word, i);
+        public Node(int pre, int cur, int nxt) {
+            this.pre = pre;
+            this.cur = cur;
+            this.nxt = nxt;
         }
-
-        return calculatePageRank();
     }
 
-    private void initializeDataStructures(int size) {
-        scores = new int[size];
-        externalCnt = new int[size];
-        externalUrl = new HashMap<>();
-        url = new HashMap<>();
-    }
+    public String solution(int n, int k, String[] cmd) {
+        int[] pre = new int[n];
+        int[] next = new int[n];
+        initializeLinkedList(pre, next, n);
 
-    private void setUrl(String page, String word, int index) {
-        String urlPattern = "<meta property=\"og:url\" content=\"";
-        int urlStart = page.indexOf(urlPattern) + urlPattern.length();
-        int urlEnd = page.indexOf("\"/>", urlStart);
-        String currentUrl = page.substring(urlStart, urlEnd);
-        url.put(index, currentUrl);
+        Stack<Node> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder("O".repeat(n));
 
-        String[] aHerf = page.split("<a href=\"");
-        for (int a = 1; a < aHerf.length; a++) {
-            String linkedUrl = aHerf[a].substring(0, aHerf[a].indexOf("\""));
-            externalUrl.computeIfAbsent(linkedUrl, k -> new ArrayList<>()).add(index);
-        }
-
-        externalCnt[index] = aHerf.length - 1;
-
-        page = page.replaceAll("[^a-zA-Z]", " ");
-        scores[index] = countWord(page.split(" "), word);
-    }
-
-    private int countWord(String[] words, String word) {
-        int cnt = 0;
-        for (String w : words) {
-            if (w.equals(word)) {
-                cnt++;
+        for (String command : cmd) {
+            char c = command.charAt(0);
+            if (c == 'U') {
+                k = moveUp(k, Integer.parseInt(command.substring(2)), pre);
+            } else if (c == 'D') {
+                k = moveDown(k, Integer.parseInt(command.substring(2)), next);
+            } else if (c == 'C') {
+                k = deleteNode(k, pre, next, stack, sb);
+            } else {
+                restoreNode(pre, next, stack, sb);
             }
         }
-        return cnt;
+        return sb.toString();
     }
 
-    private int calculatePageRank() {
-        int answer = 0;
-        double maxScore = 0;
+    private void initializeLinkedList(int[] pre, int[] next, int n) {
+        for (int i = 0; i < n; i++) {
+            pre[i] = i - 1;
+            next[i] = i + 1;
+        }
+        next[n - 1] = -1;
+    }
 
-        for (int i = 0; i < scores.length; i++) {
-            double scoreNow = scores[i];
+    private int moveUp(int k, int num, int[] pre) {
+        while (num-- > 0) {
+            k = pre[k];
+        }
+        return k;
+    }
 
-            if (externalUrl.containsKey(url.get(i))) {
-                for (int extIdx : externalUrl.get(url.get(i))) {
-                    scoreNow += (double) scores[extIdx] / (double) externalCnt[extIdx];
-                }
-            }
+    private int moveDown(int k, int num, int[] next) {
+        while (num-- > 0) {
+            k = next[k];
+        }
+        return k;
+    }
 
-            if (maxScore < scoreNow) {
-                answer = i;
-                maxScore = scoreNow;
-            }
+    private int deleteNode(int k, int[] pre, int[] next, Stack<Node> stack, StringBuilder sb) {
+        stack.push(new Node(pre[k], k, next[k]));
+
+        if (pre[k] != -1) {
+            next[pre[k]] = next[k];
+        }
+        if (next[k] != -1) {
+            pre[next[k]] = pre[k];
         }
 
-        return answer;
+        sb.setCharAt(k, 'X');
+
+        return (next[k] != -1) ? next[k] : pre[k];
+    }
+
+    private void restoreNode(int[] pre, int[] next, Stack<Node> stack, StringBuilder sb) {
+        Node node = stack.pop();
+        if (node.pre != -1) {
+            next[node.pre] = node.cur;
+        }
+        if (node.nxt != -1) {
+            pre[node.nxt] = node.cur;
+        }
+        sb.setCharAt(node.cur, 'O');
     }
 
     @Test
     void 정답() {
-        String[] p1 = {
-                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://a.com\"/>\n</head>  \n<body>\nBlind Lorem Blind ipsum dolor Blind test sit amet, consectetur adipiscing elit. \n<a href=\"https://b.com\"> Link to b </a>\n</body>\n</html>",
-                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://b.com\"/>\n</head>  \n<body>\nSuspendisse potenti. Vivamus venenatis tellus non turpis bibendum, \n<a href=\"https://a.com\"> Link to a </a>\nblind sed congue urna varius. Suspendisse feugiat nisl ligula, quis malesuada felis hendrerit ut.\n<a href=\"https://c.com\"> Link to c </a>\n</body>\n</html>",
-                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://c.com\"/>\n</head>  \n<body>\nUt condimentum urna at felis sodales rutrum. Sed dapibus cursus diam, non interdum nulla tempor nec. Phasellus rutrum enim at orci consectetu blind\n<a href=\"https://a.com\"> Link to a </a>\n</body>\n</html>" };
-        String[] p2 = {
-                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://careers.kakao.com/interview/list\"/>\n</head>  \n<body>\n<a href=\"https://programmers.co.kr/learn/courses/4673\"></a>#!MuziMuzi!)jayg07con&&\n\n</body>\n</html>",
-                "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://www.kakaocorp.com\"/>\n</head>  \n<body>\ncon%\tmuzI92apeach&2<a href=\"https://hashcode.co.kr/tos\"></a>\n\n\t^\n</body>\n</html>" };
-        Assertions.assertEquals(0, solution("blind", p1));
-        Assertions.assertEquals(1, solution("Muzi", p2));
+        String[] c1 = { "D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z" };
+        String[] c2 = { "D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z", "U 1", "C" };
+        Assertions.assertEquals("OOOOXOOO", solution(8, 2, c1));
+        Assertions.assertEquals("OOXOXOOO", solution(8, 2, c2));
     }
 }
