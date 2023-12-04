@@ -1,97 +1,43 @@
-import java.util.Stack;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    static class Node {
-        int pre;
-        int cur;
-        int nxt;
+    public int solution(int[] stones, int k) {
+        int answer = 0;
+        int min = 1;
+        int max = 200000000;
 
-        public Node(int pre, int cur, int nxt) {
-            this.pre = pre;
-            this.cur = cur;
-            this.nxt = nxt;
-        }
-    }
+        while (min <= max) {
+            int mid = (min + max) / 2;
 
-    public String solution(int n, int k, String[] cmd) {
-        int[] pre = new int[n];
-        int[] next = new int[n];
-        initializeLinkedList(pre, next, n);
-
-        Stack<Node> stack = new Stack<>();
-        StringBuilder sb = new StringBuilder("O".repeat(n));
-
-        for (String command : cmd) {
-            char c = command.charAt(0);
-            if (c == 'U') {
-                k = moveUp(k, Integer.parseInt(command.substring(2)), pre);
-            } else if (c == 'D') {
-                k = moveDown(k, Integer.parseInt(command.substring(2)), next);
-            } else if (c == 'C') {
-                k = deleteNode(k, pre, next, stack, sb);
+            if (canCross(stones, k, mid)) {
+                min = mid + 1;
+                answer = Math.max(answer, mid);
             } else {
-                restoreNode(pre, next, stack, sb);
+                max = mid - 1;
             }
         }
-        return sb.toString();
+
+        return answer;
     }
 
-    private void initializeLinkedList(int[] pre, int[] next, int n) {
-        for (int i = 0; i < n; i++) {
-            pre[i] = i - 1;
-            next[i] = i + 1;
-        }
-        next[n - 1] = -1;
-    }
+    boolean canCross(int[] stones, int k, int friendsNum) {
+        int consecutiveSkips = 0;
 
-    private int moveUp(int k, int num, int[] pre) {
-        while (num-- > 0) {
-            k = pre[k];
-        }
-        return k;
-    }
-
-    private int moveDown(int k, int num, int[] next) {
-        while (num-- > 0) {
-            k = next[k];
-        }
-        return k;
-    }
-
-    private int deleteNode(int k, int[] pre, int[] next, Stack<Node> stack, StringBuilder sb) {
-        stack.push(new Node(pre[k], k, next[k]));
-
-        if (pre[k] != -1) {
-            next[pre[k]] = next[k];
-        }
-        if (next[k] != -1) {
-            pre[next[k]] = pre[k];
+        for (int stone : stones) {
+            consecutiveSkips = (stone - friendsNum < 0) ? consecutiveSkips + 1 : 0;
+            if (consecutiveSkips == k) {
+                return false;
+            }
         }
 
-        sb.setCharAt(k, 'X');
-
-        return (next[k] != -1) ? next[k] : pre[k];
-    }
-
-    private void restoreNode(int[] pre, int[] next, Stack<Node> stack, StringBuilder sb) {
-        Node node = stack.pop();
-        if (node.pre != -1) {
-            next[node.pre] = node.cur;
-        }
-        if (node.nxt != -1) {
-            pre[node.nxt] = node.cur;
-        }
-        sb.setCharAt(node.cur, 'O');
+        return true;
     }
 
     @Test
     void 정답() {
-        String[] c1 = { "D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z" };
-        String[] c2 = { "D 2", "C", "U 3", "C", "D 4", "C", "U 2", "Z", "Z", "U 1", "C" };
-        Assertions.assertEquals("OOOOXOOO", solution(8, 2, c1));
-        Assertions.assertEquals("OOXOXOOO", solution(8, 2, c2));
+        int[] stones = { 2, 4, 5, 3, 2, 1, 4, 2, 5, 1 };
+        int k = 3;
+        Assertions.assertEquals(3, solution(stones, k));
     }
 }
