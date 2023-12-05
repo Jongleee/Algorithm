@@ -2,42 +2,36 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] stones, int k) {
+    public int solution(int[] cookie) {
         int answer = 0;
-        int min = 1;
-        int max = 200000000;
+        for (int i = 0; i < cookie.length - 1; i++) {
+            int firstIndex = i;
+            int secondIndex = i + 1;
+            int firstSum = cookie[firstIndex];
+            int secondSum = cookie[secondIndex];
 
-        while (min <= max) {
-            int mid = (min + max) / 2;
+            while (true) {
+                if (firstSum == secondSum) {
+                    answer = Math.max(answer, secondSum);
+                }
 
-            if (canCross(stones, k, mid)) {
-                min = mid + 1;
-                answer = Math.max(answer, mid);
-            } else {
-                max = mid - 1;
+                if (firstSum <= secondSum && firstIndex > 0) {
+                    firstSum += cookie[--firstIndex];
+                } else if (firstSum > secondSum && secondIndex < cookie.length - 1) {
+                    secondSum += cookie[++secondIndex];
+                } else {
+                    break;
+                }
             }
         }
-
         return answer;
-    }
-
-    boolean canCross(int[] stones, int k, int friendsNum) {
-        int consecutiveSkips = 0;
-
-        for (int stone : stones) {
-            consecutiveSkips = (stone - friendsNum < 0) ? consecutiveSkips + 1 : 0;
-            if (consecutiveSkips == k) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @Test
     void 정답() {
-        int[] stones = { 2, 4, 5, 3, 2, 1, 4, 2, 5, 1 };
-        int k = 3;
-        Assertions.assertEquals(3, solution(stones, k));
+        int[] c1 = { 1,1,2,3};
+        int[] c2 = { 1,2, 4, 5 };
+        Assertions.assertEquals(3, solution(c1));
+        Assertions.assertEquals(0, solution(c2));
     }
 }
