@@ -2,36 +2,65 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] cookie) {
-        int answer = 0;
-        for (int i = 0; i < cookie.length - 1; i++) {
-            int firstIndex = i;
-            int secondIndex = i + 1;
-            int firstSum = cookie[firstIndex];
-            int secondSum = cookie[secondIndex];
+    private boolean[] visit;
+    private int answer;
 
-            while (true) {
-                if (firstSum == secondSum) {
-                    answer = Math.max(answer, secondSum);
-                }
+    public int solution(String begin, String target, String[] words) {
+        visit = new boolean[words.length];
+        answer = 0;
 
-                if (firstSum <= secondSum && firstIndex > 0) {
-                    firstSum += cookie[--firstIndex];
-                } else if (firstSum > secondSum && secondIndex < cookie.length - 1) {
-                    secondSum += cookie[++secondIndex];
-                } else {
-                    break;
-                }
+        if (!containsTarget(target, words)) {
+            return 0;
+        }
+
+        dfs(begin, target, words, 0);
+        return answer;
+    }
+
+    private boolean containsTarget(String target, String[] words) {
+        for (String word : words) {
+            if (word.equals(target)) {
+                return true;
             }
         }
-        return answer;
+        return false;
+    }
+
+    private void dfs(String begin, String target, String[] words, int depth) {
+        if (begin.equals(target)) {
+            answer = depth;
+            return;
+        }
+
+        for (int i = 0; i < words.length; i++) {
+            if (visit[i]) {
+                continue;
+            }
+
+            int matchingChars = countMatchingChars(begin, words[i]);
+            if (matchingChars == begin.length() - 1) {
+                visit[i] = true;
+                dfs(words[i], target, words, depth + 1);
+                visit[i] = false;
+            }
+        }
+    }
+
+    private int countMatchingChars(String str1, String str2) {
+        int count = 0;
+        for (int j = 0; j < str1.length(); j++) {
+            if (str1.charAt(j) == str2.charAt(j)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Test
     void 정답() {
-        int[] c1 = { 1,1,2,3};
-        int[] c2 = { 1,2, 4, 5 };
-        Assertions.assertEquals(3, solution(c1));
-        Assertions.assertEquals(0, solution(c2));
+        String[] w1 = { "hot", "dot", "dog", "lot", "log", "cog" };
+        String[] w2 = { "hot", "dot", "dog", "lot", "log" };
+        Assertions.assertEquals(4, solution("hit", "cog", w1));
+        Assertions.assertEquals(0, solution("hit", "cog", w2));
     }
 }
