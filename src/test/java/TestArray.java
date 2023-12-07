@@ -1,131 +1,63 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private boolean[][] pillar;
-    private boolean[][] bar;
+    public double[] solution(int k, int[][] ranges) {
+        List<Double> collatz = generateCollatzSequence(k);
+        Double[] collatzNumber = toDouble(collatz);
 
-    public int[][] solution(int n, int[][] buildFrame) {
-        pillar = new boolean[n + 1][n + 1];
-        bar = new boolean[n + 1][n + 1];
+        double[] areaSum = calculateAreaSum(collatzNumber);
+        double[] answer = new double[ranges.length];
 
-        int count = 0;
-        for (int[] build : buildFrame) {
-            int x = build[0];
-            int y = build[1];
-            int type = build[2];
-            int action = build[3];
+        for (int i = 0; i < ranges.length; i++) {
+            int start = ranges[i][0];
+            int end = collatzNumber.length + ranges[i][1] - 1;
 
-            switch (type) {
-                case 0:
-                    count = processPillar(n, count, x, y, action);
-                    break;
-
-                case 1:
-                    count = processBar(n, count, x, y, action);
-                    break;
-
-                default:
-                    break;
+            if (end > start) {
+                answer[i] = areaSum[end] - areaSum[start];
+            } else if (end == start) {
+                answer[i] = 0;
+            } else {
+                answer[i] = -1;
             }
         }
 
-        return getResultArray(count);
+        return answer;
     }
 
-    private int processBar(int n, int count, int x, int y, int action) {
-        if (action == 1) {
-            if (checkBar(x, y)) {
-                bar[x][y] = true;
-                count++;
-            }
-        } else {
-            bar[x][y] = false;
-            if (!canDelete(n))
-                bar[x][y] = true;
-            else
-                count--;
+    private Double[] toDouble(List<Double> collatz) {
+        return collatz.toArray(new Double[0]);
+    }
+
+    private List<Double> generateCollatzSequence(int k) {
+        List<Double> collatz = new ArrayList<>();
+        while (k > 1) {
+            collatz.add((double) k);
+            k = (k % 2 == 0) ? k / 2 : 3 * k + 1;
         }
-        return count;
+        collatz.add(1.0);
+        return collatz;
     }
 
-    private int processPillar(int n, int count, int x, int y, int action) {
-        if (action == 1) {
-            if (checkPillar(x, y)) {
-                pillar[x][y] = true;
-                count++;
-            }
-        } else {
-            pillar[x][y] = false;
-            if (!canDelete(n))
-                pillar[x][y] = true;
-            else
-                count--;
-        }
-        return count;
-    }
+    private double[] calculateAreaSum(Double[] collatzNumber) {
+        double[] areaSum = new double[collatzNumber.length];
+        areaSum[0] = 0;
 
-    private int[][] getResultArray(int count) {
-        int[][] result = new int[count][3];
-        int idx = 0;
-
-        for (int i = 0; i < pillar.length; i++) {
-            for (int j = 0; j < pillar[i].length; j++) {
-                if (pillar[i][j]) {
-                    result[idx][0] = i;
-                    result[idx][1] = j;
-                    result[idx++][2] = 0;
-                }
-                if (bar[i][j]) {
-                    result[idx][0] = i;
-                    result[idx][1] = j;
-                    result[idx++][2] = 1;
-                }
-            }
+        for (int i = 1; i < collatzNumber.length; i++) {
+            areaSum[i] = (collatzNumber[i - 1] + collatzNumber[i]) / 2 + areaSum[i - 1];
         }
 
-        return result;
-    }
-
-    private boolean canDelete(int n) {
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= n; j++) {
-                if (pillar[i][j] && !checkPillar(i, j))
-                    return false;
-                if (bar[i][j] && !checkBar(i, j))
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean checkPillar(int x, int y) {
-        return (y == 0) || (y > 0 && pillar[x][y - 1]) || (x > 0 && bar[x - 1][y] || bar[x][y]);
-    }
-
-    private boolean checkBar(int x, int y) {
-        return (y > 0 && pillar[x][y - 1] || pillar[x + 1][y - 1]) || (x > 0 && bar[x - 1][y] && bar[x + 1][y]);
+        return areaSum;
     }
 
     @Test
     void 정답() {
-        int[][] b1 = {
-                { 1, 0, 0, 1 }, { 1, 1, 1, 1 }, { 2, 1, 0, 1 }, { 2, 2, 1, 1 },
-                { 5, 0, 0, 1 }, { 5, 1, 0, 1 }, { 4, 2, 1, 1 }, { 3, 2, 1, 1 }
-        };
-        int[][] r1 = {
-                { 1, 0, 0 }, { 1, 1, 1 }, { 2, 1, 0 }, { 2, 2, 1 },
-                { 3, 2, 1 }, { 4, 2, 1 }, { 5, 0, 0 }, { 5, 1, 0 }
-        };
-        int[][] b2 = {
-                { 0, 0, 0, 1 }, { 2, 0, 0, 1 }, { 4, 0, 0, 1 }, { 0, 1, 1, 1 },
-                { 1, 1, 1, 1 }, { 2, 1, 1, 1 }, { 3, 1, 1, 1 }, { 2, 0, 0, 0 }, { 1, 1, 1, 0 }, { 2, 2, 0, 1 }
-        };
-        int[][] r2 = {
-                { 0, 0, 0 }, { 0, 1, 1 }, { 1, 1, 1 },
-                { 2, 1, 1 }, { 3, 1, 1 }, { 4, 0, 0 }
-        };
-        Assertions.assertArrayEquals(r1, solution(5,b1));
-        Assertions.assertArrayEquals(r2, solution(5,b2));
+        int[][] r1 = { { 0, 0 }, { 0, -1 }, { 2, -3 }, { 3, -3 } };
+        int[][] r2 = { { 0, 0 }, { 1, -2 }, { 3, -3 } };
+        Assertions.assertArrayEquals(new double[] { 33.0, 31.5, 0.0, -1.0 }, solution(5, r1));
+        Assertions.assertArrayEquals(new double[] { 47.0, 36.0, 12.0 }, solution(3, r2));
     }
 }
