@@ -3,24 +3,26 @@ package com.example.algorithm.java.practice;
 import java.util.Arrays;
 
 public class Change {
+    private static final int MOD = 1000000007;
 
-    public static void main(String[] args) {
-        System.out.println(solution(5, new int[]{1, 2, 5}));
-    }
-
-    static int num = 1000000007;
-
-    public static int solution(int n, int[] money) {
+    public int solution(int n, int[] money) {
         Arrays.sort(money);
-        int[] d = new int[n + 1];
-        for (int i = 0; i <= n; i++) {
-            if (i % money[0] == 0) d[i] = 1;
-        }
-        for (int i = 1; i < money.length; i++) {
-            for (int j = money[i]; j <= n; j++) {
-                d[j] += d[j - money[i]] % num;
+
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+
+        for (int coin : money) {
+            for (int amount = coin; amount <= n; amount++) {
+                dp[amount] = (dp[amount] + dp[amount - coin]) % MOD;
             }
         }
-        return d[n];
+
+        return dp[n];
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] money = { 1, 2, 5 };
+    //     Assertions.assertEquals(4, solution(5, money));
+    // }
 }
