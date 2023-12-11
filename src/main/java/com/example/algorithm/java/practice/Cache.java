@@ -3,34 +3,34 @@ package com.example.algorithm.java.practice;
 import java.util.LinkedList;
 
 public class Cache {
-
-    public static int solution(int cacheSize, String[] cities) {
-
+    public int solution(int cacheSize, String[] cities) {
         if (cacheSize == 0)
             return cities.length * 5;
 
         int answer = 0;
         LinkedList<String> cache = new LinkedList<>();
+
         for (int i = 0; i < cities.length; i++) {
-            String s = cities[i].toUpperCase();
-            if (cache.remove(s)) {
+            String cityName = cities[i].toUpperCase();
+
+            if (cache.remove(cityName)) {
                 answer += 1;
-                cache.add(s);
+                cache.add(cityName);
             } else {
                 answer += 5;
                 if (cache.size() >= cacheSize) {
                     cache.remove(0);
                 }
-                cache.add(s);
+                cache.add(cityName);
             }
         }
         return answer;
     }
 
-    public static void main(String[] args) {
-        String[] cities = new String[] { "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo",
-                "Seoul" };
-        System.out.println(solution(3, cities));
-        // 21
-    }
+    // @Test
+    // void 정답() {
+    //     String[] cities = { "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo",
+    //             "Seoul" };
+    //     Assertions.assertEquals(21, solution(3, cities));
+    // }
 }
