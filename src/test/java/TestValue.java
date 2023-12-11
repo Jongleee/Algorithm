@@ -1,29 +1,37 @@
-import java.util.Arrays;
+import java.util.LinkedList;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    private static final int MOD = 1000000007;
+    public int solution(int cacheSize, String[] cities) {
+        if (cacheSize == 0)
+            return cities.length * 5;
 
-    public int solution(int n, int[] money) {
-        Arrays.sort(money);
+        int answer = 0;
+        LinkedList<String> cache = new LinkedList<>();
 
-        int[] dp = new int[n + 1];
-        dp[0] = 1;
+        for (int i = 0; i < cities.length; i++) {
+            String cityName = cities[i].toUpperCase();
 
-        for (int coin : money) {
-            for (int amount = coin; amount <= n; amount++) {
-                dp[amount] = (dp[amount] + dp[amount - coin]) % MOD;
+            if (cache.remove(cityName)) {
+                answer += 1;
+                cache.add(cityName);
+            } else {
+                answer += 5;
+                if (cache.size() >= cacheSize) {
+                    cache.remove(0);
+                }
+                cache.add(cityName);
             }
         }
-
-        return dp[n];
+        return answer;
     }
 
     @Test
     void 정답() {
-        int[] money = { 1, 2, 5 };
-        Assertions.assertEquals(4, solution(5, money));
+        String[] cities = { "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo",
+                "Seoul" };
+        Assertions.assertEquals(21, solution(3, cities));
     }
 }
