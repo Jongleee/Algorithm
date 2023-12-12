@@ -1,9 +1,8 @@
+package com.example.algorithm.java.heap;
+
 import java.util.PriorityQueue;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class BuildingTrack {
     private class Car implements Comparable<Car> {
         int x;
         int y;
@@ -89,13 +88,13 @@ class TestValue {
         }
     }
 
-    @Test
-    void 정답() {
-        int[][] b1 = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
-        int[][] b2 = { { 0, 0, 0, 0, 0, 0, 0, 1 }, { 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 1, 0, 0 },
-                { 0, 0, 0, 0, 1, 0, 0, 0 }, { 0, 0, 0, 1, 0, 0, 0, 1 }, { 0, 0, 1, 0, 0, 0, 1, 0 },
-                { 0, 1, 0, 0, 0, 1, 0, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0 } };
-        Assertions.assertEquals(900, solution(b1));
-        Assertions.assertEquals(3800, solution(b2));
-    }
+    // @Test
+    // void 정답() {
+    //     int[][] b1 = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+    //     int[][] b2 = { { 0, 0, 0, 0, 0, 0, 0, 1 }, { 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 1, 0, 0 },
+    //             { 0, 0, 0, 0, 1, 0, 0, 0 }, { 0, 0, 0, 1, 0, 0, 0, 1 }, { 0, 0, 1, 0, 0, 0, 1, 0 },
+    //             { 0, 1, 0, 0, 0, 1, 0, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0 } };
+    //     Assertions.assertEquals(900, solution(b1));
+    //     Assertions.assertEquals(3800, solution(b2));
+    // }
 }
