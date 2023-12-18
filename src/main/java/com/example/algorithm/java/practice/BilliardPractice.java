@@ -1,19 +1,18 @@
 package com.example.algorithm.java.practice;
 
-import java.util.Arrays;
-
 public class BilliardPractice {
-    public static int[] solution(int m, int n, int startX, int startY, int[][] balls) {
+    public int[] solution(int m, int n, int startX, int startY, int[][] balls) {
         int[] answer = new int[balls.length];
+
         for (int i = 0; i < balls.length; i++) {
             int[] ball = balls[i];
             int diffX = startX - ball[0];
             int diffY = startY - ball[1];
 
-            int left = (startX + ball[0]) * (startX + ball[0]) + diffY * diffY;
-            int right = ((m - startX) + (m - ball[0])) * ((m - startX) + (m - ball[0])) + diffY * diffY;
-            int top = diffX * diffX + ((n - startY) + (n - ball[1])) * ((n - startY) + (n - ball[1]));
-            int bottom = diffX * diffX + (startY + ball[1]) * (startY + ball[1]);
+            int left = calculateDistance(startX + ball[0], diffY);
+            int right = calculateDistance((m - startX) + (m - ball[0]), diffY);
+            int top = calculateDistance(diffX, (n - startY) + (n - ball[1]));
+            int bottom = calculateDistance(diffX, startY + ball[1]);
 
             int temp = Math.min(left, right);
             if (diffX == 0) {
@@ -25,15 +24,18 @@ public class BilliardPractice {
                 answer[i] = Math.min(temp, Math.min(top, bottom));
             }
         }
+
         return answer;
     }
 
-    public static void main(String[] args) {
-        int m = 10;
-        int n = 10;
-        int x = 3;
-        int y = 7;
-        int[][] b = new int[][] { { 7, 7 }, { 2, 7 }, { 7, 3 } };
-        System.out.println(Arrays.toString(solution(m, n, x, y, b)));// 52, 37, 116
+    private int calculateDistance(int a, int b) {
+        return a * a + b * b;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[][] balls = { { 7, 7 }, { 2, 7 }, { 7, 3 } };
+    //     int[] result = { 52, 37, 116 };
+    //     Assertions.assertArrayEquals(result, solution(10, 10, 3, 7, balls));
+    // }
 }
