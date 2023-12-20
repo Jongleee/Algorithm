@@ -1,28 +1,24 @@
 package com.example.algorithm.java.practice.sort;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class BiggestNumber {
-
-    public static String solution(int[] numbers) {
-        String[] arr = Arrays.stream(numbers)
+    public String solution(int[] numbers) {
+        String result = Arrays.stream(numbers)
                 .mapToObj(String::valueOf)
-                .toArray(String[]::new);
+                .sorted((s1, s2) -> (s2 + s1).compareTo(s1 + s2))
+                .collect(Collectors.joining());
 
-        Arrays.sort(arr, (s1, s2) -> (s2 + s1).compareTo(s1 + s2));
-
-        if (arr[0].equals("0")) {
-            return "0";
-        }
-
-        return String.join("", arr);
+        return result.startsWith("0") ? "0" : result;
     }
 
-    public static void main(String[] args) {
-        int[] n1 = { 6, 10, 2 };
-        int[] n2 = { 3, 30, 34, 5, 9 };
+    // @Test
+    // void 정답() {
+    //     int[] n1 = { 6, 10, 2 };
+    //     int[] n2 = { 3, 30, 34, 5, 9 };
 
-        System.out.println(solution(n1)); // 6210
-        System.out.println(solution(n2)); // 9534330
-    }
+    //     Assertions.assertEquals("6210", solution(n1));
+    //     Assertions.assertEquals("9534330", solution(n2));
+    // }
 }
