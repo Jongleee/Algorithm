@@ -14,7 +14,7 @@ public class TestRandom {
                 int num = scanner.nextInt();
                 System.out.println("Choose reps:");
                 int reps = scanner.nextInt();
-                for (int i = 0; i < reps;) {
+                for (int i = 0; i < reps; i++) {
                     if (num <= 5)
                         break;
                     List<Integer> numbers = new ArrayList<>();
@@ -23,15 +23,15 @@ public class TestRandom {
                                 .boxed()
                                 .toList();
                     else {
-                        numbers = random.ints(10,1, num + 1)
+                        numbers = random.ints(10, 1, num + 1)
                                 .distinct()
                                 .limit(6)
                                 .sorted()
                                 .boxed()
                                 .toList();
                     }
-                    i++;
-                    System.out.println("========= " + i + " ===========");
+
+                    System.out.println("========= " + (i + 1) + " ===========");
                     System.out.println(numbers);
                 }
             } else {
