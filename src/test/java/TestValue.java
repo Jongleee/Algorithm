@@ -1,25 +1,34 @@
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public String solution(int[] numbers) {
-        String result = Arrays.stream(numbers)
-                .mapToObj(String::valueOf)
-                .sorted((s1, s2) -> (s2 + s1).compareTo(s1 + s2))
-                .collect(Collectors.joining());
+    public int solution(int[][] targets) {
+        Arrays.sort(targets, Comparator.comparingInt(target -> target[1]));
 
-        return result.startsWith("0") ? "0" : result;
+        int lastLocation = -1;
+        int missileCnt = 0;
+
+        for (int[] target : targets) {
+            if (targetIsAfterLastLocation(target, lastLocation)) {
+                missileCnt++;
+                lastLocation = target[1];
+            }
+        }
+
+        return missileCnt;
+    }
+
+    private boolean targetIsAfterLastLocation(int[] target, int lastLocation) {
+        return target[0] >= lastLocation;
     }
 
     @Test
     void 정답() {
-        int[] n1 = { 6, 10, 2 };
-        int[] n2 = { 3, 30, 34, 5, 9 };
+        int[][] targets = 	{{4, 5}, {4, 8}, {10, 14}, {11, 13}, {5, 12}, {3, 7}, {1, 4}};
 
-        Assertions.assertEquals("6210", solution(n1));
-        Assertions.assertEquals("9534330", solution(n2));
+        Assertions.assertEquals(3, solution(targets));
     }
 }
