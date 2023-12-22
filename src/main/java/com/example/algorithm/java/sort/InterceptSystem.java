@@ -1,18 +1,33 @@
 package com.example.algorithm.java.sort;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class InterceptSystem {
     public int solution(int[][] targets) {
-        Arrays.sort(targets, (o1, o2) -> o1[1] - o2[1]);
+        Arrays.sort(targets, Comparator.comparingInt(target -> target[1]));
+
         int lastLocation = -1;
         int missileCnt = 0;
-        for (int[] t : targets) {
-            if (t[0] >= lastLocation) {
+
+        for (int[] target : targets) {
+            if (targetIsAfterLastLocation(target, lastLocation)) {
                 missileCnt++;
-                lastLocation = t[1];
+                lastLocation = target[1];
             }
         }
+
         return missileCnt;
     }
+
+    private boolean targetIsAfterLastLocation(int[] target, int lastLocation) {
+        return target[0] >= lastLocation;
+    }
+
+    // @Test
+    // void 정답() {
+    //     int[][] targets = 	{{4, 5}, {4, 8}, {10, 14}, {11, 13}, {5, 12}, {3, 7}, {1, 4}};
+
+    //     Assertions.assertEquals(3, solution(targets));
+    // }
 }
