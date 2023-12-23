@@ -1,34 +1,29 @@
 import java.util.Arrays;
-import java.util.Comparator;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[][] targets) {
-        Arrays.sort(targets, Comparator.comparingInt(target -> target[1]));
-
-        int lastLocation = -1;
-        int missileCnt = 0;
-
-        for (int[] target : targets) {
-            if (targetIsAfterLastLocation(target, lastLocation)) {
-                missileCnt++;
-                lastLocation = target[1];
+    public int solution(int[] citations) {
+        Arrays.sort(citations);
+        int n = citations.length;
+        
+        for (int i = 0; i < n; i++) {
+            int h = n - i;
+            int minCitations = Math.min(citations[i], h);
+            
+            if (minCitations >= h) {
+                return h;
             }
         }
 
-        return missileCnt;
+        return 0;
     }
 
-    private boolean targetIsAfterLastLocation(int[] target, int lastLocation) {
-        return target[0] >= lastLocation;
-    }
 
     @Test
     void 정답() {
-        int[][] targets = 	{{4, 5}, {4, 8}, {10, 14}, {11, 13}, {5, 12}, {3, 7}, {1, 4}};
-
-        Assertions.assertEquals(3, solution(targets));
+        int[] citiations = { 3, 0, 6, 1, 5 };
+        Assertions.assertEquals(3, solution(citiations));
     }
 }
