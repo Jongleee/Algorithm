@@ -19,7 +19,6 @@ public class HIndex {
         return 0;
     }
 
-
     // @Test
     // void 정답() {
     //     int[] citiations = { 3, 0, 6, 1, 5 };
