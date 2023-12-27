@@ -1,26 +1,26 @@
 package com.example.algorithm.java.searchDFS;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class TripRoute {
-    static ArrayList<String> visitRoute = new ArrayList<>();
-    static boolean[] visited;
+    private ArrayList<String> visitRoute;
+    private boolean[] visited;
 
-    public static String[] solution(String[][] tickets) {
-        int cnt = 0;
+    public String[] solution(String[][] tickets) {
+        visitRoute = new ArrayList<>();
         visited = new boolean[tickets.length];
-        dfs("ICN", "ICN", tickets, cnt);
+        dfs("ICN", "ICN", tickets, 0);
         Collections.sort(visitRoute);
         return visitRoute.get(0).split(" ");
     }
 
-    public static void dfs(String start, String route, String[][] tickets, int cnt) {
+    private void dfs(String start, String route, String[][] tickets, int cnt) {
         if (cnt == tickets.length) {
             visitRoute.add(route);
             return;
         }
+
         for (int i = 0; i < tickets.length; i++) {
             if (start.equals(tickets[i][0]) && !visited[i]) {
                 visited[i] = true;
@@ -29,7 +29,16 @@ public class TripRoute {
             }
         }
     }
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(new String[][]{{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}})));
-        }
+
+    // @Test
+    // void 정답() {
+    //     String[][] tickets1 = { { "ICN", "JFK" }, { "HND", "IAD" }, { "JFK", "HND" } };
+    //     String[] routes1 = { "ICN", "JFK", "HND", "IAD" };
+
+    //     String[][] tickets2 = { { "ICN", "SFO" }, { "ICN", "ATL" }, { "SFO", "ATL" }, { "ATL", "ICN" },{ "ATL", "SFO" } };
+    //     String[] routes2 = { "ICN", "ATL", "ICN", "SFO", "ATL", "SFO" };
+
+    //     Assertions.assertArrayEquals(routes1, solution(tickets1));
+    //     Assertions.assertArrayEquals(routes2, solution(tickets2));
+    // }
 }
