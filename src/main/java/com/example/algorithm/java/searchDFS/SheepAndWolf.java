@@ -3,58 +3,51 @@ package com.example.algorithm.java.searchDFS;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unchecked")
 public class SheepAndWolf {
-    static ArrayList<Integer>[] childs;
-    static int[] graphInfo;
-    static int sheepCnt = 0;
+    List<List<Integer>> graph = new ArrayList<>();
 
-    public static int solution(int[] info, int[][] edges) {
-        graphInfo = info;
-        childs = new ArrayList[info.length];
-        for (int[] edge : edges) {
-            int parent = edge[0];
-            int child = edge[1];
-            if (childs[parent] == null) {
-                childs[parent] = new ArrayList<>();
-            }
-            childs[parent].add(child);
+    public int dfs(int sheep, int wolf, int curNode, List<Integer> nextNodes, int[] info) {
+        if (info[curNode] == 0)
+            sheep++;
+        else
+            wolf++;
+
+        int ans = sheep;
+        if (sheep <= wolf)
+            return ans;
+
+        for (int i = 0; i < nextNodes.size(); i++) {
+            int nextNode = nextNodes.get(i);
+            List<Integer> stackNodes = new ArrayList<>(nextNodes);
+            stackNodes.remove((Integer) nextNode);
+            stackNodes.addAll(graph.get(nextNode));
+            ans = Math.max(ans, dfs(sheep, wolf, nextNode, stackNodes, info));
         }
 
-        List<Integer> list = new ArrayList<>();
-        list.add(0);
-        dfs(0, 0, 0, list);
-        return sheepCnt;
+        return ans;
     }
 
-    private static void dfs(int index, int sheepCnt, int wolfCnt, List<Integer> nextPos) {
-        switch (graphInfo[index]) {
-            case 0:
-                sheepCnt++;
-                break;
-            case 1:
-                wolfCnt++;
-                break;
-            default:
-                break;
-        }
-        if (wolfCnt >= sheepCnt)
-            return;
-        SheepAndWolf.sheepCnt = Math.max(sheepCnt, SheepAndWolf.sheepCnt);
-
-        List<Integer> list = new ArrayList<>(nextPos);
-        list.remove(Integer.valueOf(index));
-        if (childs[index] != null) {
-            list.addAll(childs[index]);
+    public int solution(int[] info, int[][] edges) {
+        int nodeLength = info.length;
+        for (int i = 0; i < nodeLength; i++) {
+            graph.add(new ArrayList<>());
         }
 
-        for (int next : list) {
-            dfs(next, sheepCnt, wolfCnt, list);
+        int edgeLength = edges.length;
+        for (int i = 0; i < edgeLength; i++) {
+            graph.get(edges[i][0]).add(edges[i][1]);
         }
+
+        List<Integer> nextNodes = new ArrayList<>(graph.get(0));
+        return dfs(0, 0, 0, nextNodes, info);
     }
-    public static void main(String[] args) {
-        System.out.println(solution(
-            new int[]{0,1,0,1,1,0,1,0,0,1,0}, new
-            int[][]{{0,1},{0,2},{1,3},{1,4},{2,5},{2,6},{3,7},{4,8},{6,9},{9,10}}));    
-    }
+
+    // @Test
+    // void 정답() {
+    //     int[] info = { 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1 };
+    //     int[][] edges = { { 0, 1 }, { 1, 2 }, { 1, 4 }, { 0, 8 }, { 8, 7 }, { 9, 10 }, { 9, 11 }, { 4, 3 }, { 6, 5 },
+    //             { 4, 6 }, { 8, 9 } };
+
+    //     Assertions.assertEquals(5, solution(info, edges));
+    // }
 }
