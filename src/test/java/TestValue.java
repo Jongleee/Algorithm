@@ -1,54 +1,29 @@
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    List<List<Integer>> graph = new ArrayList<>();
+    public String solution(int n) {
+        StringBuilder ternaryDigits = new StringBuilder();
 
-    public int dfs(int sheep, int wolf, int curNode, List<Integer> nextNodes, int[] info) {
-        if (info[curNode] == 0)
-            sheep++;
-        else
-            wolf++;
-
-        int ans = sheep;
-        if (sheep <= wolf)
-            return ans;
-
-        for (int i = 0; i < nextNodes.size(); i++) {
-            int nextNode = nextNodes.get(i);
-            List<Integer> stackNodes = new ArrayList<>(nextNodes);
-            stackNodes.remove((Integer) nextNode);
-            stackNodes.addAll(graph.get(nextNode));
-            ans = Math.max(ans, dfs(sheep, wolf, nextNode, stackNodes, info));
+        while (n != 0) {
+            if (n % 3 != 0) {
+                ternaryDigits.append(n % 3);
+                n /= 3;
+            } else {
+                ternaryDigits.append(4);
+                n = n / 3 - 1;
+            }
         }
 
-        return ans;
-    }
 
-    public int solution(int[] info, int[][] edges) {
-        int nodeLength = info.length;
-        for (int i = 0; i < nodeLength; i++) {
-            graph.add(new ArrayList<>());
-        }
-
-        int edgeLength = edges.length;
-        for (int i = 0; i < edgeLength; i++) {
-            graph.get(edges[i][0]).add(edges[i][1]);
-        }
-
-        List<Integer> nextNodes = new ArrayList<>(graph.get(0));
-        return dfs(0, 0, 0, nextNodes, info);
+        return ternaryDigits.reverse().toString();
     }
 
     @Test
     void 정답() {
-        int[] info = { 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1 };
-        int[][] edges = { { 0, 1 }, { 1, 2 }, { 1, 4 }, { 0, 8 }, { 8, 7 }, { 9, 10 }, { 9, 11 }, { 4, 3 }, { 6, 5 },
-                { 4, 6 }, { 8, 9 } };
-
-        Assertions.assertEquals(5, solution(info, edges));
+        Assertions.assertEquals("1", solution(1));
+        Assertions.assertEquals("2", solution(2));
+        Assertions.assertEquals("4", solution(3));
+        Assertions.assertEquals("11", solution(4));
     }
 }
