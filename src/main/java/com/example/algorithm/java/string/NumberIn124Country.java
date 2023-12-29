@@ -1,21 +1,28 @@
 package com.example.algorithm.java.string;
 
 public class NumberIn124Country {
-    public static String solution(int n) {
-        StringBuilder temp = new StringBuilder();
+    public String solution(int n) {
+        StringBuilder ternaryDigits = new StringBuilder();
+
         while (n != 0) {
             if (n % 3 != 0) {
-                temp.append(n % 3);
+                ternaryDigits.append(n % 3);
                 n /= 3;
             } else {
-                temp.append("4");
+                ternaryDigits.append(4);
                 n = n / 3 - 1;
             }
         }
-        return temp.reverse().toString();
+
+
+        return ternaryDigits.reverse().toString();
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution(10));
-    }
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals("1", solution(1));
+    //     Assertions.assertEquals("2", solution(2));
+    //     Assertions.assertEquals("4", solution(3));
+    //     Assertions.assertEquals("11", solution(4));
+    // }
 }
