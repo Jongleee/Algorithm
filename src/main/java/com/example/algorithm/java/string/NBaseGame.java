@@ -18,4 +18,11 @@ public class NBaseGame {
 
         return result.toString().toUpperCase();
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals("0111", solution(2,4,2,1));
+    //     Assertions.assertEquals("02468ACE11111111", solution(16,16,2,1));
+    //     Assertions.assertEquals("13579BDF01234567", solution(16,16,2,2));
+    // }
 }

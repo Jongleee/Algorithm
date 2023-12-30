@@ -2,28 +2,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public String solution(int n) {
-        StringBuilder ternaryDigits = new StringBuilder();
+    public String solution(int n, int t, int m, int p) {
+        StringBuilder answer = new StringBuilder();
 
-        while (n != 0) {
-            if (n % 3 != 0) {
-                ternaryDigits.append(n % 3);
-                n /= 3;
-            } else {
-                ternaryDigits.append(4);
-                n = n / 3 - 1;
-            }
+        int length = t * m;
+
+        for (int i = 0; answer.length() < length; i++) {
+            answer.append(Integer.toString(i, n));
         }
 
+        StringBuilder result = new StringBuilder();
 
-        return ternaryDigits.reverse().toString();
+        for (int i = p - 1; result.length() < t; i += m) {
+            result.append(answer.charAt(i));
+        }
+
+        return result.toString().toUpperCase();
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals("1", solution(1));
-        Assertions.assertEquals("2", solution(2));
-        Assertions.assertEquals("4", solution(3));
-        Assertions.assertEquals("11", solution(4));
+        Assertions.assertEquals("0111", solution(2,4,2,1));
+        Assertions.assertEquals("02468ACE11111111", solution(16,16,2,1));
+        Assertions.assertEquals("13579BDF01234567", solution(16,16,2,2));
     }
 }
