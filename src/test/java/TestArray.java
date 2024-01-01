@@ -1,45 +1,35 @@
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Stack;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private ArrayList<String> visitRoute;
-    private boolean[] visited;
+    public int[] solution(int[] numbers) {
+        int[] answer = new int[numbers.length];
+        Stack<Integer> stack = new Stack<>();
 
-    public String[] solution(String[][] tickets) {
-        visitRoute = new ArrayList<>();
-        visited = new boolean[tickets.length];
-        dfs("ICN", "ICN", tickets, 0);
-        Collections.sort(visitRoute);
-        return visitRoute.get(0).split(" ");
-    }
-
-    private void dfs(String start, String route, String[][] tickets, int cnt) {
-        if (cnt == tickets.length) {
-            visitRoute.add(route);
-            return;
-        }
-
-        for (int i = 0; i < tickets.length; i++) {
-            if (start.equals(tickets[i][0]) && !visited[i]) {
-                visited[i] = true;
-                dfs(tickets[i][1], route + " " + tickets[i][1], tickets, cnt + 1);
-                visited[i] = false;
+        for (int i = 0; i < numbers.length; i++) {
+            while (!stack.isEmpty() && numbers[stack.peek()] < numbers[i]) {
+                answer[stack.pop()] = numbers[i];
             }
+            stack.push(i);
         }
+
+        while (!stack.isEmpty()) {
+            answer[stack.pop()] = -1;
+        }
+
+        return answer;
     }
 
     @Test
     void 정답() {
-        String[][] tickets1 = { { "ICN", "JFK" }, { "HND", "IAD" }, { "JFK", "HND" } };
-        String[] routes1 = { "ICN", "JFK", "HND", "IAD" };
+        int[] numbers1 = { 2, 3, 3, 5 };
+        int[] result1 = { 3, 5, 5, -1 };
 
-        String[][] tickets2 = { { "ICN", "SFO" }, { "ICN", "ATL" }, { "SFO", "ATL" }, { "ATL", "ICN" },{ "ATL", "SFO" } };
-        String[] routes2 = { "ICN", "ATL", "ICN", "SFO", "ATL", "SFO" };
-
-        Assertions.assertArrayEquals(routes1, solution(tickets1));
-        Assertions.assertArrayEquals(routes2, solution(tickets2));
+        int[] numbers2 = { 9, 1, 5, 3, 6, 2 };
+        int[] result2 = { -1, 5, 6, 6, -1, -1 };
+        Assertions.assertArrayEquals(result1, solution(numbers1));
+        Assertions.assertArrayEquals(result2, solution(numbers2));
     }
 }
