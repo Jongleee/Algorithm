@@ -6,22 +6,33 @@ import java.util.Stack;
 
 public class DeliveryBox {
     public int solution(int[] order) {
-        Queue<Integer> belt = new LinkedList<>();
-        Stack<Integer> assistance = new Stack<>();
+        Queue<Integer> workingQueue = new LinkedList<>();
+        Stack<Integer> waitingStack = new Stack<>();
 
         int cnt = 0;
+
         for (int i = 0; i < order.length; i++) {
-            assistance.add(i + 1);
-            while (!assistance.isEmpty()) {
-                if (assistance.peek() == order[cnt]) {
-                    belt.offer(assistance.pop());
+            waitingStack.add(i + 1);
+
+            while (!waitingStack.isEmpty()) {
+                if (waitingStack.peek() == order[cnt]) {
+                    workingQueue.offer(waitingStack.pop());
                     cnt++;
                 } else {
                     break;
                 }
-
             }
         }
-        return belt.size();
+
+        return workingQueue.size();
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] order1 = { 4, 3, 1, 2, 5 };
+    //     int[] order2 = { 5, 4, 3, 2, 1 };
+
+    //     Assertions.assertEquals(2, solution(order1));
+    //     Assertions.assertEquals(5, solution(order2));
+    // }
 }
