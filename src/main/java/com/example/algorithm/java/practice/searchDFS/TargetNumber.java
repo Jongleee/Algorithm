@@ -1,30 +1,26 @@
 package com.example.algorithm.java.practice.searchDFS;
 
 public class TargetNumber {
-    static int answer = 0;
-
-    public static int solution(int[] numbers, int target) {
-        dfs(numbers, 0, target, 0);
-        return answer;
+    public int solution(int[] numbers, int target) {
+        return dfs(numbers, 0, target, 0, 0);
     }
 
-    public static void dfs(int[] numbers, int depth, int target, int sum) {
+    public int dfs(int[] numbers, int depth, int target, int sum, int answer) {
         if (depth == numbers.length) {
-            if (target == sum)
-                answer++;
+            return (target == sum) ? answer + 1 : answer;
         } else {
-            dfs(numbers, depth + 1, target, sum + numbers[depth]);
-            dfs(numbers, depth + 1, target, sum - numbers[depth]);
+            int result1 = dfs(numbers, depth + 1, target, sum + numbers[depth], answer);
+            int result2 = dfs(numbers, depth + 1, target, sum - numbers[depth], answer);
+            return result1 + result2;
         }
     }
 
-    public static void main(String[] args) {
-        int[] n1 = { 1, 1, 1, 1, 1 };
-        int t1 = 3;// 5
-        int[] n2 = { 4, 1, 2, 1 };
-        int t2 = 4;// 2
-        System.out.println(solution(n1, t1));
-        answer = 0;
-        System.out.println(solution(n2, t2));
-    }
+    // @Test
+    // void 정답() {
+    //     int[] number1 = { 1, 1, 1, 1, 1 };
+    //     int[] number2 = { 4, 1, 2, 1 };
+
+    //     Assertions.assertEquals(5, solution(number1, 3));
+    //     Assertions.assertEquals(2, solution(number2, 4));
+    // }
 }
