@@ -1,39 +1,27 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] order) {
-        Queue<Integer> workingQueue = new LinkedList<>();
-        Stack<Integer> waitingStack = new Stack<>();
+    public int solution(int[] numbers, int target) {
+        return dfs(numbers, 0, target, 0, 0);
+    }
 
-        int cnt = 0;
-
-        for (int i = 0; i < order.length; i++) {
-            waitingStack.add(i + 1);
-
-            while (!waitingStack.isEmpty()) {
-                if (waitingStack.peek() == order[cnt]) {
-                    workingQueue.offer(waitingStack.pop());
-                    cnt++;
-                } else {
-                    break;
-                }
-            }
+    public int dfs(int[] numbers, int depth, int target, int sum, int answer) {
+        if (depth == numbers.length) {
+            return (target == sum) ? answer + 1 : answer;
+        } else {
+            int result1 = dfs(numbers, depth + 1, target, sum + numbers[depth], answer);
+            int result2 = dfs(numbers, depth + 1, target, sum - numbers[depth], answer);
+            return result1 + result2;
         }
-
-        return workingQueue.size();
     }
 
     @Test
     void 정답() {
-        int[] order1 = { 4, 3, 1, 2, 5 };
-        int[] order2 = { 5, 4, 3, 2, 1 };
+        int[] number1 = { 1, 1, 1, 1, 1 };
+        int[] number2 = { 4, 1, 2, 1 };
 
-        Assertions.assertEquals(2, solution(order1));
-        Assertions.assertEquals(5, solution(order2));
+        Assertions.assertEquals(5, solution(number1, 3));
+        Assertions.assertEquals(2, solution(number2, 4));
     }
 }
