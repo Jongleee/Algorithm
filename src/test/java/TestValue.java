@@ -2,26 +2,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] numbers, int target) {
-        return dfs(numbers, 0, target, 0, 0);
+    public int solution(int n) {
+        return dfs(n, 0);
     }
 
-    public int dfs(int[] numbers, int depth, int target, int sum, int answer) {
-        if (depth == numbers.length) {
-            return (target == sum) ? answer + 1 : answer;
-        } else {
-            int result1 = dfs(numbers, depth + 1, target, sum + numbers[depth], answer);
-            int result2 = dfs(numbers, depth + 1, target, sum - numbers[depth], answer);
-            return result1 + result2;
+    private int dfs(int value, int cnt) {
+        if (value < 1 || 2 * Math.log(value) / Math.log(3) < cnt) {
+            return 0;
         }
+        if (value == 3) {
+            return (cnt == 2) ? 1 : 0;
+        }
+
+        int result = 0;
+        if (value % 3 == 0 && cnt >= 2) {
+            result += dfs(value / 3, cnt - 2);
+        }
+        result += dfs(value - 1, cnt + 1);
+        return result;
     }
 
     @Test
     void 정답() {
-        int[] number1 = { 1, 1, 1, 1, 1 };
-        int[] number2 = { 4, 1, 2, 1 };
-
-        Assertions.assertEquals(5, solution(number1, 3));
-        Assertions.assertEquals(2, solution(number2, 4));
+        Assertions.assertEquals(1, solution(15));
+        Assertions.assertEquals(0, solution(24));
+        Assertions.assertEquals(1735, solution(2147483647));
     }
 }

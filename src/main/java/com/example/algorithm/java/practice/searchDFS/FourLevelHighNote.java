@@ -1,35 +1,11 @@
 package com.example.algorithm.java.practice.searchDFS;
 
 public class FourLevelHighNote {
-
-    private int answer;
-
-    public int solution1(int n) {
-        answer = 0;
-        dfs(n, 0);
-        return answer;
+    public int solution(int n) {
+        return dfs(n, 0);
     }
 
-    private void dfs(int value, int cnt) {
-        if (value < 1 || 2 * Math.log(value) / Math.log(3) < cnt)
-            return;
-        if (value == 3) {
-            if (cnt == 2)
-                answer++;
-            return;
-        }
-
-        if (value % 3 == 0 && cnt >= 2) {
-            dfs(value / 3, cnt - 2);
-        }
-        dfs(value - 1, cnt + 1);
-    }
-
-    public int solution2(int n) {
-        return dfs2(n, 0);
-    }
-
-    private int dfs2(int value, int cnt) {
+    private int dfs(int value, int cnt) {
         if (value < 1 || 2 * Math.log(value) / Math.log(3) < cnt) {
             return 0;
         }
@@ -39,9 +15,16 @@ public class FourLevelHighNote {
 
         int result = 0;
         if (value % 3 == 0 && cnt >= 2) {
-            result += dfs2(value / 3, cnt - 2);
+            result += dfs(value / 3, cnt - 2);
         }
-        result += dfs2(value - 1, cnt + 1);
+        result += dfs(value - 1, cnt + 1);
         return result;
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(1, solution(15));
+    //     Assertions.assertEquals(0, solution(24));
+    //     Assertions.assertEquals(1735, solution(2147483647));
+    // }
 }
