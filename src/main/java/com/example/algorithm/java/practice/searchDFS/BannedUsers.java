@@ -1,80 +1,60 @@
 package com.example.algorithm.java.practice.searchDFS;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class BannedUsers {
-    static HashSet<HashSet<String>> result;
-    public static int solution(String[] userId, String[] bannedId) {
+    private Set<Set<String>> result;
+
+    public int solution(String[] userId, String[] bannedId) {
         result = new HashSet<>();
-
-        dfs(new LinkedHashSet<>(), userId, bannedId);
-
+        dfs(new HashSet<>(), 0, userId, bannedId);
         return result.size();
     }
 
-
-    private static void dfs(HashSet<String> hs, String[] userIds, String[] bannedId) {
-        if (hs.size() == bannedId.length) {
-            if (isBanList(hs, bannedId)) {
-                result.add(new HashSet<>(hs));
-            }
+    private void dfs(Set<String> currentSet, int index, String[] userIds, String[] bannedId) {
+        if (index == bannedId.length) {
+            result.add(new HashSet<>(currentSet));
             return;
         }
 
         for (String userId : userIds) {
-            if (hs.add(userId)) {
-                dfs(hs, userIds, bannedId);
-                hs.remove(userId);
+            if (!currentSet.contains(userId) && isMatching(userId, bannedId[index])) {
+                currentSet.add(userId);
+                dfs(currentSet, index + 1, userIds, bannedId);
+                currentSet.remove(userId);
             }
         }
     }
 
-
-    private static boolean isBanList(HashSet<String> hs, String[] bannedId) {
-        int index = 0;
-        for (String userID : hs) {
-            if (userID.length() != bannedId[index].length()) {
+    private boolean isMatching(String userId, String bannedId) {
+        if (userId.length() != bannedId.length()) {
+            return false;
+        }
+        for (int i = 0; i < bannedId.length(); i++) {
+            if (bannedId.charAt(i) == '*') {
+                continue;
+            }
+            if (userId.charAt(i) != bannedId.charAt(i)) {
                 return false;
             }
-            for (int i = 0; i < bannedId[index].length(); i++) {
-                if (bannedId[index].charAt(i) == '*') {
-                    continue;
-                }
-                if (userID.charAt(i) != bannedId[index].charAt(i)) {
-                    return false;
-                }
-            }
-            index++;
         }
         return true;
     }
-    class Solution2 {
-        String[] regex;
-        HashSet<Integer> set = new HashSet<>();
-        public int solution(String[] userId, String[] bannedId) {
-            regex = new String[bannedId.length];
-            for(int i=0; i<bannedId.length; i++){
-                regex[i] = bannedId[i].replace("*", "[\\w]");
-            }
-            dfs(0,userId,0);
 
-            return set.size();
-        }
-        void dfs(int index, String[] userId, int bit){
-            if(index==regex.length){
-                set.add(bit);
-                return;
-            }
-            for(int i=0; i<userId.length; ++i) {
-                if((((bit>>i) & 1) != 1) && userId[i].matches(regex[index])){
-                    dfs(index+1, userId, bit|1<<i);
-                }
-            }
-        }
-    }
-    public static void main(String[] args) {
-        System.out.println(solution(new String[]{"frodo", "fradi", "crodo", "abc123", "frodoc"},
-        new String[]{"fr*d*", "*rodo", "******", "******"}));
-    }
+    // @Test
+    // void 정답() {
+    //     String[] user_id1 = { "frodo", "fradi", "crodo", "abc123", "frodoc" };
+    //     String[] banned_id1 = { "fr*d*", "abc1**" };
+
+    //     String[] user_id2 = { "frodo", "fradi", "crodo", "abc123", "frodoc" };
+    //     String[] banned_id2 = { "*rodo", "*rodo", "******" };
+
+    //     String[] user_id3 = { "frodo", "fradi", "crodo", "abc123", "frodoc" };
+    //     String[] banned_id3 = { "fr*d*", "*rodo", "******", "******" };
+
+    //     Assertions.assertEquals(2, solution(user_id1, banned_id1));
+    //     Assertions.assertEquals(2, solution(user_id2, banned_id2));
+    //     Assertions.assertEquals(3, solution(user_id3, banned_id3));
+    // }
 }

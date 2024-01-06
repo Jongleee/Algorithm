@@ -1,31 +1,61 @@
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int n) {
-        return dfs(n, 0);
+    private Set<Set<String>> result;
+
+    public int solution(String[] userId, String[] bannedId) {
+        result = new HashSet<>();
+        dfs(new HashSet<>(), 0, userId, bannedId);
+        return result.size();
     }
 
-    private int dfs(int value, int cnt) {
-        if (value < 1 || 2 * Math.log(value) / Math.log(3) < cnt) {
-            return 0;
-        }
-        if (value == 3) {
-            return (cnt == 2) ? 1 : 0;
+    private void dfs(Set<String> currentSet, int index, String[] userIds, String[] bannedId) {
+        if (index == bannedId.length) {
+            result.add(new HashSet<>(currentSet));
+            return;
         }
 
-        int result = 0;
-        if (value % 3 == 0 && cnt >= 2) {
-            result += dfs(value / 3, cnt - 2);
+        for (String userId : userIds) {
+            if (!currentSet.contains(userId) && isMatching(userId, bannedId[index])) {
+                currentSet.add(userId);
+                dfs(currentSet, index + 1, userIds, bannedId);
+                currentSet.remove(userId);
+            }
         }
-        result += dfs(value - 1, cnt + 1);
-        return result;
+    }
+
+    private boolean isMatching(String userId, String bannedId) {
+        if (userId.length() != bannedId.length()) {
+            return false;
+        }
+        for (int i = 0; i < bannedId.length(); i++) {
+            if (bannedId.charAt(i) == '*') {
+                continue;
+            }
+            if (userId.charAt(i) != bannedId.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(1, solution(15));
-        Assertions.assertEquals(0, solution(24));
-        Assertions.assertEquals(1735, solution(2147483647));
+        String[] user_id1 = { "frodo", "fradi", "crodo", "abc123", "frodoc" };
+        String[] banned_id1 = { "fr*d*", "abc1**" };
+
+        String[] user_id2 = { "frodo", "fradi", "crodo", "abc123", "frodoc" };
+        String[] banned_id2 = { "*rodo", "*rodo", "******" };
+
+        String[] user_id3 = { "frodo", "fradi", "crodo", "abc123", "frodoc" };
+        String[] banned_id3 = { "fr*d*", "*rodo", "******", "******" };
+
+        Assertions.assertEquals(2, solution(user_id1, banned_id1));
+        Assertions.assertEquals(2, solution(user_id2, banned_id2));
+        Assertions.assertEquals(3, solution(user_id3, banned_id3));
     }
 }
