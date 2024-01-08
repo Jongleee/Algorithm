@@ -8,36 +8,37 @@ import java.util.List;
 import java.util.Queue;
 
 public class PuzzlePieceFill {
-    static class Point implements Comparable<Point> {
-    int x;
-    int y;
+    class Point implements Comparable<Point> {
+        int x;
+        int y;
 
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public int compareTo(Point o) {
-        if (this.x == o.x) {
-            return this.y - o.y;
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
 
-        return this.x - o.x;
+        @Override
+        public int compareTo(Point o) {
+            if (this.x == o.x) {
+                return this.y - o.y;
+            }
+
+            return this.x - o.x;
+        }
     }
-}
 
-    static int[] dx = { -1, 0, 1, 0 };
-    static int[] dy = { 0, -1, 0, 1 };
+    private static final int[] dx = { -1, 0, 1, 0 };
+    private static final int[] dy = { 0, -1, 0, 1 };
 
-    static int boardSize;
-    static ArrayList<ArrayList<Point>> empty = new ArrayList<>();
-    static ArrayList<ArrayList<Point>> block = new ArrayList<>();
-    static boolean[][] visited;
+    private int boardSize;
+    private List<List<Point>> empty;
+    private List<List<Point>> block;
+    private boolean[][] visited;
 
-    public static int solution(int[][] gameBoard, int[][] table) {
+    public int solution(int[][] gameBoard, int[][] table) {
+        empty = new ArrayList<>();
+        block = new ArrayList<>();
         boardSize = gameBoard.length;
-
         visited = new boolean[boardSize][boardSize];
 
         init(gameBoard, table);
@@ -45,11 +46,9 @@ public class PuzzlePieceFill {
         boolean[] visitedBoard = new boolean[empty.size()];
         int answer = 0;
 
-        for (int i = 0; i < block.size(); i++) {
-            ArrayList<Point> currentBlock = block.get(i);
-
+        for (List<Point> currentBlock : block) {
             for (int j = 0; j < empty.size(); j++) {
-                ArrayList<Point> currentEmpty = empty.get(j);
+                List<Point> currentEmpty = empty.get(j);
                 if (currentEmpty.size() == currentBlock.size() && !visitedBoard[j]) {
                     if (isRotate(currentEmpty, currentBlock)) {
                         answer += currentBlock.size();
@@ -63,11 +62,11 @@ public class PuzzlePieceFill {
         return answer;
     }
 
-    private static void init(int[][] gameBoard, int[][] table) {
+    private void init(int[][] gameBoard, int[][] table) {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if (gameBoard[i][j] == 0 && !visited[i][j]) {
-                    empty.add((ArrayList<Point>) check(gameBoard, i, j, 0));
+                    empty.add(check(gameBoard, i, j, 0));
                 }
             }
         }
@@ -79,12 +78,12 @@ public class PuzzlePieceFill {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if (table[i][j] == 1 && !visited[i][j])
-                    block.add((ArrayList<Point>) check(table, i, j, 1));
+                    block.add(check(table, i, j, 1));
             }
         }
     }
 
-    public static List<Point> check(int[][] board, int x, int y, int type) {
+    public List<Point> check(int[][] board, int x, int y, int type) {
         Queue<Point> q = new LinkedList<>();
         ArrayList<Point> result = new ArrayList<>();
 
@@ -116,7 +115,7 @@ public class PuzzlePieceFill {
         return result;
     }
 
-    public static boolean isRotate(List<Point> empty, List<Point> block) {
+    public boolean isRotate(List<Point> empty, List<Point> block) {
         for (int i = 0; i < 4; i++) {
             int zeroX = block.get(0).x;
             int zeroY = block.get(0).y;
@@ -156,16 +155,17 @@ public class PuzzlePieceFill {
         return false;
     }
 
-    public static void main(String[] args) {
-        int[][] g1 = { { 1, 1, 0, 0, 1, 0 }, { 0, 0, 1, 0, 1, 0 }, { 0, 1, 1, 0, 0, 1 },
-                { 1, 1, 0, 1, 1, 1 }, { 1, 0, 0, 0, 1, 0 }, { 0, 1, 1, 1, 0, 0 } };
-        int[][] t1 = { { 1, 0, 0, 1, 1, 0 }, { 1, 0, 1, 0, 1, 0 }, { 0, 1, 1, 0, 1, 1 },
-                { 0, 0, 1, 0, 0, 0 }, { 1, 1, 0, 1, 1, 0 }, { 0, 1, 0, 0, 0, 0 } };
-        int[][] g2 = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 1, 1 } };
-        int[][] t2 = { { 1, 1, 1 }, { 1, 0, 0 }, { 0, 0, 0 } };
+    // @Test
+    // void 정답() {
+    //     int[][] g1 = { { 1, 1, 0, 0, 1, 0 }, { 0, 0, 1, 0, 1, 0 }, { 0, 1, 1, 0, 0, 1 }, { 1, 1, 0, 1, 1, 1 },
+    //             { 1, 0, 0, 0, 1, 0 }, { 0, 1, 1, 1, 0, 0 } };
+    //     int[][] t1 = { { 1, 0, 0, 1, 1, 0 }, { 1, 0, 1, 0, 1, 0 }, { 0, 1, 1, 0, 1, 1 }, { 0, 0, 1, 0, 0, 0 },
+    //             { 1, 1, 0, 1, 1, 0 }, { 0, 1, 0, 0, 0, 0 } };
 
-        System.out.println(solution(g2, t2));
-        System.out.println(solution(g1, t1));
-    }
+    //     int[][] g2 = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 1, 1 } };
+    //     int[][] t2 = { { 1, 1, 1 }, { 1, 0, 0 }, { 0, 0, 0 } };
 
+    //     Assertions.assertEquals(14, solution(g1, t1));
+    //     Assertions.assertEquals(0, solution(g2, t2));
+    // }
 }
