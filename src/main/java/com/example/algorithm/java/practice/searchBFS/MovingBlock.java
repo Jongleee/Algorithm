@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class MovingBlock {
-    static class Robot {
+    class Robot {
         int x1;
         int x2;
         int y1;
@@ -22,33 +22,23 @@ public class MovingBlock {
         }
     }
 
-    public static int solution(int[][] board) {
+    boolean[][][] visited;
+
+    public int solution(int[][] board) {
         int answer = 0;
         Queue<Robot> q = new LinkedList<>();
         int[][] op = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
-        boolean[][][] visited = new boolean[board.length][board.length][2];
+        visited = new boolean[board.length][board.length][2];
 
         q.offer(new Robot(0, 0, 0, 1, 0, 0));
 
         while (!q.isEmpty()) {
-            Robot robot = q.peek();
-            q.poll();
+            Robot robot = q.poll();
 
-            if (robot.x1 < 0 || robot.x1 >= board.length || robot.y1 < 0 || robot.y1 >= board.length ||
-                    robot.x2 < 0 || robot.x2 >= board.length || robot.y2 < 0 || robot.y2 >= board.length) {
-                continue;
-            }
-
-            if (board[robot.x1][robot.y1] == 1 || board[robot.x2][robot.y2] == 1) {
-                continue;
-            }
-
-            if (visited[robot.x1][robot.y1][robot.vertical] &&
-                    visited[robot.x2][robot.y2][robot.vertical])
+            if (isValid(board, robot) || hasObstacle(board, robot) || visited(robot))
                 continue;
 
-            if ((robot.x1 == board.length - 1 && robot.y1 == board.length - 1) ||
-                    (robot.x2 == board.length - 1 && robot.y2 == board.length - 1)) {
+            if (isAtDestination(board, robot)) {
                 answer = robot.time;
                 break;
             }
@@ -56,7 +46,7 @@ public class MovingBlock {
             visited[robot.x1][robot.y1][robot.vertical] = true;
             visited[robot.x2][robot.y2][robot.vertical] = true;
 
-            nextCoordinate(q, op, robot);
+            updateCoordinate(q, op, robot);
 
             moving(board, q, robot);
         }
@@ -64,7 +54,26 @@ public class MovingBlock {
         return answer;
     }
 
-    private static void nextCoordinate(Queue<Robot> q, int[][] op, Robot item) {
+    private boolean visited(Robot robot) {
+        return visited[robot.x1][robot.y1][robot.vertical] &&
+                visited[robot.x2][robot.y2][robot.vertical];
+    }
+
+    private boolean isAtDestination(int[][] board, Robot robot) {
+        return (robot.x1 == board.length - 1 && robot.y1 == board.length - 1) ||
+                (robot.x2 == board.length - 1 && robot.y2 == board.length - 1);
+    }
+
+    private boolean hasObstacle(int[][] board, Robot robot) {
+        return board[robot.x1][robot.y1] == 1 || board[robot.x2][robot.y2] == 1;
+    }
+
+    private boolean isValid(int[][] board, Robot robot) {
+        return robot.x1 < 0 || robot.x1 >= board.length || robot.y1 < 0 || robot.y1 >= board.length ||
+                robot.x2 < 0 || robot.x2 >= board.length || robot.y2 < 0 || robot.y2 >= board.length;
+    }
+
+    private void updateCoordinate(Queue<Robot> q, int[][] op, Robot item) {
         for (int i = 0; i < op.length; i++) {
             int nextX1 = item.x1 + op[i][0];
             int nextY1 = item.y1 + op[i][1];
@@ -75,7 +84,7 @@ public class MovingBlock {
         }
     }
 
-    private static void moving(int[][] board, Queue<Robot> q, Robot item) {
+    private void moving(int[][] board, Queue<Robot> q, Robot item) {
         if (item.vertical == 1) {
             if (item.y1 - 1 >= 0 && board[item.x1][item.y1 - 1] == 0 && board[item.x2][item.y2 - 1] == 0) {
                 q.offer(new Robot(item.x1, item.y1, item.x1, item.y1 - 1, item.time + 1, 0));
@@ -102,8 +111,11 @@ public class MovingBlock {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution(new int[][]{{0, 0, 0, 1, 1},{0, 0, 0, 1, 0},{0, 1, 0, 1, 1},{1, 1, 0, 0, 1},{0, 0, 0, 0, 0}}));
-    }
-    //답 7
+    // @Test
+    // void 정답() {
+    //     int[][] board = { { 0, 0, 0, 1, 1 }, { 0, 0, 0, 1, 0 }, { 0, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1 },
+    //             { 0, 0, 0, 0, 0 } };
+
+    //     Assertions.assertEquals(7, solution(board));
+    // }
 }

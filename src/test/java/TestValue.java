@@ -1,172 +1,122 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    class Point implements Comparable<Point> {
-        int x;
-        int y;
+    class Robot {
+        int x1;
+        int x2;
+        int y1;
+        int y2;
+        int time;
+        int vertical;
 
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public int compareTo(Point o) {
-            if (this.x == o.x) {
-                return this.y - o.y;
-            }
-
-            return this.x - o.x;
+        Robot(int x1, int y1, int x2, int y2, int time, int v) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.time = time;
+            this.vertical = v;
         }
     }
 
-    private static final int[] dx = { -1, 0, 1, 0 };
-    private static final int[] dy = { 0, -1, 0, 1 };
+    boolean[][][] visited;
 
-    private int boardSize;
-    private List<List<Point>> empty;
-    private List<List<Point>> block;
-    private boolean[][] visited;
-
-    public int solution(int[][] gameBoard, int[][] table) {
-        empty = new ArrayList<>();
-        block = new ArrayList<>();
-        boardSize = gameBoard.length;
-        visited = new boolean[boardSize][boardSize];
-
-        init(gameBoard, table);
-
-        boolean[] visitedBoard = new boolean[empty.size()];
+    public int solution(int[][] board) {
         int answer = 0;
+        Queue<Robot> q = new LinkedList<>();
+        int[][] op = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        visited = new boolean[board.length][board.length][2];
 
-        for (List<Point> currentBlock : block) {
-            for (int j = 0; j < empty.size(); j++) {
-                List<Point> currentEmpty = empty.get(j);
-                if (currentEmpty.size() == currentBlock.size() && !visitedBoard[j]) {
-                    if (isRotate(currentEmpty, currentBlock)) {
-                        answer += currentBlock.size();
-                        visitedBoard[j] = true;
-                        break;
-                    }
-                }
+        q.offer(new Robot(0, 0, 0, 1, 0, 0));
+
+        while (!q.isEmpty()) {
+            Robot robot = q.poll();
+
+            if (isValid(board, robot) || hasObstacle(board, robot) || visited(robot))
+                continue;
+
+            if (isAtDestination(board, robot)) {
+                answer = robot.time;
+                break;
             }
+
+            visited[robot.x1][robot.y1][robot.vertical] = true;
+            visited[robot.x2][robot.y2][robot.vertical] = true;
+
+            updateCoordinate(q, op, robot);
+
+            moving(board, q, robot);
         }
 
         return answer;
     }
 
-    private void init(int[][] gameBoard, int[][] table) {
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                if (gameBoard[i][j] == 0 && !visited[i][j]) {
-                    empty.add(check(gameBoard, i, j, 0));
-                }
-            }
-        }
+    private boolean visited(Robot robot) {
+        return visited[robot.x1][robot.y1][robot.vertical] &&
+                visited[robot.x2][robot.y2][robot.vertical];
+    }
 
-        for (int i = 0; i < boardSize; i++) {
-            Arrays.fill(visited[i], false);
-        }
+    private boolean isAtDestination(int[][] board, Robot robot) {
+        return (robot.x1 == board.length - 1 && robot.y1 == board.length - 1) ||
+                (robot.x2 == board.length - 1 && robot.y2 == board.length - 1);
+    }
 
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                if (table[i][j] == 1 && !visited[i][j])
-                    block.add(check(table, i, j, 1));
-            }
+    private boolean hasObstacle(int[][] board, Robot robot) {
+        return board[robot.x1][robot.y1] == 1 || board[robot.x2][robot.y2] == 1;
+    }
+
+    private boolean isValid(int[][] board, Robot robot) {
+        return robot.x1 < 0 || robot.x1 >= board.length || robot.y1 < 0 || robot.y1 >= board.length ||
+                robot.x2 < 0 || robot.x2 >= board.length || robot.y2 < 0 || robot.y2 >= board.length;
+    }
+
+    private void updateCoordinate(Queue<Robot> q, int[][] op, Robot item) {
+        for (int i = 0; i < op.length; i++) {
+            int nextX1 = item.x1 + op[i][0];
+            int nextY1 = item.y1 + op[i][1];
+            int nextX2 = item.x2 + op[i][0];
+            int nextY2 = item.y2 + op[i][1];
+
+            q.offer(new Robot(nextX1, nextY1, nextX2, nextY2, item.time + 1, item.vertical));
         }
     }
 
-    public List<Point> check(int[][] board, int x, int y, int type) {
-        Queue<Point> q = new LinkedList<>();
-        ArrayList<Point> result = new ArrayList<>();
+    private void moving(int[][] board, Queue<Robot> q, Robot item) {
+        if (item.vertical == 1) {
+            if (item.y1 - 1 >= 0 && board[item.x1][item.y1 - 1] == 0 && board[item.x2][item.y2 - 1] == 0) {
+                q.offer(new Robot(item.x1, item.y1, item.x1, item.y1 - 1, item.time + 1, 0));
+                q.offer(new Robot(item.x2, item.y2, item.x2, item.y2 - 1, item.time + 1, 0));
+            }
 
-        q.add(new Point(x, y));
-        visited[x][y] = true;
+            if (item.y1 + 1 <= (board.length - 1) &&
+                    board[item.x1][item.y1 + 1] == 0 && board[item.x2][item.y2 + 1] == 0) {
+                q.offer(new Robot(item.x1, item.y1, item.x1, item.y1 + 1, item.time + 1, 0));
+                q.offer(new Robot(item.x2, item.y2, item.x2, item.y2 + 1, item.time + 1, 0));
+            }
+        } else {
+            if (item.x1 - 1 >= 0 && board[item.x1 - 1][item.y1] == 0 &&
+                    board[item.x2 - 1][item.y2] == 0) {
+                q.offer(new Robot(item.x1, item.y1, item.x1 - 1, item.y1, item.time + 1, 1));
+                q.offer(new Robot(item.x2, item.y2, item.x2 - 1, item.y2, item.time + 1, 1));
+            }
 
-        result.add(new Point(0, 0));
-
-        while (!q.isEmpty()) {
-            Point current = q.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int nx = current.x + dx[i];
-                int ny = current.y + dy[i];
-
-                if (nx >= 0 && nx < boardSize && ny >= 0 && ny < boardSize) {
-                    if (!visited[nx][ny] && board[nx][ny] == type) {
-                        q.add(new Point(nx, ny));
-                        visited[nx][ny] = true;
-                        result.add(new Point(nx - x, ny - y));
-                    }
-                }
-
+            if (item.x1 + 1 <= (board.length - 1) && board[item.x1 + 1][item.y1] == 0 &&
+                    board[item.x2 + 1][item.y2] == 0) {
+                q.offer(new Robot(item.x1, item.y1, item.x1 + 1, item.y1, item.time + 1, 1));
+                q.offer(new Robot(item.x2, item.y2, item.x2 + 1, item.y2, item.time + 1, 1));
             }
         }
-
-        Collections.sort(result);
-
-        return result;
-    }
-
-    public boolean isRotate(List<Point> empty, List<Point> block) {
-        for (int i = 0; i < 4; i++) {
-            int zeroX = block.get(0).x;
-            int zeroY = block.get(0).y;
-
-            for (int j = 0; j < block.size(); j++) {
-                block.get(j).x -= zeroX;
-                block.get(j).y -= zeroY;
-            }
-
-            boolean isCollect = true;
-
-            for (int j = 0; j < empty.size(); j++) {
-                Point emptyPoint = empty.get(j);
-                Point blockPoint = block.get(j);
-
-                if (emptyPoint.x != blockPoint.x || emptyPoint.y != blockPoint.y) {
-                    isCollect = false;
-                    break;
-                }
-            }
-
-            if (isCollect) {
-                return true;
-            } else {
-                for (int j = 0; j < block.size(); j++) {
-                    int temp = block.get(j).x;
-
-                    block.get(j).x = block.get(j).y;
-                    block.get(j).y = -temp;
-                }
-
-                Collections.sort(block);
-            }
-
-        }
-
-        return false;
     }
 
     @Test
     void 정답() {
-        int[][] g1 = { { 1, 1, 0, 0, 1, 0 }, { 0, 0, 1, 0, 1, 0 }, { 0, 1, 1, 0, 0, 1 }, { 1, 1, 0, 1, 1, 1 },
-                { 1, 0, 0, 0, 1, 0 }, { 0, 1, 1, 1, 0, 0 } };
-        int[][] t1 = { { 1, 0, 0, 1, 1, 0 }, { 1, 0, 1, 0, 1, 0 }, { 0, 1, 1, 0, 1, 1 }, { 0, 0, 1, 0, 0, 0 },
-                { 1, 1, 0, 1, 1, 0 }, { 0, 1, 0, 0, 0, 0 } };
+        int[][] board = { { 0, 0, 0, 1, 1 }, { 0, 0, 0, 1, 0 }, { 0, 1, 0, 1, 1 }, { 1, 1, 0, 0, 1 },
+                { 0, 0, 0, 0, 0 } };
 
-        int[][] g2 = { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 1, 1 } };
-        int[][] t2 = { { 1, 1, 1 }, { 1, 0, 0 }, { 0, 0, 0 } };
-
-        Assertions.assertEquals(14, solution(g1, t1));
-        Assertions.assertEquals(0, solution(g2, t2));
+        Assertions.assertEquals(7, solution(board));
     }
 }
