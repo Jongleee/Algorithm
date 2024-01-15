@@ -2,27 +2,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[] money) {
-        int n = money.length;
-        int[] dp1 = new int[n];
-        int[] dp2 = new int[n];
+    private int count;
 
-        dp1[0] = money[0];
-        dp1[1] = dp1[0];
-        dp2[0] = 0;
-        dp2[1] = money[1];
-        for (int i = 2; i < n; i++) {
-            dp1[i] = Math.max(dp1[i - 2] + money[i], dp1[i - 1]);
-            dp2[i] = Math.max(dp2[i - 2] + money[i], dp2[i - 1]);
+    public int solution(int n) {
+        count = 0;
+        dfs(0, 0, n);
+        return count;
+    }
+
+    public void dfs(int left, int right, int n) {
+        if (left > n || right > n || left < right) {
+            return;
         }
 
-        return Math.max(dp1[n - 2], dp2[n - 1]);
+        if (left == n && right == n) {
+            count++;
+            return;
+        }
+
+        dfs(left + 1, right, n);
+        dfs(left, right + 1, n);
     }
 
     @Test
     void 정답() {
-        int[] money = { 1, 2, 3, 1 };
-
-        Assertions.assertEquals(4, solution(money));
+        Assertions.assertEquals(2, solution(2));
+        Assertions.assertEquals(5, solution(3));
     }
 }
