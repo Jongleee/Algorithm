@@ -2,31 +2,35 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    private int count;
+    public int solution(int[][] matrixSizes) {
+        int numMatrices = matrixSizes.length;
+        int[][] dp = new int[numMatrices][numMatrices];
 
-    public int solution(int n) {
-        count = 0;
-        dfs(0, 0, n);
-        return count;
-    }
-
-    public void dfs(int left, int right, int n) {
-        if (left > n || right > n || left < right) {
-            return;
+        for (int i = 0; i < numMatrices; i++) {
+            for (int j = 0; j < numMatrices; j++) {
+                dp[i][j] = Integer.MAX_VALUE;
+            }
         }
 
-        if (left == n && right == n) {
-            count++;
-            return;
+        for (int len = 0; len < numMatrices; len++) {
+            for (int start = 0; start < numMatrices - len; start++) {
+                int end = start + len;
+                if (start == end) {
+                    dp[start][end] = 0;
+                } else {
+                    for (int k = start; k < end; k++) {
+                        dp[start][end] = Math.min(dp[start][end], dp[start][k] + dp[k + 1][end] +
+                                matrixSizes[start][0] * matrixSizes[k][1] * matrixSizes[end][1]);
+                    }
+                }
+            }
         }
 
-        dfs(left + 1, right, n);
-        dfs(left, right + 1, n);
+        return dp[0][numMatrices - 1];
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(2, solution(2));
-        Assertions.assertEquals(5, solution(3));
+        Assertions.assertEquals(270, solution(new int[][] { { 5, 3 }, { 3, 10 }, { 10, 6 } }));
     }
 }
