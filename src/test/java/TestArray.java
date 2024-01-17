@@ -1,60 +1,78 @@
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private int[] answer;
+    private final int max = 32421;
+    private int[][] dp;
+    private ArrayList<Integer> score;
+    private ArrayList<Integer> multiScore;
 
-    public int[] solution(long[] numbers) {
-        answer = new int[numbers.length];
-        for (int i = 0; i < numbers.length; i++) {
-            answer[i] = 1;
-            long number = numbers[i];
-            int numberLength = (int) Math.floor(Math.log(number) / Math.log(2)) + 1;
-            int exp = 1;
-            int treeLength = 0;
-            while (treeLength < numberLength) {
-                treeLength = (int) Math.pow(2, exp++) - 1;
-            }
-
-            boolean[] node = new boolean[treeLength];
-            int index = treeLength - 1;
-
-            while (number > 0) {
-                long div = number / 2;
-                long mod = number % 2;
-                number = div;
-                node[index--] = (mod == 1);
-
-                if (div == 0)
-                    break;
-            }
-
-            solve(node, 0, treeLength - 1, false, i);
-        }
-        return answer;
+    public int[] solution(int target) {
+        dp = new int[target + 1][2];
+        initialize(target);
+        return solve(target);
     }
 
-    private void solve(boolean[] node, int s, int e, boolean isEnd, int i) {
-        int mid = (s + e) / 2;
-        boolean currentNode = node[mid];
+    private void initialize(int t) {
+        dp = new int[t + 1][2];
 
-        if (isEnd && currentNode) {
-            answer[i] = 0;
-            return;
+        for (int i = 1; i <= t; i++)
+            dp[i][0] = max;
+
+        score = new ArrayList<>();
+        score.add(50);
+        for (int i = 1; i < 21; i++)
+            score.add(i);
+
+        multiScore = new ArrayList<>();
+        for (int i = 1; i < 21; i++) {
+            for (int j = 2; j < 4; j++) {
+                if (i * j <= 20)
+                    continue;
+                multiScore.add(i * j);
+            }
+        }
+    }
+
+    private void setMin(int[] a, int[] b) {
+        if (a[0] > b[0] || (a[0] == b[0] && a[1] < b[1])) {
+            a[0] = b[0];
+            a[1] = b[1];
+        }
+    }
+
+    private int[] solve(int remain) {
+        if (remain == 0)
+            return new int[] { 0, 0 };
+
+        if (remain < 0)
+            return new int[] { max, max };
+
+        if (dp[remain][0] != max)
+            return dp[remain];
+
+        int[] result = new int[] { max, max };
+
+        for (int s : score) {
+            int[] temp = solve(remain - s);
+            setMin(result, new int[] { temp[0] + 1, temp[1] + 1 });
         }
 
-        if (s != e) {
-            solve(node, s, mid - 1, !currentNode, i);
-            solve(node, mid + 1, e, !currentNode, i);
+        for (int s : multiScore) {
+            int[] temp = solve(remain - s);
+            setMin(result, new int[] { temp[0] + 1, temp[1] });
         }
+
+        dp[remain][0] = result[0];
+        dp[remain][1] = result[1];
+        return dp[remain];
     }
 
     @Test
     void 정답() {
-        long[] numbers1 = { 7, 42, 5 };
-        long[] numbers2 = { 63, 111, 95 };
-        int[] result = { 1, 1, 0 };
-        Assertions.assertArrayEquals(result, solution(numbers1));
-        Assertions.assertArrayEquals(result, solution(numbers2));
+        Assertions.assertArrayEquals(new int[] { 1, 0 }, solution(24));
+        Assertions.assertArrayEquals(new int[] { 2, 2 }, solution(58));
     }
 }
