@@ -1,22 +1,31 @@
 package com.example.algorithm.java.practice.dynamicProgramming;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Countdown {
+    private static final int MAX = 32421;
+    private int[][] dp;
+    private ArrayList<Integer> score;
+    private ArrayList<Integer> multiScore;
 
-    private static ArrayList<Integer> score = new ArrayList<>();
-    private static ArrayList<Integer> multiScore = new ArrayList<>();
-    private static int max = 32421;
-    private static int[][] dp;
+    public int[] solution(int target) {
+        dp = new int[target + 1][2];
+        initialize(target);
+        return solve(target);
+    }
 
-    public static void init(int t) {
+    private void initialize(int t) {
+        dp = new int[t + 1][2];
+
         for (int i = 1; i <= t; i++)
-            dp[i][0] = max;
+            dp[i][0] = MAX;
 
+        score = new ArrayList<>();
         score.add(50);
         for (int i = 1; i < 21; i++)
             score.add(i);
+
+        multiScore = new ArrayList<>();
         for (int i = 1; i < 21; i++) {
             for (int j = 2; j < 4; j++) {
                 if (i * j <= 20)
@@ -26,30 +35,32 @@ public class Countdown {
         }
     }
 
-    public static void setMin(int[] a, int[] b) {
-        if (a[0] > b[0]) {
+    private void setMin(int[] a, int[] b) {
+        if (a[0] > b[0] || (a[0] == b[0] && a[1] < b[1])) {
             a[0] = b[0];
             a[1] = b[1];
-        } else if (a[0] == b[0] && a[1] < b[1])
-            a[1] = b[1];
+        }
     }
 
-    public static int[] solve(int remain) {
+    private int[] solve(int remain) {
         if (remain == 0)
             return new int[] { 0, 0 };
+
         if (remain < 0)
-            return new int[] { max, max };
-        if (dp[remain][0] != max)
+            return new int[] { MAX, MAX };
+
+        if (dp[remain][0] != MAX)
             return dp[remain];
 
-        int[] result = new int[] { max, max };
+        int[] result = new int[] { MAX, MAX };
 
-        for (int i = 0; i < score.size(); i++) {
-            int[] temp = solve(remain - score.get(i));
+        for (int s : score) {
+            int[] temp = solve(remain - s);
             setMin(result, new int[] { temp[0] + 1, temp[1] + 1 });
         }
-        for (int i = 0; i < multiScore.size(); i++) {
-            int[] temp = solve(remain - multiScore.get(i));
+
+        for (int s : multiScore) {
+            int[] temp = solve(remain - s);
             setMin(result, new int[] { temp[0] + 1, temp[1] });
         }
 
@@ -58,14 +69,9 @@ public class Countdown {
         return dp[remain];
     }
 
-    public static int[] solution(int target) {
-        dp = new int[target + 1][2];
-        init(target);
-        return solve(target);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(58)));
-        // 2,2
-    }
+    // @Test
+    // void 정답() {
+    //     Assertions.assertArrayEquals(new int[] { 1, 0 }, solution(24));
+    //     Assertions.assertArrayEquals(new int[] { 2, 2 }, solution(58));
+    // }
 }
