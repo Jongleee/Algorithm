@@ -1,78 +1,131 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    private final int max = 32421;
-    private int[][] dp;
-    private ArrayList<Integer> score;
-    private ArrayList<Integer> multiScore;
+    static final int MAX = 20000001;
+    ArrayList<ArrayList<Edge>> graph;
 
-    public int[] solution(int target) {
-        dp = new int[target + 1][2];
-        initialize(target);
-        return solve(target);
+    class Edge implements Comparable<Edge> {
+        int index;
+        int intensity;
+
+        Edge(int index, int intensity) {
+            this.index = index;
+            this.intensity = intensity;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return this.intensity - o.intensity;
+        }
     }
 
-    private void initialize(int t) {
-        dp = new int[t + 1][2];
+    public int[] solution(int n, int[][] paths, int[] gates, int[] summits) {
+        graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
+        }
 
-        for (int i = 1; i <= t; i++)
-            dp[i][0] = max;
+        buildGraph(paths, gates, summits);
 
-        score = new ArrayList<>();
-        score.add(50);
-        for (int i = 1; i < 21; i++)
-            score.add(i);
+        int[] intensity = new int[n + 1];
+        Arrays.fill(intensity, MAX);
 
-        multiScore = new ArrayList<>();
-        for (int i = 1; i < 21; i++) {
-            for (int j = 2; j < 4; j++) {
-                if (i * j <= 20)
-                    continue;
-                multiScore.add(i * j);
+        return dijkstra(intensity, gates, summits);
+    }
+
+    private void buildGraph(int[][] paths, int[] gates, int[] summits) {
+        for (int[] path : paths) {
+            int from = path[0];
+            int to = path[1];
+            int weight = path[2];
+
+            if (isGate(from, gates) || isSummit(to, summits)) {
+                graph.get(from).add(new Edge(to, weight));
+            } else if (isGate(to, gates) || isSummit(from, summits)) {
+                graph.get(to).add(new Edge(from, weight));
+            } else {
+                graph.get(from).add(new Edge(to, weight));
+                graph.get(to).add(new Edge(from, weight));
             }
         }
     }
 
-    private void setMin(int[] a, int[] b) {
-        if (a[0] > b[0] || (a[0] == b[0] && a[1] < b[1])) {
-            a[0] = b[0];
-            a[1] = b[1];
+    int[] dijkstra(int[] intensity, int[] gates, int[] summits) {
+        PriorityQueue<Edge> pq = new PriorityQueue<>();
+
+        initializeDijkstra(intensity, pq, gates);
+
+        while (!pq.isEmpty()) {
+            Edge now = pq.poll();
+            if (now.intensity > intensity[now.index])
+                continue;
+
+            ArrayList<Edge> edges = graph.get(now.index);
+            for (Edge edge : edges) {
+                updateIntensityAndQueue(intensity, pq, now, edge);
+            }
+        }
+
+        return findMinIntensityAndIndex(intensity, summits);
+    }
+
+    private void initializeDijkstra(int[] intensity, PriorityQueue<Edge> pq, int[] gates) {
+        for (int gate : gates) {
+            pq.offer(new Edge(gate, 0));
+            intensity[gate] = 0;
         }
     }
 
-    private int[] solve(int remain) {
-        if (remain == 0)
-            return new int[] { 0, 0 };
-
-        if (remain < 0)
-            return new int[] { max, max };
-
-        if (dp[remain][0] != max)
-            return dp[remain];
-
-        int[] result = new int[] { max, max };
-
-        for (int s : score) {
-            int[] temp = solve(remain - s);
-            setMin(result, new int[] { temp[0] + 1, temp[1] + 1 });
+    private void updateIntensityAndQueue(int[] intensity, PriorityQueue<Edge> pq, Edge now, Edge edge) {
+        int intensityNow = (edge.intensity == Integer.MAX_VALUE) ? now.intensity
+                : Math.max(edge.intensity, now.intensity);
+        if (intensityNow < intensity[edge.index]) {
+            intensity[edge.index] = intensityNow;
+            pq.offer(new Edge(edge.index, intensityNow));
         }
+    }
 
-        for (int s : multiScore) {
-            int[] temp = solve(remain - s);
-            setMin(result, new int[] { temp[0] + 1, temp[1] });
+    private int[] findMinIntensityAndIndex(int[] intensity, int[] summits) {
+        int index = -1;
+        int minIntensity = Integer.MAX_VALUE;
+        Arrays.sort(summits);
+        for (int summit : summits) {
+            if (intensity[summit] < minIntensity) {
+                minIntensity = intensity[summit];
+                index = summit;
+            }
         }
+        return new int[] { index, minIntensity };
+    }
 
-        dp[remain][0] = result[0];
-        dp[remain][1] = result[1];
-        return dp[remain];
+    private boolean isSummit(int index, int[] summits) {
+        for (int summit : summits) {
+            if (index == summit)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isGate(int index, int[] gates) {
+        for (int gate : gates) {
+            if (index == gate)
+                return true;
+        }
+        return false;
     }
 
     @Test
     void 정답() {
-        Assertions.assertArrayEquals(new int[] { 1, 0 }, solution(24));
-        Assertions.assertArrayEquals(new int[] { 2, 2 }, solution(58));
+        int[][] paths = { { 1, 2, 3 }, { 2, 3, 5 }, { 2, 4, 2 }, { 2, 5, 4 },
+                { 3, 4, 4 }, { 4, 5, 3 }, { 4, 6, 1 }, { 5, 6, 1 } };
+        int[] gates = { 1, 3 };
+        int[] summits = { 5 };
+
+        Assertions.assertArrayEquals(new int[] { 5, 3 }, solution(6, paths, gates, summits));
     }
 }
