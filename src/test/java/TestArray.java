@@ -1,131 +1,104 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.Comparator;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    static final int MAX = 20000001;
-    ArrayList<ArrayList<Edge>> graph;
+    class TreeNode {
+        int x;
+        int y;
+        int value;
+        TreeNode left;
+        TreeNode right;
 
-    class Edge implements Comparable<Edge> {
-        int index;
-        int intensity;
-
-        Edge(int index, int intensity) {
-            this.index = index;
-            this.intensity = intensity;
-        }
-
-        @Override
-        public int compareTo(Edge o) {
-            return this.intensity - o.intensity;
+        public TreeNode(int x, int y, int value) {
+            this.x = x;
+            this.y = y;
+            this.value = value;
+            this.left = null;
+            this.right = null;
         }
     }
 
-    public int[] solution(int n, int[][] paths, int[] gates, int[] summits) {
-        graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
-        }
+    int[][] result;
+    int idx;
 
-        buildGraph(paths, gates, summits);
+    public int[][] solution(int[][] nodeinfo) {
+        TreeNode[] nodes = buildNodes(nodeinfo);
 
-        int[] intensity = new int[n + 1];
-        Arrays.fill(intensity, MAX);
-
-        return dijkstra(intensity, gates, summits);
-    }
-
-    private void buildGraph(int[][] paths, int[] gates, int[] summits) {
-        for (int[] path : paths) {
-            int from = path[0];
-            int to = path[1];
-            int weight = path[2];
-
-            if (isGate(from, gates) || isSummit(to, summits)) {
-                graph.get(from).add(new Edge(to, weight));
-            } else if (isGate(to, gates) || isSummit(from, summits)) {
-                graph.get(to).add(new Edge(from, weight));
-            } else {
-                graph.get(from).add(new Edge(to, weight));
-                graph.get(to).add(new Edge(from, weight));
+        Arrays.sort(nodes, new Comparator<TreeNode>() {
+            @Override
+            public int compare(TreeNode n1, TreeNode n2) {
+                if (n1.y == n2.y)
+                    return n1.x - n2.x;
+                else
+                    return n2.y - n1.y;
             }
+        });
+        TreeNode root = buildBinaryTree(nodes);
+
+        result = new int[2][nodeinfo.length];
+        idx = 0;
+        preorderTraversal(root);
+        idx = 0;
+        postorderTraversal(root);
+
+        return result;
+    }
+
+    private TreeNode[] buildNodes(int[][] nodeinfo) {
+        TreeNode[] nodes = new TreeNode[nodeinfo.length];
+        for (int i = 0; i < nodeinfo.length; i++) {
+            nodes[i] = new TreeNode(nodeinfo[i][0], nodeinfo[i][1], i + 1);
+        }
+        return nodes;
+    }
+
+    private TreeNode buildBinaryTree(TreeNode[] nodes) {
+        TreeNode root = nodes[0];
+        for (int i = 1; i < nodes.length; i++) {
+            insertNode(root, nodes[i]);
+        }
+        return root;
+    }
+
+    private void insertNode(TreeNode parent, TreeNode child) {
+        if (parent.x > child.x) {
+            if (parent.left == null)
+                parent.left = child;
+            else
+                insertNode(parent.left, child);
+        } else {
+            if (parent.right == null)
+                parent.right = child;
+            else
+                insertNode(parent.right, child);
         }
     }
 
-    int[] dijkstra(int[] intensity, int[] gates, int[] summits) {
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-
-        initializeDijkstra(intensity, pq, gates);
-
-        while (!pq.isEmpty()) {
-            Edge now = pq.poll();
-            if (now.intensity > intensity[now.index])
-                continue;
-
-            ArrayList<Edge> edges = graph.get(now.index);
-            for (Edge edge : edges) {
-                updateIntensityAndQueue(intensity, pq, now, edge);
-            }
-        }
-
-        return findMinIntensityAndIndex(intensity, summits);
-    }
-
-    private void initializeDijkstra(int[] intensity, PriorityQueue<Edge> pq, int[] gates) {
-        for (int gate : gates) {
-            pq.offer(new Edge(gate, 0));
-            intensity[gate] = 0;
+    private void preorderTraversal(TreeNode root) {
+        if (root != null) {
+            result[0][idx++] = root.value;
+            preorderTraversal(root.left);
+            preorderTraversal(root.right);
         }
     }
 
-    private void updateIntensityAndQueue(int[] intensity, PriorityQueue<Edge> pq, Edge now, Edge edge) {
-        int intensityNow = (edge.intensity == Integer.MAX_VALUE) ? now.intensity
-                : Math.max(edge.intensity, now.intensity);
-        if (intensityNow < intensity[edge.index]) {
-            intensity[edge.index] = intensityNow;
-            pq.offer(new Edge(edge.index, intensityNow));
+    private void postorderTraversal(TreeNode root) {
+        if (root != null) {
+            postorderTraversal(root.left);
+            postorderTraversal(root.right);
+            result[1][idx++] = root.value;
         }
-    }
-
-    private int[] findMinIntensityAndIndex(int[] intensity, int[] summits) {
-        int index = -1;
-        int minIntensity = Integer.MAX_VALUE;
-        Arrays.sort(summits);
-        for (int summit : summits) {
-            if (intensity[summit] < minIntensity) {
-                minIntensity = intensity[summit];
-                index = summit;
-            }
-        }
-        return new int[] { index, minIntensity };
-    }
-
-    private boolean isSummit(int index, int[] summits) {
-        for (int summit : summits) {
-            if (index == summit)
-                return true;
-        }
-        return false;
-    }
-
-    private boolean isGate(int index, int[] gates) {
-        for (int gate : gates) {
-            if (index == gate)
-                return true;
-        }
-        return false;
     }
 
     @Test
     void 정답() {
-        int[][] paths = { { 1, 2, 3 }, { 2, 3, 5 }, { 2, 4, 2 }, { 2, 5, 4 },
-                { 3, 4, 4 }, { 4, 5, 3 }, { 4, 6, 1 }, { 5, 6, 1 } };
-        int[] gates = { 1, 3 };
-        int[] summits = { 5 };
+        int[][] nodeinfo = { { 5, 3 }, { 11, 5 }, { 13, 3 }, { 3, 5 },
+                { 6, 1 }, { 1, 3 }, { 8, 6 }, { 7, 2 }, { 2, 2 } };
+        int[][] result = { { 7, 4, 6, 9, 1, 8, 5, 2, 3 }, { 9, 6, 5, 8, 1, 4, 3, 2, 7 } };
 
-        Assertions.assertArrayEquals(new int[] { 5, 3 }, solution(6, paths, gates, summits));
+        Assertions.assertArrayEquals(result, solution(nodeinfo));
     }
 }
