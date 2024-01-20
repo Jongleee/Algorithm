@@ -4,19 +4,19 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class FindingPathGame {
-    public class Node {
+    class TreeNode {
         int x;
         int y;
         int value;
-        Node left;
-        Node right;
+        TreeNode left;
+        TreeNode right;
 
-        public Node(int x, int y, int value, Node left, Node right) {
+        public TreeNode(int x, int y, int value) {
             this.x = x;
             this.y = y;
             this.value = value;
-            this.left = left;
-            this.right = right;
+            this.left = null;
+            this.right = null;
         }
     }
 
@@ -24,54 +24,80 @@ public class FindingPathGame {
     int idx;
 
     public int[][] solution(int[][] nodeinfo) {
-        Node[] node = new Node[nodeinfo.length];
-        for (int i = 0; i < nodeinfo.length; i++) {
-            node[i] = new Node(nodeinfo[i][0], nodeinfo[i][1], i + 1, null, null);
-        }
-        Arrays.sort(node, new Comparator<Node>() {
+        TreeNode[] nodes = buildNodes(nodeinfo);
+
+        Arrays.sort(nodes, new Comparator<TreeNode>() {
             @Override
-            public int compare(Node n1, Node n2) {
-                if (n1.y == n2.y) return n1.x - n2.x;
-                else return n2.y - n1.y;
+            public int compare(TreeNode n1, TreeNode n2) {
+                if (n1.y == n2.y)
+                    return n1.x - n2.x;
+                else
+                    return n2.y - n1.y;
             }
         });
-
-        Node root = node[0];
-        for (int i = 1; i < node.length; i++) {
-            insertNode(root, node[i]);
-        }
+        TreeNode root = buildBinaryTree(nodes);
 
         result = new int[2][nodeinfo.length];
         idx = 0;
-        preorder(root); //전위 순회
+        preorderTraversal(root);
         idx = 0;
-        postorder(root); //후위 순회
+        postorderTraversal(root);
+
         return result;
     }
 
-    public void insertNode(Node parent, Node child) {
+    private TreeNode[] buildNodes(int[][] nodeinfo) {
+        TreeNode[] nodes = new TreeNode[nodeinfo.length];
+        for (int i = 0; i < nodeinfo.length; i++) {
+            nodes[i] = new TreeNode(nodeinfo[i][0], nodeinfo[i][1], i + 1);
+        }
+        return nodes;
+    }
+
+    private TreeNode buildBinaryTree(TreeNode[] nodes) {
+        TreeNode root = nodes[0];
+        for (int i = 1; i < nodes.length; i++) {
+            insertNode(root, nodes[i]);
+        }
+        return root;
+    }
+
+    private void insertNode(TreeNode parent, TreeNode child) {
         if (parent.x > child.x) {
-            if (parent.left == null) parent.left = child;
-            else insertNode(parent.left, child);
+            if (parent.left == null)
+                parent.left = child;
+            else
+                insertNode(parent.left, child);
         } else {
-            if (parent.right == null) parent.right = child;
-            else insertNode(parent.right, child);
+            if (parent.right == null)
+                parent.right = child;
+            else
+                insertNode(parent.right, child);
         }
     }
 
-    public void preorder(Node root) {
+    private void preorderTraversal(TreeNode root) {
         if (root != null) {
             result[0][idx++] = root.value;
-            preorder(root.left);
-            preorder(root.right);
+            preorderTraversal(root.left);
+            preorderTraversal(root.right);
         }
     }
 
-    public void postorder(Node root) {
+    private void postorderTraversal(TreeNode root) {
         if (root != null) {
-            postorder(root.left);
-            postorder(root.right);
+            postorderTraversal(root.left);
+            postorderTraversal(root.right);
             result[1][idx++] = root.value;
         }
     }
+
+    // @Test
+    // void 정답() {
+    //     int[][] nodeinfo = { { 5, 3 }, { 11, 5 }, { 13, 3 }, { 3, 5 },
+    //             { 6, 1 }, { 1, 3 }, { 8, 6 }, { 7, 2 }, { 2, 2 } };
+    //     int[][] result = { { 7, 4, 6, 9, 1, 8, 5, 2, 3 }, { 9, 6, 5, 8, 1, 4, 3, 2, 7 } };
+
+    //     Assertions.assertArrayEquals(result, solution(nodeinfo));
+    // }
 }
