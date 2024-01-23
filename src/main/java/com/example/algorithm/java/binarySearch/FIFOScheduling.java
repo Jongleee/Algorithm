@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.binarySearch;
+package com.example.algorithm.java.binarySearch;
 
 public class FIFOScheduling {
     public int solution(int n, int[] cores) {
