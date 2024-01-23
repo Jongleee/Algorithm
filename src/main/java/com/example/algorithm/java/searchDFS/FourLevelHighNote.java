@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.searchDFS;
+package com.example.algorithm.java.searchDFS;
 
 public class FourLevelHighNote {
     public int solution(int n) {

@@ -1,27 +1,26 @@
 package com.example.algorithm.java.bruteForce;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class VowelDictionary {
-    private List<String> dictionary;
-    private final String[] alphabetArr = { "A", "E", "I", "O", "U" };
-
     public int solution(String word) {
-        dictionary = new ArrayList<>();
-        generateDictionary("");
-        return dictionary.indexOf(word);
-    }
+        int answer = 0;
+        int[] lengths = { 781, 156, 31, 6, 1 };
+        String vowels = "AEIOU";
 
-    private void generateDictionary(String currentWord) {
-        dictionary.add(currentWord);
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            int index = vowels.indexOf(ch) + 1;
 
-        if (currentWord.length() >= alphabetArr.length) {
-            return;
+            answer += (index - 1) * lengths[i] + 1;
         }
 
-        for (String alphabet : alphabetArr) {
-            generateDictionary(currentWord + alphabet);
-        }
+        return answer;
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(6, solution("AAAAE"));
+    //     Assertions.assertEquals(10, solution("AAAE"));
+    //     Assertions.assertEquals(1563, solution("I"));
+    //     Assertions.assertEquals(1189, solution("EIO"));
+    // }
 }

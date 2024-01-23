@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.searchBFS;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.util.LinkedList;
 import java.util.Queue;
