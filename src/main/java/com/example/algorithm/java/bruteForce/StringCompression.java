@@ -1,28 +1,43 @@
 package com.example.algorithm.java.bruteForce;
 
 public class StringCompression {
-    public static int solution(String s) {
+    public int solution(String s) {
         int answer = s.length();
+
         for (int i = 1; i <= s.length() / 2; i++) {
             int zipLevel = 1;
-            String zipStr = s.substring(0, i);
             StringBuilder result = new StringBuilder();
+            String zipStr = s.substring(0, i);
+
             for (int j = i; j <= s.length(); j += i) {
-                String next = j + i > s.length() ? s.substring(j) : s.substring(j, j + i);
+                String next = (j + i > s.length()) ? s.substring(j) : s.substring(j, j + i);
+
                 if (zipStr.equals(next)) {
                     zipLevel++;
                 } else {
-                    result.append(zipLevel > 1 ? Integer.toString(zipLevel) : "").append(zipStr);
+                    appendCompressed(result, zipLevel, zipStr);
                     zipStr = next;
                     zipLevel = 1;
                 }
             }
-            result.append(zipStr);
+
+            appendCompressed(result, zipLevel, zipStr);
             answer = Math.min(answer, result.length());
         }
+
         return answer;
     }
-    public static void main(String[] args) {
-        System.out.println(solution("abcabcabcabcdededededede"));
+
+    private void appendCompressed(StringBuilder result, int zipLevel, String zipStr) {
+        result.append((zipLevel > 1) ? Integer.toString(zipLevel) : "").append(zipStr);
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(7, solution("aabbaccc"));
+    //     Assertions.assertEquals(9, solution("ababcdcdababcdcd"));
+    //     Assertions.assertEquals(8, solution("abcabcdede"));
+    //     Assertions.assertEquals(14, solution("abcabcabcabcdededededede"));
+    //     Assertions.assertEquals(17, solution("xababcdcdababcdcd"));
+    // }
 }
