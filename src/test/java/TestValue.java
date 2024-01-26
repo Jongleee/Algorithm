@@ -1,44 +1,73 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(String s) {
-        int answer = s.length();
+    public int solution(int[] picks, String[] minerals) {
+        int answer = 0;
+        int num = picks[0] + picks[1] + picks[2];
+        int[][] section = new int[minerals.length / 5 + 1][3];
 
-        for (int i = 1; i <= s.length() / 2; i++) {
-            int zipLevel = 1;
-            StringBuilder result = new StringBuilder();
-            String zipStr = s.substring(0, i);
-
-            for (int j = i; j <= s.length(); j += i) {
-                String next = (j + i > s.length()) ? s.substring(j) : s.substring(j, j + i);
-
-                if (zipStr.equals(next)) {
-                    zipLevel++;
-                } else {
-                    appendCompressed(result, zipLevel, zipStr);
-                    zipStr = next;
-                    zipLevel = 1;
-                }
+        for (int i = 0; i < minerals.length && num > 0; i++) {
+            int index = i / 5;
+            updateSection(section[index], minerals[i]);
+            if (i % 5 == 4) {
+                num--;
             }
+        }
 
-            appendCompressed(result, zipLevel, zipStr);
-            answer = Math.min(answer, result.length());
+        Arrays.sort(section, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o2[2] - o1[2];
+            }
+        });
+
+        int pick = 0;
+        for (int[] arr : section) {
+            while (pick < 3 && picks[pick] == 0) {
+                pick++;
+            }
+            if (pick == 3) {
+                break;
+            }
+            picks[pick]--;
+            answer += arr[pick];
         }
 
         return answer;
     }
 
-    private void appendCompressed(StringBuilder result, int zipLevel, String zipStr) {
-        result.append((zipLevel > 1) ? Integer.toString(zipLevel) : "").append(zipStr);
+    private void updateSection(int[] section, String mineral) {
+        switch (mineral.charAt(0)) {
+            case 'd':
+                section[0]++;
+                section[1] += 5;
+                section[2] += 25;
+                break;
+            case 'i':
+                section[0]++;
+                section[1]++;
+                section[2] += 5;
+                break;
+            default:
+                section[0]++;
+                section[1]++;
+                section[2]++;
+        }
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(7, solution("aabbaccc"));
-        Assertions.assertEquals(9, solution("ababcdcdababcdcd"));
-        Assertions.assertEquals(8, solution("abcabcdede"));
-        Assertions.assertEquals(14, solution("abcabcabcabcdededededede"));
-        Assertions.assertEquals(17, solution("xababcdcdababcdcd"));
+        int[] picks1 = { 1, 3, 2 };
+        String[] minerals1 = { "diamond", "diamond", "diamond", "iron", "iron", "diamond", "iron", "stone" };
+        int[] picks2 = { 0, 1, 1 };
+        String[] minerals2 = { "diamond", "diamond", "diamond", "diamond", "diamond", "iron", "iron", "iron", "iron",
+                "iron", "diamond" };
+
+        Assertions.assertEquals(12, solution(picks1, minerals1));
+        Assertions.assertEquals(50, solution(picks2, minerals2));
     }
 }
