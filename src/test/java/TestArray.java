@@ -1,104 +1,70 @@
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    class TreeNode {
-        int x;
-        int y;
-        int value;
-        TreeNode left;
-        TreeNode right;
+    public int[] solution(String[] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length();
 
-        public TreeNode(int x, int y, int value) {
-            this.x = x;
-            this.y = y;
-            this.value = value;
-            this.left = null;
-            this.right = null;
-        }
-    }
+        boolean[][][] visited = new boolean[rows][cols][4];
+        List<Integer> distances = new ArrayList<>();
 
-    int[][] result;
-    int idx;
+        int[] directionsRow = { -1, 0, 1, 0 };
+        int[] directionsCol = { 0, -1, 0, 1 };
 
-    public int[][] solution(int[][] nodeinfo) {
-        TreeNode[] nodes = buildNodes(nodeinfo);
-
-        Arrays.sort(nodes, new Comparator<TreeNode>() {
-            @Override
-            public int compare(TreeNode n1, TreeNode n2) {
-                if (n1.y == n2.y)
-                    return n1.x - n2.x;
-                else
-                    return n2.y - n1.y;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                for (int dir = 0; dir < 4; dir++) {
+                    if (!visited[row][col][dir]) {
+                        int distance = explore(grid, row, col, dir, visited, directionsRow, directionsCol);
+                        distances.add(distance);
+                    }
+                }
             }
-        });
-        TreeNode root = buildBinaryTree(nodes);
+        }
 
-        result = new int[2][nodeinfo.length];
-        idx = 0;
-        preorderTraversal(root);
-        idx = 0;
-        postorderTraversal(root);
-
-        return result;
+        return distances.stream().sorted().mapToInt(Integer::intValue).toArray();
     }
 
-    private TreeNode[] buildNodes(int[][] nodeinfo) {
-        TreeNode[] nodes = new TreeNode[nodeinfo.length];
-        for (int i = 0; i < nodeinfo.length; i++) {
-            nodes[i] = new TreeNode(nodeinfo[i][0], nodeinfo[i][1], i + 1);
+    private int explore(String[] grid, int row, int col, int dir, boolean[][][] visited, int[] directionsRow,
+            int[] directionsCol) {
+        int distance = 0;
+        while (!visited[row][col][dir]) {
+            distance++;
+            visited[row][col][dir] = true;
+
+            char cell = grid[row].charAt(col);
+            dir = updateDirection(cell, dir);
+
+            row = (row + directionsRow[dir] + grid.length) % grid.length;
+            col = (col + directionsCol[dir] + grid[0].length()) % grid[0].length();
         }
-        return nodes;
+        return distance;
     }
 
-    private TreeNode buildBinaryTree(TreeNode[] nodes) {
-        TreeNode root = nodes[0];
-        for (int i = 1; i < nodes.length; i++) {
-            insertNode(root, nodes[i]);
+    private int updateDirection(char cell, int dir) {
+        if (cell == 'L') {
+            dir = (dir + 3) % 4;
+        } else if (cell == 'R') {
+            dir = (dir + 1) % 4;
         }
-        return root;
-    }
-
-    private void insertNode(TreeNode parent, TreeNode child) {
-        if (parent.x > child.x) {
-            if (parent.left == null)
-                parent.left = child;
-            else
-                insertNode(parent.left, child);
-        } else {
-            if (parent.right == null)
-                parent.right = child;
-            else
-                insertNode(parent.right, child);
-        }
-    }
-
-    private void preorderTraversal(TreeNode root) {
-        if (root != null) {
-            result[0][idx++] = root.value;
-            preorderTraversal(root.left);
-            preorderTraversal(root.right);
-        }
-    }
-
-    private void postorderTraversal(TreeNode root) {
-        if (root != null) {
-            postorderTraversal(root.left);
-            postorderTraversal(root.right);
-            result[1][idx++] = root.value;
-        }
+        return dir;
     }
 
     @Test
     void 정답() {
-        int[][] nodeinfo = { { 5, 3 }, { 11, 5 }, { 13, 3 }, { 3, 5 },
-                { 6, 1 }, { 1, 3 }, { 8, 6 }, { 7, 2 }, { 2, 2 } };
-        int[][] result = { { 7, 4, 6, 9, 1, 8, 5, 2, 3 }, { 9, 6, 5, 8, 1, 4, 3, 2, 7 } };
+        String[] grid1 = { "SL", "LR" };
+        int[] result1 = { 16 };
+        String[] grid2 = { "S" };
+        int[] result2 = { 1, 1, 1, 1 };
+        String[] grid3 = { "R", "R" };
+        int[] result3 = { 4, 4 };
 
-        Assertions.assertArrayEquals(result, solution(nodeinfo));
+        Assertions.assertArrayEquals(result1, solution(grid1));
+        Assertions.assertArrayEquals(result2, solution(grid2));
+        Assertions.assertArrayEquals(result3, solution(grid3));
     }
 }
