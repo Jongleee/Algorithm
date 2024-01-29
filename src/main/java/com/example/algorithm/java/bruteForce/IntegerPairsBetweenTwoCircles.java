@@ -1,7 +1,7 @@
 package com.example.algorithm.java.bruteForce;
 
 public class IntegerPairsBetweenTwoCircles {
-    public static long solution(int r1, int r2) {
+    public long solution(int r1, int r2) {
         long answer = 0;
         for (long i = 1; i < r2; i++) {
             int num2 = (int) Math.sqrt((double) r2 * r2 - i * i);
@@ -19,8 +19,9 @@ public class IntegerPairsBetweenTwoCircles {
         return answer;
     }
 
-    public static void main(String[] args) {
-
-        System.out.println(solution(999999, 1000000));// 6281440
-    }
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(20, solution(2, 3));
+    //     Assertions.assertEquals(6281440,solution(999999, 1000000));
+    // }
 }
