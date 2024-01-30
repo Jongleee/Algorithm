@@ -3,11 +3,11 @@ package com.example.algorithm.java.bruteForce;
 import java.util.HashSet;
 
 public class FindPrimeNumber {
-    static char[] chs;
-    static boolean[] visited;
-    static HashSet<Integer> set;
+    char[] chs;
+    boolean[] visited;
+    HashSet<Integer> set;
 
-    public static int solution(String numbers) {
+    public int solution(String numbers) {
         int len = numbers.length();
         visited = new boolean[len];
         set = new HashSet<>();
@@ -20,7 +20,7 @@ public class FindPrimeNumber {
         return set.size();
     }
 
-    public static void permutation(int start, int r, int n, String numbers) {
+    public void permutation(int start, int r, int n, String numbers) {
         if (start == r) {
             if (chs[0] == '0')
                 return;
@@ -42,7 +42,7 @@ public class FindPrimeNumber {
         }
     }
 
-    public static boolean isPrimeNumber(int num) {
+    public boolean isPrimeNumber(int num) {
         if (num == 1)
             return false;
 
@@ -53,7 +53,9 @@ public class FindPrimeNumber {
         return true;
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution("232"));
-    }
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(3, solution("17"));
+    //     Assertions.assertEquals(2, solution("011"));
+    // }
 }
