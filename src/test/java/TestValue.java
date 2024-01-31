@@ -1,62 +1,65 @@
-import java.util.HashSet;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    char[] chs;
-    boolean[] visited;
-    HashSet<Integer> set;
+    public long solution(int[][] land, int p, int q) {
+        long answer;
+        long maxHeight = 0;
+        long minHeight = Long.MAX_VALUE;
+        long totalBlocks = 0;
 
-    public int solution(String numbers) {
-        int len = numbers.length();
-        visited = new boolean[len];
-        set = new HashSet<>();
-
-        for (int i = 1; i <= len; i++) {
-            chs = new char[i];
-            permutation(0, i, len, numbers);
-        }
-
-        return set.size();
-    }
-
-    public void permutation(int start, int r, int n, String numbers) {
-        if (start == r) {
-            if (chs[0] == '0')
-                return;
-            int num = Integer.parseInt(String.valueOf(chs));
-            if (isPrimeNumber(num)) {
-                set.add(num);
+        for (int i = 0; i < land.length; i++) {
+            for (int j = 0; j < land[i].length; j++) {
+                maxHeight = Math.max(maxHeight, land[i][j]);
+                minHeight = Math.min(minHeight, land[i][j]);
+                totalBlocks += land[i][j];
             }
-            return;
         }
 
-        for (int i = 0; i < n; i++) {
-            if (visited[i])
-                continue;
+        answer = calculateCost(land, maxHeight, p, q, totalBlocks);
 
-            visited[i] = true;
-            chs[start] = numbers.charAt(i);
-            permutation(start + 1, r, n, numbers);
-            visited[i] = false;
+        long front = minHeight;
+        long rear = maxHeight;
+
+        while (front <= rear) {
+            long mid = (front + rear) / 2;
+            long cost1 = calculateCost(land, mid, p, q, totalBlocks);
+            long cost2 = calculateCost(land, mid + 1, p, q, totalBlocks);
+
+            if (cost1 <= cost2) {
+                answer = cost1;
+                rear = mid - 1;
+            } else {
+                answer = cost2;
+                front = mid + 1;
+            }
         }
+
+        return answer;
     }
 
-    public boolean isPrimeNumber(int num) {
-        if (num == 1)
-            return false;
+    private long calculateCost(int[][] land, long height, int p, int q, long totalBlocks) {
+        long cost = 0;
 
-        for (int i = 2; i <= Math.sqrt(num); i++) {
-            if (num % i == 0)
-                return false;
+        for (int i = 0; i < land.length; i++) {
+            for (int j = 0; j < land[i].length; j++) {
+                if (land[i][j] < height) {
+                    cost += (height - land[i][j]) * p;
+                } else if (land[i][j] > height) {
+                    cost += (land[i][j] - height) * q;
+                }
+            }
         }
-        return true;
+
+        return cost;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(3, solution("17"));
-        Assertions.assertEquals(2, solution("011"));
+        int[][] land1 = { { 1, 2 }, { 2, 3 } };
+        int[][] land2 = { { 4, 4, 3 }, { 3, 2, 2 }, { 2, 1, 0 } };
+
+        Assertions.assertEquals(5, solution(land1, 3, 2));
+        Assertions.assertEquals(33, solution(land2, 5, 3));
     }
 }
