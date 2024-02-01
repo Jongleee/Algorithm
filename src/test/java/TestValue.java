@@ -1,65 +1,57 @@
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public long solution(int[][] land, int p, int q) {
-        long answer;
-        long maxHeight = 0;
-        long minHeight = Long.MAX_VALUE;
-        long totalBlocks = 0;
+    public int solution(int distance, int[] rocks, int n) {
+        Arrays.sort(rocks);
+        return binarySearch(distance, rocks, n);
+    }
 
-        for (int i = 0; i < land.length; i++) {
-            for (int j = 0; j < land[i].length; j++) {
-                maxHeight = Math.max(maxHeight, land[i][j]);
-                minHeight = Math.min(minHeight, land[i][j]);
-                totalBlocks += land[i][j];
-            }
-        }
+    private int binarySearch(int distance, int[] rocks, int n) {
+        int left = 1;
+        int right = distance;
+        int answer = 0;
 
-        answer = calculateCost(land, maxHeight, p, q, totalBlocks);
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            int removedRockCnt = countRemovedRocks(rocks, mid, distance);
 
-        long front = minHeight;
-        long rear = maxHeight;
-
-        while (front <= rear) {
-            long mid = (front + rear) / 2;
-            long cost1 = calculateCost(land, mid, p, q, totalBlocks);
-            long cost2 = calculateCost(land, mid + 1, p, q, totalBlocks);
-
-            if (cost1 <= cost2) {
-                answer = cost1;
-                rear = mid - 1;
+            if (removedRockCnt <= n) {
+                answer = mid;
+                left = mid + 1;
             } else {
-                answer = cost2;
-                front = mid + 1;
+                right = mid - 1;
             }
         }
-
         return answer;
     }
 
-    private long calculateCost(int[][] land, long height, int p, int q, long totalBlocks) {
-        long cost = 0;
+    private int countRemovedRocks(int[] rocks, int mid, int distance) {
+        int before = 0;
+        int end = distance;
+        int removeCnt = 0;
 
-        for (int i = 0; i < land.length; i++) {
-            for (int j = 0; j < land[i].length; j++) {
-                if (land[i][j] < height) {
-                    cost += (height - land[i][j]) * p;
-                } else if (land[i][j] > height) {
-                    cost += (land[i][j] - height) * q;
-                }
+        for (int rock : rocks) {
+            if (rock - before < mid) {
+                removeCnt++;
+            } else {
+                before = rock;
             }
         }
 
-        return cost;
+        if (end - before < mid) {
+            removeCnt++;
+        }
+
+        return removeCnt;
     }
 
     @Test
     void 정답() {
-        int[][] land1 = { { 1, 2 }, { 2, 3 } };
-        int[][] land2 = { { 4, 4, 3 }, { 3, 2, 2 }, { 2, 1, 0 } };
+        int[] rocks = { 2, 14, 11, 21, 17 };
 
-        Assertions.assertEquals(5, solution(land1, 3, 2));
-        Assertions.assertEquals(33, solution(land2, 5, 3));
+        Assertions.assertEquals(4, solution(26, rocks, 2));
     }
 }
