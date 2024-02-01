@@ -3,12 +3,12 @@ package com.example.algorithm.java.binarySearch;
 import java.util.Arrays;
 
 public class SteppingStone {
-    public static int solution(int distance, int[] rocks, int n) {
+    public int solution(int distance, int[] rocks, int n) {
         Arrays.sort(rocks);
         return binarySearch(distance, rocks, n);
     }
 
-    private static int binarySearch(int distance, int[] rocks, int n) {
+    private int binarySearch(int distance, int[] rocks, int n) {
         int left = 1;
         int right = distance;
         int answer = 0;
@@ -27,7 +27,7 @@ public class SteppingStone {
         return answer;
     }
 
-    private static int countRemovedRocks(int[] rocks, int mid, int distance) {
+    private int countRemovedRocks(int[] rocks, int mid, int distance) {
         int before = 0;
         int end = distance;
         int removeCnt = 0;
@@ -47,10 +47,10 @@ public class SteppingStone {
         return removeCnt;
     }
 
-    public static void main(String[] args) {
-        int d1 = 25;
-        int[] r1 = { 2, 14, 11, 21, 17 };
-        int n1 = 2;
-        System.out.println(solution(d1, r1, n1));// 4
-    }
+    // @Test
+    // void 정답() {
+    //     int[] rocks = { 2, 14, 11, 21, 17 };
+
+    //     Assertions.assertEquals(4, solution(26, rocks, 2));
+    // }
 }

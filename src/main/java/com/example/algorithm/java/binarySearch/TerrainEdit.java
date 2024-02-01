@@ -5,25 +5,23 @@ public class TerrainEdit {
         long answer;
         long maxHeight = 0;
         long minHeight = Long.MAX_VALUE;
-        long totalBlocks = 0;
 
         for (int i = 0; i < land.length; i++) {
             for (int j = 0; j < land[i].length; j++) {
                 maxHeight = Math.max(maxHeight, land[i][j]);
                 minHeight = Math.min(minHeight, land[i][j]);
-                totalBlocks += land[i][j];
             }
         }
 
-        answer = calculateCost(land, maxHeight, p, q, totalBlocks);
+        answer = calculateCost(land, maxHeight, p, q);
 
         long front = minHeight;
         long rear = maxHeight;
 
         while (front <= rear) {
             long mid = (front + rear) / 2;
-            long cost1 = calculateCost(land, mid, p, q, totalBlocks);
-            long cost2 = calculateCost(land, mid + 1, p, q, totalBlocks);
+            long cost1 = calculateCost(land, mid, p, q);
+            long cost2 = calculateCost(land, mid + 1, p, q);
 
             if (cost1 <= cost2) {
                 answer = cost1;
@@ -37,7 +35,7 @@ public class TerrainEdit {
         return answer;
     }
 
-    private long calculateCost(int[][] land, long height, int p, int q, long totalBlocks) {
+    private long calculateCost(int[][] land, long height, int p, int q) {
         long cost = 0;
 
         for (int i = 0; i < land.length; i++) {
@@ -55,10 +53,10 @@ public class TerrainEdit {
 
     // @Test
     // void 정답() {
-    //     int[][] land1 = { { 1, 2 }, { 2, 3 } };
-    //     int[][] land2 = { { 4, 4, 3 }, { 3, 2, 2 }, { 2, 1, 0 } };
+    // int[][] land1 = { { 1, 2 }, { 2, 3 } };
+    // int[][] land2 = { { 4, 4, 3 }, { 3, 2, 2 }, { 2, 1, 0 } };
 
-    //     Assertions.assertEquals(5, solution(land1, 3, 2));
-    //     Assertions.assertEquals(33, solution(land2, 5, 3));
+    // Assertions.assertEquals(5, solution(land1, 3, 2));
+    // Assertions.assertEquals(33, solution(land2, 5, 3));
     // }
 }
