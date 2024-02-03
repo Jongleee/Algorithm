@@ -13,8 +13,8 @@ public class SearchLyric {
 
         for (String word : words) {
             int len = word.length();
-            frontMap.computeIfAbsent(len, ArrayList::new).add(word);
-            backMap.computeIfAbsent(len, ArrayList::new).add(reverse(word));
+            frontMap.computeIfAbsent(len, list -> new ArrayList<>()).add(word);
+            backMap.computeIfAbsent(len, list -> new ArrayList<>()).add(reverse(word));
         }
 
         frontMap.values().forEach(Collections::sort);
@@ -71,12 +71,8 @@ public class SearchLyric {
     // void 정답() {
     //     String[] words = { "frodo", "front", "frost", "frozen", "frame", "kakao" };
     //     String[] queries = { "fro??", "????o", "fr???", "fro???", "pro?" };
-    //     List<Integer> result= new ArrayList<Integer>();
-    //     result.add(3);
-    //     result.add(2);
-    //     result.add(4);
-    //     result.add(1);
-    //     result.add(0);
-    //     Assertions.assertEquals(result , solution(words, queries));
+    //     List<Integer> result = new ArrayList<>(Arrays.asList(3, 2, 4, 1, 0));
+
+    //     Assertions.assertEquals(result, solution(words, queries));
     // }
 }
