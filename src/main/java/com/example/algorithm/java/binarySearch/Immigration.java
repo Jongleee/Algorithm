@@ -3,16 +3,17 @@ package com.example.algorithm.java.binarySearch;
 import java.util.Arrays;
 
 public class Immigration {
-    public static long solution(int n, int[] times) {
-        long answer = 0;
-
+    public long solution(int n, int[] times) {
         Arrays.sort(times);
+
         long start = 1;
         long end = (long) times[times.length - 1] * n;
+        long answer = 0;
 
         while (start <= end) {
-            long sum = 0;
             long mid = (start + end) / 2;
+            long sum = 0;
+
             for (int time : times) {
                 sum += mid / time;
             }
@@ -28,9 +29,11 @@ public class Immigration {
         return answer;
     }
 
-    public static void main(String[] args) {
-        int n = 6;
-        int[] times = { 7, 10 };
-        System.out.println(solution(n, times));
-    }
+    // @Test
+    // void 정답() {
+    //     int n = 6;
+    //     int[] times = { 7, 10 };
+
+    //     Assertions.assertEquals(28, solution(n, times));
+    // }
 }
