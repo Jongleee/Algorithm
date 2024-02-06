@@ -1,36 +1,58 @@
 package com.example.algorithm.java.greedy;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class ConnectingIslands {
-    static int[] parent;
+    public int solution(int n, int[][] costs) {
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int[] cost : costs) {
+            graph.computeIfAbsent(cost[0], k -> new ArrayList<>()).add(new int[] { cost[1], cost[2] });
+            graph.computeIfAbsent(cost[1], k -> new ArrayList<>()).add(new int[] { cost[0], cost[2] });
+        }
 
-    public static int solution(int n, int[][] costs) {
-        int answer = 0;
-        Arrays.sort(costs, (int[] c1, int[] c2) -> c1[2] - c2[2]);
-        parent = new int[n];
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(arr -> arr[1]));
+        Set<Integer> visited = new HashSet<>();
+        int totalCost = 0;
 
-        Arrays.setAll(parent, i -> i);
+        pq.addAll(graph.get(0));
+        visited.add(0);
 
-        for (int i = 0; i < costs.length; i++) {
-            int startParent = findParent(costs[i][0]);
-            int endParent = findParent(costs[i][1]);
-            if (startParent != endParent) {
-                answer += costs[i][2];
-                parent[endParent] = startParent;
+        while (!pq.isEmpty()) {
+            int[] edge = pq.poll();
+            int vertex = edge[0];
+            int cost = edge[1];
+
+            if (visited.contains(vertex)) {
+                continue;
+            }
+
+            visited.add(vertex);
+            totalCost += cost;
+
+            if (graph.containsKey(vertex)) {
+                for (int[] neighbor : graph.get(vertex)) {
+                    if (!visited.contains(neighbor[0])) {
+                        pq.offer(neighbor);
+                    }
+                }
             }
         }
-        return answer;
+
+        return totalCost;
     }
 
-    public static int findParent(int i) {
-        if (parent[i] == i)
-            return i;
-        return findParent(parent[i]);
-    }
+    // @Test
+    // void 정답() {
+    //     int n = 4;
+    //     int[][] costs = { { 0, 1, 1 }, { 0, 2, 2 }, { 1, 2, 5 }, { 1, 3, 1 }, { 2, 3, 8 } };
 
-    public static void main(String[] args) {
-        System.out
-                .println(solution(4, new int[][] { { 0, 1, 1 }, { 0, 2, 2 }, { 1, 2, 5 }, { 1, 3, 1 }, { 2, 3, 8 } }));
-    }
+    //     Assertions.assertEquals(4, solution(n, costs));
+    // }
 }

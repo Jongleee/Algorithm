@@ -1,40 +1,59 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public long solution(int n, int[] times) {
-        Arrays.sort(times);
+    public int solution(int n, int[][] costs) {
+        Map<Integer, List<int[]>> graph = new HashMap<>();
+        for (int[] cost : costs) {
+            graph.computeIfAbsent(cost[0], k -> new ArrayList<>()).add(new int[] { cost[1], cost[2] });
+            graph.computeIfAbsent(cost[1], k -> new ArrayList<>()).add(new int[] { cost[0], cost[2] });
+        }
 
-        long start = 1;
-        long end = (long) times[times.length - 1] * n;
-        long answer = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(arr -> arr[1]));
+        Set<Integer> visited = new HashSet<>();
+        int totalCost = 0;
 
-        while (start <= end) {
-            long mid = (start + end) / 2;
-            long sum = 0;
+        pq.addAll(graph.get(0));
+        visited.add(0);
 
-            for (int time : times) {
-                sum += mid / time;
+        while (!pq.isEmpty()) {
+            int[] edge = pq.poll();
+            int vertex = edge[0];
+            int cost = edge[1];
+
+            if (visited.contains(vertex)) {
+                continue;
             }
 
-            if (sum >= n) {
-                end = mid - 1;
-                answer = mid;
-            } else {
-                start = mid + 1;
+            visited.add(vertex);
+            totalCost += cost;
+
+            if (graph.containsKey(vertex)) {
+                for (int[] neighbor : graph.get(vertex)) {
+                    if (!visited.contains(neighbor[0])) {
+                        pq.offer(neighbor);
+                    }
+                }
             }
         }
 
-        return answer;
+        return totalCost;
     }
 
     @Test
     void 정답() {
-        int n = 6;
-        int[] times = { 7, 10 };
+        int n = 4;
+        int[][] costs = { { 0, 1, 1 }, { 0, 2, 2 }, { 1, 2, 5 }, { 1, 3, 1 }, { 2, 3, 8 } };
 
-        Assertions.assertEquals(28, solution(n, times));
+        Assertions.assertEquals(4, solution(n, costs));
     }
 }
