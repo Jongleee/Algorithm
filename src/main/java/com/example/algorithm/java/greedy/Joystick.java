@@ -4,18 +4,25 @@ public class Joystick {
     public int solution(String name) {
         int answer = 0;
         int length = name.length();
+        int minMove = length - 1;
 
-        int move = length - 1;
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             answer += Math.min(name.charAt(i) - 'A', 'Z' - name.charAt(i) + 1);
 
-            int index = i + 1;
-            while(index < length && name.charAt(index) == 'A'){
-                index++;
+            int nextIndex = i + 1;
+            while (nextIndex < length && name.charAt(nextIndex) == 'A') {
+                nextIndex++;
             }
 
-            move = Math.min(move, i + length - index + Math.min(i, length - index));
+            minMove = Math.min(minMove, i + length - nextIndex + Math.min(i, length - nextIndex));
         }
-        return answer + move;
+
+        return answer + minMove;
     }
+
+    // @Test
+    // void 정답() {
+    //     Assertions.assertEquals(56, solution("JEROEN"));
+    //     Assertions.assertEquals(23, solution("JAN"));
+    // }
 }
