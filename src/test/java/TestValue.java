@@ -2,28 +2,32 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(String name) {
-        int answer = 0;
-        int length = name.length();
-        int minMove = length - 1;
+    public String solution(String number, int k) {
+        StringBuilder sb = new StringBuilder();
+        int maxIndex = 0;
+        int len = number.length() - k;
 
-        for (int i = 0; i < length; i++) {
-            answer += Math.min(name.charAt(i) - 'A', 'Z' - name.charAt(i) + 1);
-
-            int nextIndex = i + 1;
-            while (nextIndex < length && name.charAt(nextIndex) == 'A') {
-                nextIndex++;
+        for (int i = 0; i < len; i++) {
+            int maxDigit = 0;
+            for (int j = maxIndex; j <= k + i; j++) {
+                int digit = number.charAt(j) - '0';
+                if (digit > maxDigit) {
+                    maxDigit = digit;
+                    maxIndex = j + 1;
+                }
+                if (maxDigit == 9)
+                    break;
             }
-
-            minMove = Math.min(minMove, i + length - nextIndex + Math.min(i, length - nextIndex));
+            sb.append(maxDigit);
         }
 
-        return answer + minMove;
+        return sb.toString();
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(56, solution("JEROEN"));
-        Assertions.assertEquals(23, solution("JAN"));
+        Assertions.assertEquals("94", solution("1924", 2));
+        Assertions.assertEquals("3234", solution("1231234", 3));
+        Assertions.assertEquals("775841", solution("4177252841", 4));
     }
 }
