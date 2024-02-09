@@ -1,33 +1,28 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public String solution(String number, int k) {
-        StringBuilder sb = new StringBuilder();
-        int maxIndex = 0;
-        int len = number.length() - k;
+    public int solution(int[][] routes) {
+        Arrays.sort(routes, Comparator.comparingInt(o -> o[1]));
 
-        for (int i = 0; i < len; i++) {
-            int maxDigit = 0;
-            for (int j = maxIndex; j <= k + i; j++) {
-                int digit = number.charAt(j) - '0';
-                if (digit > maxDigit) {
-                    maxDigit = digit;
-                    maxIndex = j + 1;
-                }
-                if (maxDigit == 9)
-                    break;
+        int cameraLocation = routes[0][1];
+        int cameraCount = 1;
+
+        for (int[] route : routes) {
+            if (route[0] > cameraLocation) {
+                cameraCount++;
+                cameraLocation = route[1];
             }
-            sb.append(maxDigit);
         }
-
-        return sb.toString();
+        return cameraCount;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals("94", solution("1924", 2));
-        Assertions.assertEquals("3234", solution("1231234", 3));
-        Assertions.assertEquals("775841", solution("4177252841", 4));
+        int[][] routes = { { -20, -15 }, { -14, -5 }, { -18, -13 }, { -5, -3 } };
+        Assertions.assertEquals(2, solution(routes));
     }
 }
