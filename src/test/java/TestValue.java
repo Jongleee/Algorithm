@@ -1,28 +1,30 @@
-import java.util.Arrays;
-import java.util.Comparator;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int[][] routes) {
-        Arrays.sort(routes, Comparator.comparingInt(o -> o[1]));
-
-        int cameraLocation = routes[0][1];
-        int cameraCount = 1;
-
-        for (int[] route : routes) {
-            if (route[0] > cameraLocation) {
-                cameraCount++;
-                cameraLocation = route[1];
+    public int solution(int m, int n, int[][] puddles) {
+        int[][] step = new int[n + 1][m + 1];
+        int divisor = 1000000007;
+        for (int i = 0; i < puddles.length; i++) {
+            step[puddles[i][1]][puddles[i][0]] = -1;
+        }
+        step[1][1] = 1;
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < m + 1; j++) {
+                if (step[i][j] == -1)
+                    continue;
+                if (step[i - 1][j] > -1)
+                    step[i][j] = (step[i][j] + step[i - 1][j]) % divisor;
+                if (step[i][j - 1] > -1)
+                    step[i][j] = (step[i][j] + step[i][j - 1]) % divisor;
             }
         }
-        return cameraCount;
+        return step[n][m] % divisor;
     }
 
     @Test
     void 정답() {
-        int[][] routes = { { -20, -15 }, { -14, -5 }, { -18, -13 }, { -5, -3 } };
-        Assertions.assertEquals(2, solution(routes));
+        int[][] puddles = { { 2, 2 } };
+        Assertions.assertEquals(4, solution(4, 3, puddles));
     }
 }

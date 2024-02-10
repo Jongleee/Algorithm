@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.dynamicProgramming;
+package com.example.algorithm.java.dynamicProgramming;
 
 public class SumOfSuccessivePulsePartSequences {
     public long solution(int[] sequence) {

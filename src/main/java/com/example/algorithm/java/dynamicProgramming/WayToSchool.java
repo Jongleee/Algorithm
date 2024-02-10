@@ -1,7 +1,7 @@
-package com.example.algorithm.java.greedy;
+package com.example.algorithm.java.dynamicProgramming;
 
 public class WayToSchool {
-    public static int solution(int m, int n, int[][] puddles) {
+    public int solution(int m, int n, int[][] puddles) {
         int[][] step = new int[n + 1][m + 1];
         int divisor = 1000000007;
         for (int i = 0; i < puddles.length; i++) {
@@ -13,15 +13,17 @@ public class WayToSchool {
                 if (step[i][j] == -1)
                     continue;
                 if (step[i - 1][j] > -1)
-                    step[i][j] += step[i - 1][j] % divisor;
+                    step[i][j] = (step[i][j] + step[i - 1][j]) % divisor;
                 if (step[i][j - 1] > -1)
-                    step[i][j] += step[i][j - 1] % divisor;
+                    step[i][j] = (step[i][j] + step[i][j - 1]) % divisor;
             }
         }
         return step[n][m] % divisor;
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution(4, 3, new int[][] { { 2, 2 } }));
-    }
+    // @Test
+    // void 정답() {
+    //     int[][] puddles = { { 2, 2 } };
+    //     Assertions.assertEquals(4, solution(4, 3, puddles));
+    // }
 }
