@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.dynamicProgramming;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.util.ArrayList;
 

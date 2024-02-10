@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.dynamicProgramming;
+package com.example.algorithm.java.dynamicProgramming;
 
 public class CodingTestStudy {
     public int solution(int alp, int cop, int[][] problems) {
