@@ -1,70 +1,71 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(String[] grid) {
-        int rows = grid.length;
-        int cols = grid[0].length();
+    public int[] solution(String[] genres, int[] plays) {
+        List<String> sortedGenres = sortByTotalPlays(genres, plays);
 
-        boolean[][][] visited = new boolean[rows][cols][4];
-        List<Integer> distances = new ArrayList<>();
+        List<Integer> resultIndices = new ArrayList<>();
+        for (String genre : sortedGenres) {
+            int firstIdx = findMostPlayedSongIndex(genres, plays, genre);
+            resultIndices.add(firstIdx);
 
-        int[] directionsRow = { -1, 0, 1, 0 };
-        int[] directionsCol = { 0, -1, 0, 1 };
+            int secondIdx = findMostPlayedSongIndexExceptGivenIndex(genres, plays, genre, firstIdx);
+            if (secondIdx != -1)
+                resultIndices.add(secondIdx);
+        }
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                for (int dir = 0; dir < 4; dir++) {
-                    if (!visited[row][col][dir]) {
-                        int distance = explore(grid, row, col, dir, visited, directionsRow, directionsCol);
-                        distances.add(distance);
-                    }
-                }
+        int[] result = new int[resultIndices.size()];
+        for (int i = 0; i < resultIndices.size(); i++) {
+            result[i] = resultIndices.get(i);
+        }
+        return result;
+    }
+
+    private List<String> sortByTotalPlays(String[] genres, int[] plays) {
+        Map<String, Integer> genreTotalPlaysMap = new HashMap<>();
+        for (int i = 0; i < genres.length; i++) {
+            genreTotalPlaysMap.put(genres[i], genreTotalPlaysMap.getOrDefault(genres[i], 0) + plays[i]);
+        }
+        List<String> sortedGenres = new ArrayList<>(genreTotalPlaysMap.keySet());
+        sortedGenres.sort((genre1, genre2) -> genreTotalPlaysMap.get(genre2) - genreTotalPlaysMap.get(genre1));
+        return sortedGenres;
+    }
+
+    private int findMostPlayedSongIndex(String[] genres, int[] plays, String genre) {
+        int maxPlays = 0;
+        int mostPlayedIndex = -1;
+        for (int i = 0; i < genres.length; i++) {
+            if (genres[i].equals(genre) && plays[i] > maxPlays) {
+                maxPlays = plays[i];
+                mostPlayedIndex = i;
             }
         }
-
-        return distances.stream().sorted().mapToInt(Integer::intValue).toArray();
+        return mostPlayedIndex;
     }
 
-    private int explore(String[] grid, int row, int col, int dir, boolean[][][] visited, int[] directionsRow,
-            int[] directionsCol) {
-        int distance = 0;
-        while (!visited[row][col][dir]) {
-            distance++;
-            visited[row][col][dir] = true;
-
-            char cell = grid[row].charAt(col);
-            dir = updateDirection(cell, dir);
-
-            row = (row + directionsRow[dir] + grid.length) % grid.length;
-            col = (col + directionsCol[dir] + grid[0].length()) % grid[0].length();
+    private int findMostPlayedSongIndexExceptGivenIndex(String[] genres, int[] plays, String genre, int exceptIndex) {
+        int maxPlays = 0;
+        int secondMostPlayedIndex = -1;
+        for (int i = 0; i < genres.length; i++) {
+            if (genres[i].equals(genre) && plays[i] > maxPlays && i != exceptIndex) {
+                maxPlays = plays[i];
+                secondMostPlayedIndex = i;
+            }
         }
-        return distance;
-    }
-
-    private int updateDirection(char cell, int dir) {
-        if (cell == 'L') {
-            dir = (dir + 3) % 4;
-        } else if (cell == 'R') {
-            dir = (dir + 1) % 4;
-        }
-        return dir;
+        return secondMostPlayedIndex;
     }
 
     @Test
     void 정답() {
-        String[] grid1 = { "SL", "LR" };
-        int[] result1 = { 16 };
-        String[] grid2 = { "S" };
-        int[] result2 = { 1, 1, 1, 1 };
-        String[] grid3 = { "R", "R" };
-        int[] result3 = { 4, 4 };
+        String[] genres = { "classic", "pop", "classic", "classic", "pop" };
+        int[] plays = { 500, 600, 150, 800, 2500 };
 
-        Assertions.assertArrayEquals(result1, solution(grid1));
-        Assertions.assertArrayEquals(result2, solution(grid2));
-        Assertions.assertArrayEquals(result3, solution(grid3));
+        Assertions.assertArrayEquals(new int[] { 4, 1, 3, 0 }, solution(genres, plays));
     }
 }
