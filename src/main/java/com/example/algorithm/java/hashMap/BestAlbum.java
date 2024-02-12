@@ -2,76 +2,69 @@ package com.example.algorithm.java.hashMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BestAlbum {
-
     public int[] solution(String[] genres, int[] plays) {
-        ArrayList<String> genre = makeGenre(genres, plays);
+        List<String> sortedGenres = sortByTotalPlays(genres, plays);
 
-        return extracted(genres, plays, genre);
-    }
+        List<Integer> resultIndices = new ArrayList<>();
+        for (String genre : sortedGenres) {
+            int firstIdx = findMostPlayedSongIndex(genres, plays, genre);
+            resultIndices.add(firstIdx);
 
-    private int[] extracted(String[] genres, int[] plays, ArrayList<String> genre) {
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < genre.size(); i++) {
-            String g = genre.get(i);
-
-            // 해당 장르의 음악 중에서 play횟수가 가장 큰 인덱스를 찾는다
-            int max;
-            int firstIdx = findFirstIdx(genres, plays, g);
-
-            // 해당 장르의 음악 중에서 play횟수가 두번째로 큰 인덱스를 찾는다.
-            max = 0;
-            int secondIdx = findSecondIdx(genres, plays, g, max, firstIdx);
-
-            list.add(firstIdx);
-            if (secondIdx >= 0)
-                list.add(secondIdx); // secondIdx는 존재 할수도, 안할수도 있다.
+            int secondIdx = findMostPlayedSongIndexExceptGivenIndex(genres, plays, genre, firstIdx);
+            if (secondIdx != -1)
+                resultIndices.add(secondIdx);
         }
 
-        int[] result = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
+        int[] result = new int[resultIndices.size()];
+        for (int i = 0; i < resultIndices.size(); i++) {
+            result[i] = resultIndices.get(i);
         }
         return result;
     }
 
-    private int findSecondIdx(String[] genres, int[] plays, String g, int max, int firstIdx) {
-        int secondIdx = -1;
-        for (int j = 0; j < genres.length; j++) {
-            if (g.equals(genres[j]) && max < plays[j] && j != firstIdx) {
-                max = plays[j];
-                secondIdx = j;
+    private List<String> sortByTotalPlays(String[] genres, int[] plays) {
+        Map<String, Integer> genreTotalPlaysMap = new HashMap<>();
+        for (int i = 0; i < genres.length; i++) {
+            genreTotalPlaysMap.put(genres[i], genreTotalPlaysMap.getOrDefault(genres[i], 0) + plays[i]);
+        }
+        List<String> sortedGenres = new ArrayList<>(genreTotalPlaysMap.keySet());
+        sortedGenres.sort((genre1, genre2) -> genreTotalPlaysMap.get(genre2) - genreTotalPlaysMap.get(genre1));
+        return sortedGenres;
+    }
+
+    private int findMostPlayedSongIndex(String[] genres, int[] plays, String genre) {
+        int maxPlays = 0;
+        int mostPlayedIndex = -1;
+        for (int i = 0; i < genres.length; i++) {
+            if (genres[i].equals(genre) && plays[i] > maxPlays) {
+                maxPlays = plays[i];
+                mostPlayedIndex = i;
             }
         }
-        return secondIdx;
+        return mostPlayedIndex;
     }
 
-    private int findFirstIdx(String[] genres, int[] plays, String g) {
-        int max = 0;
-        int firstIdx = -1;
-        for (int j = 0; j < genres.length; j++) {
-            if (g.equals(genres[j]) && max < plays[j]) {
-                max = plays[j];
-                firstIdx = j;
+    private int findMostPlayedSongIndexExceptGivenIndex(String[] genres, int[] plays, String genre, int exceptIndex) {
+        int maxPlays = 0;
+        int secondMostPlayedIndex = -1;
+        for (int i = 0; i < genres.length; i++) {
+            if (genres[i].equals(genre) && plays[i] > maxPlays && i != exceptIndex) {
+                maxPlays = plays[i];
+                secondMostPlayedIndex = i;
             }
         }
-        return firstIdx;
+        return secondMostPlayedIndex;
     }
 
-    private ArrayList<String> makeGenre(String[] genres, int[] plays) {
-        HashMap<String, Integer> map = new HashMap<>();
+    // @Test
+    // void 정답() {
+    //     String[] genres = { "classic", "pop", "classic", "classic", "pop" };
+    //     int[] plays = { 500, 600, 150, 800, 2500 };
 
-        for(int i=0; i<genres.length; i++){
-            map.put(genres[i], map.getOrDefault(genres[i], 0)+plays[i]);
-        }
-
-
-        ArrayList<String> genre = new ArrayList<>();
-        for(String key : map.keySet()) {
-            genre.add(key);
-        }
-        genre.sort((o1, o2) -> map.get(o2) - map.get(o1)); //key값에 해당하는 value를 내림차순으로 정렬한다.
-        return genre;
-    }
+    //     Assertions.assertArrayEquals(new int[] { 4, 1, 3, 0 }, solution(genres, plays));
+    // }
 }
