@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,65 +8,63 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(String[] genres, int[] plays) {
-        List<String> sortedGenres = sortByTotalPlays(genres, plays);
+    public int[] solution(int[] fees, String[] records) {
+        int lastTime = getMinutes("23:59");
+        Map<String, Integer> parking = new HashMap<>();
+        Map<String, Integer> times = new HashMap<>();
+        List<String> cars = new ArrayList<>();
 
-        List<Integer> resultIndices = new ArrayList<>();
-        for (String genre : sortedGenres) {
-            int firstIdx = findMostPlayedSongIndex(genres, plays, genre);
-            resultIndices.add(firstIdx);
+        for (String r : records) {
+            String[] parts = r.split(" ");
+            int time = getMinutes(parts[0]);
+            String car = parts[1];
 
-            int secondIdx = findMostPlayedSongIndexExceptGivenIndex(genres, plays, genre, firstIdx);
-            if (secondIdx != -1)
-                resultIndices.add(secondIdx);
-        }
+            if (!cars.contains(car)) {
+                cars.add(car);
+                times.put(car, 0);
+            }
 
-        int[] result = new int[resultIndices.size()];
-        for (int i = 0; i < resultIndices.size(); i++) {
-            result[i] = resultIndices.get(i);
-        }
-        return result;
-    }
-
-    private List<String> sortByTotalPlays(String[] genres, int[] plays) {
-        Map<String, Integer> genreTotalPlaysMap = new HashMap<>();
-        for (int i = 0; i < genres.length; i++) {
-            genreTotalPlaysMap.put(genres[i], genreTotalPlaysMap.getOrDefault(genres[i], 0) + plays[i]);
-        }
-        List<String> sortedGenres = new ArrayList<>(genreTotalPlaysMap.keySet());
-        sortedGenres.sort((genre1, genre2) -> genreTotalPlaysMap.get(genre2) - genreTotalPlaysMap.get(genre1));
-        return sortedGenres;
-    }
-
-    private int findMostPlayedSongIndex(String[] genres, int[] plays, String genre) {
-        int maxPlays = 0;
-        int mostPlayedIndex = -1;
-        for (int i = 0; i < genres.length; i++) {
-            if (genres[i].equals(genre) && plays[i] > maxPlays) {
-                maxPlays = plays[i];
-                mostPlayedIndex = i;
+            if (parking.containsKey(car)) {
+                times.put(car, times.get(car) + (time - parking.get(car)));
+                parking.remove(car);
+            } else {
+                parking.put(car, time);
             }
         }
-        return mostPlayedIndex;
-    }
 
-    private int findMostPlayedSongIndexExceptGivenIndex(String[] genres, int[] plays, String genre, int exceptIndex) {
-        int maxPlays = 0;
-        int secondMostPlayedIndex = -1;
-        for (int i = 0; i < genres.length; i++) {
-            if (genres[i].equals(genre) && plays[i] > maxPlays && i != exceptIndex) {
-                maxPlays = plays[i];
-                secondMostPlayedIndex = i;
+        int[] answer = new int[cars.size()];
+        Collections.sort(cars);
+
+        for (int i = 0; i < cars.size(); i++) {
+            String car = cars.get(i);
+            int time = times.get(car);
+
+            if (parking.containsKey(car)) {
+                time += (lastTime - parking.get(car));
+            }
+
+            if (time > fees[0]) {
+                answer[i] += fees[1] + Math.ceil((time - fees[0]) / (fees[2] * 1.0)) * fees[3];
+            } else {
+                answer[i] += fees[1];
             }
         }
-        return secondMostPlayedIndex;
+
+        return answer;
+    }
+
+    public int getMinutes(String time) {
+        String[] t = time.split(":");
+        return Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
     }
 
     @Test
     void 정답() {
-        String[] genres = { "classic", "pop", "classic", "classic", "pop" };
-        int[] plays = { 500, 600, 150, 800, 2500 };
+        int[] fees = { 180, 5000, 10, 600 };
+        String[] records = { "05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT", "07:59 5961 OUT", "07:59 0148 IN",
+                "18:59 0000 IN", "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT" };
+        int[] result = { 14600, 34400, 5000 };
 
-        Assertions.assertArrayEquals(new int[] { 4, 1, 3, 0 }, solution(genres, plays));
+        Assertions.assertArrayEquals(result, solution(fees, records));
     }
 }
