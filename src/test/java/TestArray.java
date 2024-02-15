@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,63 +7,51 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(int[] fees, String[] records) {
-        int lastTime = getMinutes("23:59");
-        Map<String, Integer> parking = new HashMap<>();
-        Map<String, Integer> times = new HashMap<>();
-        List<String> cars = new ArrayList<>();
+    public int[] solution(String msg) {
+        List<Integer> compressedMsg = new ArrayList<>();
+        int nextCode = 1;
+        Map<String, Integer> dictionary = new HashMap<>();
 
-        for (String r : records) {
-            String[] parts = r.split(" ");
-            int time = getMinutes(parts[0]);
-            String car = parts[1];
-
-            if (!cars.contains(car)) {
-                cars.add(car);
-                times.put(car, 0);
-            }
-
-            if (parking.containsKey(car)) {
-                times.put(car, times.get(car) + (time - parking.get(car)));
-                parking.remove(car);
-            } else {
-                parking.put(car, time);
-            }
+        for (int i = 65; i <= 90; i++) {
+            String character = String.valueOf((char) i);
+            dictionary.put(character, nextCode++);
         }
 
-        int[] answer = new int[cars.size()];
-        Collections.sort(cars);
-
-        for (int i = 0; i < cars.size(); i++) {
-            String car = cars.get(i);
-            int time = times.get(car);
-
-            if (parking.containsKey(car)) {
-                time += (lastTime - parking.get(car));
+        int i = 0;
+        while (i < msg.length()) {
+            int maxLength = msg.length() - i;
+            int j = maxLength;
+            while (j > 0 && !dictionary.containsKey(msg.substring(i, i + j))) {
+                j--;
             }
+            String substring = msg.substring(i, i + j);
 
-            if (time > fees[0]) {
-                answer[i] += fees[1] + Math.ceil((time - fees[0]) / (fees[2] * 1.0)) * fees[3];
+            if (i + j == msg.length()) {
+                compressedMsg.add(dictionary.get(substring));
             } else {
-                answer[i] += fees[1];
+                substring = msg.substring(i, i + j + 1);
+                compressedMsg.add(dictionary.get(substring.substring(0, substring.length() - 1)));
             }
+            dictionary.put(substring, nextCode++);
+            i += Math.max(1, j);
         }
 
-        return answer;
-    }
+        int[] result = new int[compressedMsg.size()];
+        for (int k = 0; k < result.length; k++) {
+            result[k] = compressedMsg.get(k);
+        }
 
-    public int getMinutes(String time) {
-        String[] t = time.split(":");
-        return Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
+        return result;
     }
 
     @Test
     void 정답() {
-        int[] fees = { 180, 5000, 10, 600 };
-        String[] records = { "05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT", "07:59 5961 OUT", "07:59 0148 IN",
-                "18:59 0000 IN", "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT" };
-        int[] result = { 14600, 34400, 5000 };
+        int[] result1 = { 11, 1, 27, 15 };
+        int[] result2 = { 20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34 };
+        int[] result3 = { 1, 2, 27, 29, 28, 31, 30 };
 
-        Assertions.assertArrayEquals(result, solution(fees, records));
+        Assertions.assertArrayEquals(result1, solution("KAKAO"));
+        Assertions.assertArrayEquals(result2, solution("TOBEORNOTTOBEORTOBEORNOT"));
+        Assertions.assertArrayEquals(result3, solution("ABABABABABABABAB"));
     }
 }
