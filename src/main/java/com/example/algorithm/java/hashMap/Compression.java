@@ -7,40 +7,50 @@ import java.util.Map;
 
 public class Compression {
     public int[] solution(String msg) {
-        List<Integer> list = new ArrayList<>();
-        int num = 1;
-        Map<String, Integer> map = new HashMap<>();
+        List<Integer> compressedMsg = new ArrayList<>();
+        int nextCode = 1;
+        Map<String, Integer> dictionary = new HashMap<>();
 
         for (int i = 65; i <= 90; i++) {
-            String c = String.valueOf((char) i);
-            map.put(c, num++);
+            String character = String.valueOf((char) i);
+            dictionary.put(character, nextCode++);
         }
 
-        for (int i = 0; i < msg.length();) {
-            int j = msg.length() - i;
-            while (!map.containsKey(msg.substring(i, i + j))) {
+        int i = 0;
+        while (i < msg.length()) {
+            int maxLength = msg.length() - i;
+            int j = maxLength;
+            while (j > 0 && !dictionary.containsKey(msg.substring(i, i + j))) {
                 j--;
-                if (j == 0) {
-                    break;
-                }
             }
-            String s = msg.substring(i, i + j);
+            String substring = msg.substring(i, i + j);
 
             if (i + j == msg.length()) {
-                list.add(map.get(s));
+                compressedMsg.add(dictionary.get(substring));
             } else {
-                s = msg.substring(i, i + j + 1);
-                list.add(map.get(s.substring(0, s.length() - 1)));
+                substring = msg.substring(i, i + j + 1);
+                compressedMsg.add(dictionary.get(substring.substring(0, substring.length() - 1)));
             }
-            map.put(s, num++);
-            i += j;
+            dictionary.put(substring, nextCode++);
+            i += Math.max(1, j);
         }
 
-        int[] answer = new int[list.size()];
-        for (int i = 0; i < answer.length; i++) {
-            answer[i] = list.get(i);
+        int[] result = new int[compressedMsg.size()];
+        for (int k = 0; k < result.length; k++) {
+            result[k] = compressedMsg.get(k);
         }
 
-        return answer;
+        return result;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] result1 = { 11, 1, 27, 15 };
+    //     int[] result2 = { 20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34 };
+    //     int[] result3 = { 1, 2, 27, 29, 28, 31, 30 };
+
+    //     Assertions.assertArrayEquals(result1, solution("KAKAO"));
+    //     Assertions.assertArrayEquals(result2, solution("TOBEORNOTTOBEORTOBEORNOT"));
+    //     Assertions.assertArrayEquals(result3, solution("ABABABABABABABAB"));
+    // }
 }
