@@ -1,30 +1,38 @@
 package com.example.algorithm.java.hashMap;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class PickTangerine {
     public int solution(int k, int[] tangerine) {
         Map<Integer, Integer> sizeMap = new HashMap<>();
-
         for (int size : tangerine) {
             sizeMap.put(size, sizeMap.getOrDefault(size, 0) + 1);
         }
 
-        List<Integer> keyList = new ArrayList<>(sizeMap.keySet());
-        keyList.sort(Comparator.comparingInt(sizeMap::get).reversed());
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> sizeMap.get(b) - sizeMap.get(a));
+        pq.addAll(sizeMap.keySet());
 
         int answer = 0;
-        for (int i = 0; i < keyList.size() && k > 0; i++) {
-            int size = keyList.get(i);
-            int count = sizeMap.get(size);
+        while (!pq.isEmpty() && k > 0) {
+            int size = pq.poll();
+            int count = Math.min(k, sizeMap.get(size));
             answer++;
             k -= count;
         }
 
         return answer;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] tangerine1 = { 1, 3, 2, 5, 4, 5, 2, 3 };
+    //     int[] tangerine2 = { 1, 3, 2, 5, 4, 5, 2, 3 };
+    //     int[] tangerine3 = { 1, 1, 1, 1, 2, 2, 2, 3 };
+
+    //     Assertions.assertEquals(3, solution(6, tangerine1));
+    //     Assertions.assertEquals(2, solution(4, tangerine2));
+    //     Assertions.assertEquals(1, solution(2, tangerine3));
+    // }
 }
