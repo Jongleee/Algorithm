@@ -18,4 +18,15 @@ public class PhoneNumberList {
 
         return true;
     }
+
+    // @Test
+    // void 정답() {
+    //     String[] phone_book1 = { "119", "97674223", "1195524421" };
+    //     String[] phone_book2 = { "123", "456", "789" };
+    //     String[] phone_book3 = { "12", "123", "1235", "567", "88" };
+
+    //     Assertions.assertEquals(false, solution(phone_book1));
+    //     Assertions.assertEquals(true, solution(phone_book2));
+    //     Assertions.assertEquals(false, solution(phone_book3));
+    // }
 }
