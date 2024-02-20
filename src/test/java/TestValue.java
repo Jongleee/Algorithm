@@ -4,25 +4,24 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public long solution(int n, int[] works) {
-        long answer = 0;
+    public int solution(int[] scoville, int K) {
+        int answer = 0;
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
 
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
-
-        for (int work : works) {
-            maxHeap.offer(work);
+        for (int s : scoville) {
+            queue.add(s);
         }
 
-        while (n > 0) {
-            int maxWork = maxHeap.poll();
-            if (maxWork == 0)
-                break;
-            maxHeap.offer(maxWork - 1);
-            n--;
-        }
+        while (queue.peek() < K) {
+            if (queue.size() < 2)
+                return -1;
 
-        for (int work : maxHeap) {
-            answer += (long) work * work;
+            int first = queue.poll();
+            int second = queue.poll();
+            int mixedScoville = first + (second * 2);
+
+            queue.add(mixedScoville);
+            answer++;
         }
 
         return answer;
@@ -30,12 +29,8 @@ class TestValue {
 
     @Test
     void 정답() {
-        int[] works1 = { 4, 3, 3 };
-        int[] works2 = { 2, 1, 2 };
-        int[] works3 = { 1, 1 };
+        int[] scoville = { 1, 2, 3, 9, 10, 12 };
 
-        Assertions.assertEquals(12, solution(4, works1));
-        Assertions.assertEquals(6, solution(1, works2));
-        Assertions.assertEquals(0, solution(3, works3));
+        Assertions.assertEquals(2, solution(scoville,7));
     }
 }

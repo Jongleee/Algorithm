@@ -20,7 +20,7 @@ public class OvertimeIndex {
             n--;
         }
 
-        for (int work : maxHeap) {
+        for (Integer work : maxHeap) {
             answer += (long) work * work;
         }
 
