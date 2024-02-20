@@ -1,36 +1,42 @@
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(int n, int k, int[] enemy) {
-        PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.reverseOrder());
-        int answer = 0;
+    public int solution(int[][] jobs) {
+        Arrays.sort(jobs, (o1, o2) -> o1[0] - o2[0]);
 
-        for (Integer e : enemy) {
-            queue.add(e);
-            n -= e;
-            if (n < 0) {
-                if (k > 0) {
-                    n += queue.poll();
-                    k--;
-                } else {
-                    return answer;
-                }
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+
+        int time = 0;
+        int totalResponseTime = 0;
+        int jobsIndex = 0;
+        int count = 0;
+
+        while (count < jobs.length) {
+            while (jobsIndex < jobs.length && jobs[jobsIndex][0] <= time) {
+                minHeap.add(jobs[jobsIndex++]);
             }
-            answer++;
+
+            if (minHeap.isEmpty()) {
+                time = jobs[jobsIndex][0];
+            } else {
+                int[] currentJob = minHeap.poll();
+                totalResponseTime += (time + currentJob[1] - currentJob[0]);
+                time += currentJob[1];
+                count++;
+            }
         }
-        return answer;
+
+        return totalResponseTime / jobs.length;
     }
 
     @Test
     void 정답() {
-        int[] enemy1 = { 4, 2, 4, 5, 3, 3, 1 };
-        int[] enemy2 = { 3, 3, 3, 3 };
+        int[][] jobs = { { 0, 3 }, { 1, 9 }, { 2, 6 } };
 
-        Assertions.assertEquals(5, solution(7, 3, enemy1));
-        Assertions.assertEquals(4, solution(2, 4, enemy2));
+        Assertions.assertEquals(9, solution(jobs));
     }
 }
