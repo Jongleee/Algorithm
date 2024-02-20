@@ -21,7 +21,15 @@ public class DefenseGame {
             }
             answer++;
         }
-        return enemy.length;
+        return answer;
     }
 
+    // @Test
+    // void 정답() {
+    //     int[] enemy1 = { 4, 2, 4, 5, 3, 3, 1 };
+    //     int[] enemy2 = { 3, 3, 3, 3 };
+
+    //     Assertions.assertEquals(5, solution(7, 3, enemy1));
+    //     Assertions.assertEquals(4, solution(2, 4, enemy2));
+    // }
 }
