@@ -1,44 +1,50 @@
 package com.example.algorithm.java.heap;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class DualPriorityQueue {
-    public static int[] solution(String[] operations) {
-        int[] answer = {0,0};
-        PriorityQueue<Integer> priorityQueueWithMax = new PriorityQueue<>(Comparator.reverseOrder());
-        PriorityQueue<Integer> priorityQueueWithMin = new PriorityQueue<>();
+    public int[] solution(String[] operations) {
+        int[] answer = { 0, 0 };
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 
-        for (String operation : operations) {
-            String[] splitOperation = operation.split(" ");
+        for (String op : operations) {
+            String[] splitOp = op.split(" ");
+            String command = splitOp[0];
+            int value = Integer.parseInt(splitOp[1]);
 
-            if (splitOperation[0].equals("I")) {
-                priorityQueueWithMax.add(Integer.parseInt(splitOperation[1]));
-                priorityQueueWithMin.add(Integer.parseInt(splitOperation[1]));
-            }
-
-            if (splitOperation[0].equals("D")) {
-                if (!priorityQueueWithMax.isEmpty()) {
-                    if (splitOperation[1].equals("1")) {
-                        int max = priorityQueueWithMax.poll();
-                        priorityQueueWithMin.remove(max);
-
-                    } else {
-                        int min = priorityQueueWithMin.poll();
-                        priorityQueueWithMax.remove(min);
-                    }
+            if (command.equals("I")) {
+                maxHeap.add(value);
+                minHeap.add(value);
+            } else if (command.equals("D") && !maxHeap.isEmpty()) {
+                if (value == 1) {
+                    int max = maxHeap.poll();
+                    minHeap.remove(max);
+                } else {
+                    int min = minHeap.poll();
+                    maxHeap.remove(min);
                 }
             }
+        }
 
+        if (!maxHeap.isEmpty()) {
+            answer[0] = maxHeap.peek();
+            answer[1] = minHeap.peek();
         }
-        if (!priorityQueueWithMax.isEmpty()) {
-            answer[0] = priorityQueueWithMax.peek();
-            answer[1] = priorityQueueWithMin.peek();
-        }
+
         return answer;
     }
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(new String[]{"I -45", "I 653", "D 1", "I -642", "I 45", "I 97", "D 1", "D -1", "I 333"})));
-    }
+
+    // @Test
+    // void 정답() {
+    //     String[] operations1 = { "I 16", "I -5643", "D -1", "D 1", "D 1", "I 123", "D -1" };
+    //     String[] operations2 = { "I -45", "I 653", "D 1", "I -642", "I 45", "I 97", "D 1", "D -1", "I 333" };
+
+    //     int[] result1 = { 0, 0 };
+    //     int[] result2 = { 333, -45 };
+
+    //     Assertions.assertArrayEquals(result1, solution(operations1));
+    //     Assertions.assertArrayEquals(result2, solution(operations2));
+    // }
 }

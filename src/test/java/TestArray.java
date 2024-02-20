@@ -1,57 +1,51 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(String msg) {
-        List<Integer> compressedMsg = new ArrayList<>();
-        int nextCode = 1;
-        Map<String, Integer> dictionary = new HashMap<>();
+    public int[] solution(String[] operations) {
+        int[] answer = { 0, 0 };
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 
-        for (int i = 65; i <= 90; i++) {
-            String character = String.valueOf((char) i);
-            dictionary.put(character, nextCode++);
-        }
+        for (String op : operations) {
+            String[] splitOp = op.split(" ");
+            String command = splitOp[0];
+            int value = Integer.parseInt(splitOp[1]);
 
-        int i = 0;
-        while (i < msg.length()) {
-            int maxLength = msg.length() - i;
-            int j = maxLength;
-            while (j > 0 && !dictionary.containsKey(msg.substring(i, i + j))) {
-                j--;
+            if (command.equals("I")) {
+                maxHeap.add(value);
+                minHeap.add(value);
+            } else if (command.equals("D") && !maxHeap.isEmpty()) {
+                if (value == 1) {
+                    int max = maxHeap.poll();
+                    minHeap.remove(max);
+                } else {
+                    int min = minHeap.poll();
+                    maxHeap.remove(min);
+                }
             }
-            String substring = msg.substring(i, i + j);
-
-            if (i + j == msg.length()) {
-                compressedMsg.add(dictionary.get(substring));
-            } else {
-                substring = msg.substring(i, i + j + 1);
-                compressedMsg.add(dictionary.get(substring.substring(0, substring.length() - 1)));
-            }
-            dictionary.put(substring, nextCode++);
-            i += Math.max(1, j);
         }
 
-        int[] result = new int[compressedMsg.size()];
-        for (int k = 0; k < result.length; k++) {
-            result[k] = compressedMsg.get(k);
+        if (!maxHeap.isEmpty()) {
+            answer[0] = maxHeap.peek();
+            answer[1] = minHeap.peek();
         }
 
-        return result;
+        return answer;
     }
 
     @Test
     void 정답() {
-        int[] result1 = { 11, 1, 27, 15 };
-        int[] result2 = { 20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34 };
-        int[] result3 = { 1, 2, 27, 29, 28, 31, 30 };
+        String[] operations1 = { "I 16", "I -5643", "D -1", "D 1", "D 1", "I 123", "D -1" };
+        String[] operations2 = { "I -45", "I 653", "D 1", "I -642", "I 45", "I 97", "D 1", "D -1", "I 333" };
 
-        Assertions.assertArrayEquals(result1, solution("KAKAO"));
-        Assertions.assertArrayEquals(result2, solution("TOBEORNOTTOBEORTOBEORNOT"));
-        Assertions.assertArrayEquals(result3, solution("ABABABABABABABAB"));
+        int[] result1 = { 0, 0 };
+        int[] result2 = { 333, -45 };
+
+        Assertions.assertArrayEquals(result1, solution(operations1));
+        Assertions.assertArrayEquals(result2, solution(operations2));
     }
 }
