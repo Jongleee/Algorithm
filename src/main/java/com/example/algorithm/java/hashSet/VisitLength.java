@@ -11,7 +11,7 @@ public class VisitLength {
         pos[0][1] = 0;
 
         for (char direction : dirs.toCharArray()) {
-            int[][] tempPos = new int[2][2];
+            int[][] tempPos = new int[1][2];
             tempPos[0][0] = pos[0][0];
             tempPos[0][1] = pos[0][1];
 

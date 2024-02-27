@@ -1,68 +1,61 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.PriorityQueue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(String dirs) {
-        Set<String> set = new HashSet<>();
-        int[][] pos = new int[1][2];
-        pos[0][0] = 0;
-        pos[0][1] = 0;
+    public int solution(int[][] land, int height) {
+        int n = land.length;
 
-        for (char direction : dirs.toCharArray()) {
-            int[][] tempPos = new int[2][2];
-            tempPos[0][0] = pos[0][0];
-            tempPos[0][1] = pos[0][1];
+        boolean[][] visited = new boolean[n][n];
+        int[][] move = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
 
-            move(tempPos, direction);
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[0] - b[0]);
 
-            if (isValidMove(tempPos[0])) {
-                String path1 = posToString(pos[0]) + posToString(tempPos[0]);
-                String path2 = posToString(tempPos[0]) + posToString(pos[0]);
+        int value = 0;
+        queue.offer(new int[] { 0, 0, 0 });
 
-                set.add(path1);
-                set.add(path2);
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int val = curr[0];
+            int x = curr[1];
+            int y = curr[2];
 
-                pos[0][0] = tempPos[0][0];
-                pos[0][1] = tempPos[0][1];
+            if (visited[x][y]) {
+                continue;
+            }
+            visited[x][y] = true;
+            value += val;
+
+            int currentHeight = land[x][y];
+
+            for (int[] d : move) {
+                int nx = x + d[0];
+                int ny = y + d[1];
+
+                if (nx < 0 || ny < 0 || nx >= n || ny >= n || visited[nx][ny]) {
+                    continue;
+                }
+
+                int nextHeight = land[nx][ny];
+                int heightDiff = Math.abs(nextHeight - currentHeight);
+
+                if (heightDiff > height) {
+                    queue.add(new int[] { heightDiff, nx, ny });
+                } else {
+                    queue.add(new int[] { 0, nx, ny });
+                }
             }
         }
-
-        return set.size() / 2;
-    }
-
-    private void move(int[][] pos, char direction) {
-        switch (direction) {
-            case 'U':
-                pos[0][1]++;
-                break;
-            case 'D':
-                pos[0][1]--;
-                break;
-            case 'R':
-                pos[0][0]++;
-                break;
-            case 'L':
-                pos[0][0]--;
-                break;
-            default:
-                break;
-        }
-    }
-
-    private boolean isValidMove(int[] pos) {
-        return pos[0] >= -5 && pos[0] <= 5 && pos[1] >= -5 && pos[1] <= 5;
-    }
-
-    private String posToString(int[] pos) {
-        return pos[0] + "," + pos[1];
+        return value;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(7, solution("ULURRDLLU"));
-        Assertions.assertEquals(7, solution("LULLLLLLU"));
+        int[][] land1 = { { 1, 4, 8, 10 }, { 5, 5, 5, 5 }, { 10, 10, 10, 10 }, { 10, 10, 10, 20 } };
+        int[][] land2 = { { 10, 11, 10, 11 }, { 2, 21, 20, 10 }, { 1, 20, 21, 11 }, { 2, 1, 2, 1 } };
+
+        Assertions.assertEquals(15, solution(land1, 3));
+        Assertions.assertEquals(18, solution(land2, 1));
     }
 }

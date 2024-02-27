@@ -1,33 +1,40 @@
 package com.example.algorithm.java.heap;
 
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class OvertimeIndex {
-    public static long solution(int n, int[] works) {
+    public long solution(int n, int[] works) {
         long answer = 0;
-        PriorityQueue<Integer> worksQueue = new PriorityQueue<>(Comparator.reverseOrder());
-        for (int work : works) {
-            worksQueue.add(work);
-        }
-        while (n > 0) {
-            int max = worksQueue.poll();
-            worksQueue.add(max - 1);
-            n--;
 
-            if (worksQueue.peek() == 0)
-                break;
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+
+        for (int work : works) {
+            maxHeap.offer(work);
         }
-        if (n > 0)
-            return 0;
-        for (int i = 0; i < works.length; i++) {
-            int work = worksQueue.poll();
+
+        while (n > 0) {
+            int maxWork = maxHeap.poll();
+            if (maxWork == 0)
+                break;
+            maxHeap.offer(maxWork - 1);
+            n--;
+        }
+
+        for (Integer work : maxHeap) {
             answer += (long) work * work;
         }
+
         return answer;
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution(4, new int[] { 4, 3, 3 }));
-    }
+    // @Test
+    // void 정답() {
+    //     int[] works1 = { 4, 3, 3 };
+    //     int[] works2 = { 2, 1, 2 };
+    //     int[] works3 = { 1, 1 };
+
+    //     Assertions.assertEquals(12, solution(4, works1));
+    //     Assertions.assertEquals(6, solution(1, works2));
+    //     Assertions.assertEquals(0, solution(3, works3));
+    // }
 }

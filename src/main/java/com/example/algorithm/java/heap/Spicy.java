@@ -25,4 +25,11 @@ public class Spicy {
 
         return answer;
     }
+
+    // @Test
+    // void 정답() {
+    //     int[] scoville = { 1, 2, 3, 9, 10, 12 };
+
+    //     Assertions.assertEquals(2, solution(scoville,7));
+    // }
 }
