@@ -15,16 +15,12 @@ public class Friends4Block {
         boolean flag = true;
 
         while (flag) {
-            boolean[][] v = new boolean[m][n];
             flag = false;
+            boolean[][] v = new boolean[m][n];
 
             for (int i = 0; i < m - 1; i++) {
                 for (int j = 0; j < n - 1; j++) {
-                    if (copy[i][j] == '-') {
-                        continue;
-                    }
-
-                    if (check(i, j, copy)) {
+                    if (copy[i][j] != '-' && check(i, j, copy)) {
                         v[i][j] = true;
                         v[i][j + 1] = true;
                         v[i + 1][j] = true;
@@ -48,40 +44,34 @@ public class Friends4Block {
     public int erase(int m, int n, char[][] board, boolean[][] v) {
         int cnt = 0;
 
-        mark(m, n, board, v);
-
-        for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             Queue<Character> q = new LinkedList<>();
-
-            for (int j = m - 1; j >= 0; j--) {
-                if (board[j][i] == '.') {
+            for (int i = m - 1; i >= 0; i--) {
+                if (v[i][j]) {
                     cnt++;
-                } else {
-                    q.add(board[j][i]);
+                } else if (board[i][j] != '-') {
+                    q.add(board[i][j]);
                 }
             }
 
-            int idx = m - 1;
-
-            while (!q.isEmpty()) {
-                board[idx--][i] = q.poll();
-            }
-
-            for (int j = idx; j >= 0; j--) {
-                board[j][i] = '-';
+            for (int i = m - 1; i >= 0; i--) {
+                if (!q.isEmpty()) {
+                    board[i][j] = q.poll();
+                } else {
+                    board[i][j] = '-';
+                }
             }
         }
 
         return cnt;
     }
 
-    private void mark(int m, int n, char[][] board, boolean[][] v) {
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (v[i][j]) {
-                    board[i][j] = '.';
-                }
-            }
-        }
-    }
+    // @Test
+    // void 정답() {
+    //     String[] board1 = { "CCBDE", "AAADE", "AAABF", "CCBBF" };
+    //     String[] board2 = { "TTTANT", "RRFACC", "RRRFCC", "TRRRAA", "TTMMMF", "TMMTTJ" };
+
+    //     Assertions.assertEquals(14, solution(4, 5, board1));
+    //     Assertions.assertEquals(15, solution(6, 6, board2));
+    // }
 }
