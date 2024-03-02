@@ -4,15 +4,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MaximizeEquation {
-    private long max = 0;
+    private long max;
     private List<Long> operandList;
     private List<String> operatorList;
+
     public long solution(String expression) {
+        max = 0;
         permutation(expression, 0, 3, new String[] { "+", "-", "*" }, new boolean[3], "");
         return max;
     }
 
-    private void permutation(String expression, int startDepth, int targetDepth, String[] arr, boolean[] check, String result) {
+    private void permutation(String expression, int startDepth, int targetDepth, String[] arr, boolean[] check,
+            String result) {
         if (startDepth == targetDepth) {
             calculate(expression, result);
         } else {
@@ -31,46 +34,47 @@ public class MaximizeEquation {
         operatorList = new LinkedList<>();
 
         StringBuilder nextValue = init(expression);
-
         operandList.add(Long.parseLong(nextValue.toString()));
 
         for (int i = 0; i < 3; i++) {
             String nowOperator = String.valueOf(operators.charAt(i));
-
-            while (!operatorList.isEmpty()) {
-                int index = operatorList.indexOf(nowOperator);
-
-                if (index == -1) {
-                    break;
-                } else {
-                    switch (nowOperator) {
-                        case "+":
-                            operandList.add(index, operandList.get(index) + operandList.get(index + 1));
-                            break;
-                        case "-":
-                            operandList.add(index, operandList.get(index) - operandList.get(index + 1));
-                            break;
-                        case "*":
-                            operandList.add(index, operandList.get(index) * operandList.get(index + 1));
-                            break;
-                        default:
-                            break;
-                    }
-
-                    operandList.remove(index + 1);
-                    operandList.remove(index + 1);
-
-                    operatorList.remove(index);
-                }
-            }
+            calculateOperators(nowOperator);
         }
 
         max = Math.max(max, Math.abs(operandList.get(0)));
     }
 
+    private void calculateOperators(String nowOperator) {
+        int size = operatorList.size();
+        for (int i = 0; i < size; i++) {
+            String op = operatorList.get(i);
+            if (op.equals(nowOperator)) {
+                long operand1 = operandList.remove(i);
+                long operand2 = operandList.remove(i);
+                long result = 0;
+                switch (nowOperator) {
+                    case "+":
+                        result = operand1 + operand2;
+                        break;
+                    case "-":
+                        result = operand1 - operand2;
+                        break;
+                    case "*":
+                        result = operand1 * operand2;
+                        break;
+                    default:
+                        break;
+                }
+                operandList.add(i, result);
+                operatorList.remove(i);
+                i--;
+                size--;
+            }
+        }
+    }
+
     private StringBuilder init(String expression) {
         StringBuilder result = new StringBuilder();
-
         for (int i = 0; i < expression.length(); i++) {
             char ch = expression.charAt(i);
             if (ch == '+' || ch == '-' || ch == '*') {
@@ -83,4 +87,10 @@ public class MaximizeEquation {
         }
         return result;
     }
+
+    // @Test
+    // void 정답() {
+    // Assertions.assertEquals(60420, solution("100-200*300-500+20"));
+    // Assertions.assertEquals(300, solution("50*6-3*2"));
+    // }
 }
