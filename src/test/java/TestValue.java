@@ -1,95 +1,56 @@
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    private long max;
-    private List<Long> operandList;
-    private List<String> operatorList;
+    public int solution(String str1, String str2) {
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
 
-    public long solution(String expression) {
-        max = 0;
-        permutation(expression, 0, 3, new String[] { "+", "-", "*" }, new boolean[3], "");
-        return max;
+        cluster(str1.toLowerCase(), map1);
+        cluster(str2.toLowerCase(), map2);
+
+        int union = 0;
+        int intersection = 0;
+
+        Set<String> set = new HashSet<>(map1.keySet());
+        set.addAll(map2.keySet());
+
+        for (String key : set) {
+            int a = map1.getOrDefault(key, 0);
+            int b = map2.getOrDefault(key, 0);
+            union += Math.max(a, b);
+            intersection += Math.min(a, b);
+        }
+
+        if (union == 0) {
+            return 65536;
+        }
+
+        return (int) (((double) intersection / (double) union) * 65536);
     }
 
-    private void permutation(String expression, int startDepth, int targetDepth, String[] arr, boolean[] check,
-            String result) {
-        if (startDepth == targetDepth) {
-            calculate(expression, result);
-        } else {
-            for (int i = 0; i < arr.length; i++) {
-                if (!check[i]) {
-                    check[i] = true;
-                    permutation(expression, startDepth + 1, targetDepth, arr, check, result + arr[i]);
-                    check[i] = false;
-                }
+    private void cluster(String str, Map<String, Integer> map) {
+        for (int i = 0; i <= str.length() - 2; i++) {
+            String s = str.substring(i, i + 2);
+            if (Character.isLetter(s.charAt(0)) && Character.isLetter(s.charAt(1))) {
+                map.put(s, map.getOrDefault(s, 0) + 1);
             }
         }
-    }
-
-    private void calculate(String expression, String operators) {
-        operandList = new LinkedList<>();
-        operatorList = new LinkedList<>();
-
-        StringBuilder nextValue = init(expression);
-        operandList.add(Long.parseLong(nextValue.toString()));
-
-        for (int i = 0; i < 3; i++) {
-            String nowOperator = String.valueOf(operators.charAt(i));
-            calculateOperators(nowOperator);
-        }
-
-        max = Math.max(max, Math.abs(operandList.get(0)));
-    }
-
-    private void calculateOperators(String nowOperator) {
-        int size = operatorList.size();
-        for (int i = 0; i < size; i++) {
-            String op = operatorList.get(i);
-            if (op.equals(nowOperator)) {
-                long operand1 = operandList.remove(i);
-                long operand2 = operandList.remove(i);
-                long result = 0;
-                switch (nowOperator) {
-                    case "+":
-                        result = operand1 + operand2;
-                        break;
-                    case "-":
-                        result = operand1 - operand2;
-                        break;
-                    case "*":
-                        result = operand1 * operand2;
-                        break;
-                }
-                operandList.add(i, result);
-                operatorList.remove(i);
-                i--;
-                size--;
-            }
-        }
-    }
-
-    private StringBuilder init(String expression) {
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < expression.length(); i++) {
-            char ch = expression.charAt(i);
-            if (ch == '+' || ch == '-' || ch == '*') {
-                operandList.add(Long.parseLong(result.toString()));
-                result = new StringBuilder();
-                operatorList.add(String.valueOf(ch));
-            } else {
-                result.append(ch);
-            }
-        }
-        return result;
     }
 
     @Test
     void 정답() {
-        Assertions.assertEquals(60420, solution("100-200*300-500+20"));
-        Assertions.assertEquals(300, solution("50*6-3*2"));
+        String[] str1 = { "FRANCE", "handshake", "aa1+aa2", "E=M*C^2" };
+        String[] str2 = { "french", "shake hands", "AAAA12", "e=m*c^2" };
+        int[] expected = { 16384, 65536, 43690, 65536 };
+
+        for (int i = 0; i < expected.length; i++) {
+            Assertions.assertEquals(expected[i], solution(str1[i], str2[i]));
+        }
     }
 }
