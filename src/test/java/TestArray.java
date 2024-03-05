@@ -2,45 +2,34 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(int[] sequence, int k) {
-        int left = 0;
-        int right = 0;
-        int minLength = Integer.MAX_VALUE;
-        int[] answer = new int[2];
-        int currentSum = 0;
+    public int[] solution(int n, long left, long right) {
+        int length = (int) (right - left) + 1;
+        int[] answer = new int[length];
 
-        while (right < sequence.length) {
-            currentSum += sequence[right];
-            while (currentSum > k) {
-                currentSum -= sequence[left];
-                left++;
-            }
-            if (currentSum == k) {
-                int currentLength = right - left + 1;
-                if (currentLength < minLength) {
-                    minLength = currentLength;
-                    answer[0] = left;
-                    answer[1] = right;
-                }
-            }
-            right++;
+        for (int i = 0; i < length; i++) {
+            long offset = i + left;
+            answer[i] = calculateValue(n, offset);
         }
 
         return answer;
     }
 
+    private int calculateValue(int n, long offset) {
+        int row = (int) (offset / n) + 1;
+        int col = (int) (offset % n) + 1;
+        return Math.max(row, col);
+    }
+
     @Test
     void 정답() {
-        int[] sequence1 = { 1, 2, 3, 4, 5 };
-        int[] sequence2 = { 1, 1, 1, 2, 3, 4, 5 };
-        int[] sequence3 = { 2, 2, 2, 2, 2 };
+        int[] n = { 3, 4 };
+        int[] left = { 2, 7 };
+        int[] right = { 5, 14 };
 
-        int[] result1 = { 2, 3 };
-        int[] result2 = { 6, 6 };
-        int[] result3 = { 0, 2 };
+        int[][] result = { { 3, 2, 2, 3 }, { 4, 3, 3, 3, 4, 4, 4, 4 } };
 
-        Assertions.assertArrayEquals(result1, solution(sequence1, 7));
-        Assertions.assertArrayEquals(result2, solution(sequence2, 5));
-        Assertions.assertArrayEquals(result3, solution(sequence3, 6));
+        for (int i = 0; i < result.length; i++) {
+            Assertions.assertArrayEquals(result[i], solution(n[i], left[i], right[i]));
+        }
     }
 }
