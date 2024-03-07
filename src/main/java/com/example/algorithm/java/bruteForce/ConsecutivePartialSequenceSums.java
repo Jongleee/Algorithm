@@ -1,4 +1,4 @@
-package com.example.algorithm.java.implement;
+package com.example.algorithm.java.bruteForce;
 
 import java.util.HashSet;
 import java.util.Set;

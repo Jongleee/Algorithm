@@ -1,4 +1,4 @@
-package com.example.algorithm.java.implement;
+package com.example.algorithm.java.twoPorinter;
 
 public class ContinuousSequenceSum {
     public int[] solution(int[] sequence, int k) {

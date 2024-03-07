@@ -1,4 +1,4 @@
-package com.example.algorithm.java.implement;
+package com.example.algorithm.java.linearSearch;
 
 public class AddNegativePositive {
     public int solution(int[] absolutes, boolean[] signs) {
