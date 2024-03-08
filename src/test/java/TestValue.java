@@ -1,56 +1,48 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public int solution(String str1, String str2) {
-        Map<String, Integer> map1 = new HashMap<>();
-        Map<String, Integer> map2 = new HashMap<>();
+    public int solution(int[][] data, int column, int rowBegin, int rowEnd) {
+        column--;
+        rowBegin--;
 
-        cluster(str1.toLowerCase(), map1);
-        cluster(str2.toLowerCase(), map2);
+        int finalColumn = column;
+        Arrays.sort(data, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[finalColumn] == o2[finalColumn])
+                    return o2[0] - o1[0];
+                return o1[finalColumn] - o2[finalColumn];
+            }
+        });
 
-        int union = 0;
-        int intersection = 0;
+        int result = 0;
 
-        Set<String> set = new HashSet<>(map1.keySet());
-        set.addAll(map2.keySet());
-
-        for (String key : set) {
-            int a = map1.getOrDefault(key, 0);
-            int b = map2.getOrDefault(key, 0);
-            union += Math.max(a, b);
-            intersection += Math.min(a, b);
+        for (int i = rowBegin; i < rowEnd; i++) {
+            int sumSi = calculateSumSi(data[i], i + 1);
+            result ^= sumSi;
         }
 
-        if (union == 0) {
-            return 65536;
-        }
-
-        return (int) (((double) intersection / (double) union) * 65536);
+        return result;
     }
 
-    private void cluster(String str, Map<String, Integer> map) {
-        for (int i = 0; i <= str.length() - 2; i++) {
-            String s = str.substring(i, i + 2);
-            if (Character.isLetter(s.charAt(0)) && Character.isLetter(s.charAt(1))) {
-                map.put(s, map.getOrDefault(s, 0) + 1);
-            }
+    private int calculateSumSi(int[] row, int rowNumber) {
+        int sum = 0;
+        for (int i = 0; i < row.length; i++) {
+            sum += row[i] % rowNumber;
         }
+        return sum;
     }
 
     @Test
     void 정답() {
-        String[] str1 = { "FRANCE", "handshake", "aa1+aa2", "E=M*C^2" };
-        String[] str2 = { "french", "shake hands", "AAAA12", "e=m*c^2" };
-        int[] expected = { 16384, 65536, 43690, 65536 };
+        int[][][] data = { { { 2, 2, 6 }, { 1, 5, 10 }, { 4, 2, 9 }, { 3, 8, 3 } } };
 
-        for (int i = 0; i < expected.length; i++) {
-            Assertions.assertEquals(expected[i], solution(str1[i], str2[i]));
+        for (int i = 0; i < data.length; i++) {
+            Assertions.assertEquals(4, solution(data[i], 2, 2, 3));
         }
     }
 }

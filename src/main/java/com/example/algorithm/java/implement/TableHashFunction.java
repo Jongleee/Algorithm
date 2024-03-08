@@ -1,17 +1,21 @@
 package com.example.algorithm.java.implement;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class TableHashFunction {
-    public static int solution(int[][] data, int column, int rowBegin, int rowEnd) {
+    public int solution(int[][] data, int column, int rowBegin, int rowEnd) {
         column--;
         rowBegin--;
 
         int finalColumn = column;
-        Arrays.sort(data, (o1, o2) -> {
-            if (o1[finalColumn] == o2[finalColumn])
-                return o2[0] - o1[0];
-            return o1[finalColumn] - o2[finalColumn];
+        Arrays.sort(data, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[finalColumn] == o2[finalColumn])
+                    return o2[0] - o1[0];
+                return o1[finalColumn] - o2[finalColumn];
+            }
         });
 
         int result = 0;
@@ -24,7 +28,7 @@ public class TableHashFunction {
         return result;
     }
 
-    private static int calculateSumSi(int[] row, int rowNumber) {
+    private int calculateSumSi(int[] row, int rowNumber) {
         int sum = 0;
         for (int i = 0; i < row.length; i++) {
             sum += row[i] % rowNumber;
@@ -32,8 +36,12 @@ public class TableHashFunction {
         return sum;
     }
 
-    public static void main(String[] args) {
-        int[][] data = { { 2, 2, 6 }, { 1, 5, 10 }, { 4, 2, 9 }, { 3, 8, 3 } };
-        System.out.println(solution(data, 2, 2, 3));//4
-    }
+    // @Test
+    // void 정답() {
+    //     int[][][] data = { { { 2, 2, 6 }, { 1, 5, 10 }, { 4, 2, 9 }, { 3, 8, 3 } } };
+
+    //     for (int i = 0; i < data.length; i++) {
+    //         Assertions.assertEquals(4, solution(data[i], 2, 2, 3));
+    //     }
+    // }
 }
