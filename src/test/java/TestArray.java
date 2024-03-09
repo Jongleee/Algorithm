@@ -2,53 +2,35 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(int rows, int columns, int[][] queries) {
-        int[][] square = new int[rows][columns];
+    public int[] solution(int n) {
+        int[] answer = new int[n * (n + 1) / 2];
+
+        int[][] triangle = new int[n][n];
         int value = 1;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                square[i][j] = value++;
+
+        int x = -1;
+        int y = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (i % 3 == 0) {
+                    x++;
+                } else if (i % 3 == 1) {
+                    y++;
+                } else if (i % 3 == 2) {
+                    x--;
+                    y--;
+                }
+                triangle[x][y] = value++;
             }
         }
-        return rotateNums(square, queries);
-    }
 
-    public int[] rotateNums(int[][] square, int[][] queries) {
-        int[] answer = new int[queries.length];
         int index = 0;
-
-        for (int[] query : queries) {
-            int x1 = query[0] - 1;
-            int y1 = query[1] - 1;
-            int x2 = query[2] - 1;
-            int y2 = query[3] - 1;
-            int min = Integer.MAX_VALUE;
-
-            int prev = square[x1][y1];
-            min = Math.min(min, prev);
-
-            for (int i = x1; i < x2; i++) {
-                square[i][y1] = square[i + 1][y1];
-                min = Math.min(min, square[i][y1]);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (triangle[i][j] == 0)
+                    break;
+                answer[index++] = triangle[i][j];
             }
-
-            for (int i = y1; i < y2; i++) {
-                square[x2][i] = square[x2][i + 1];
-                min = Math.min(min, square[x2][i]);
-            }
-
-            for (int i = x2; i > x1; i--) {
-                square[i][y2] = square[i - 1][y2];
-                min = Math.min(min, square[i][y2]);
-            }
-
-            for (int i = y2; i > y1 + 1; i--) {
-                square[x1][i] = square[x1][i - 1];
-                min = Math.min(min, square[x1][i]);
-            }
-
-            square[x1][y1 + 1] = prev;
-            answer[index++] = min;
         }
 
         return answer;
@@ -56,17 +38,14 @@ class TestArray {
 
     @Test
     void 정답() {
-        int[] rows = { 6, 3, 100 };
-        int[] columns = { 6, 3, 97 };
+        int[] n = { 4, 5, 6 };
 
-        int[][][] queries = { { { 2, 2, 5, 4 }, { 3, 3, 6, 6 }, { 5, 1, 6, 3 } },
-                { { 1, 1, 2, 2 }, { 1, 2, 2, 3 }, { 2, 1, 3, 2 }, { 2, 2, 3, 3 } },
-                { { 1, 1, 100, 97 } } };
-
-        int[][] result = { { 8, 10, 25 }, { 1, 1, 5, 3 }, { 1 } };
+        int[][] result = { { 1, 2, 9, 3, 10, 8, 4, 5, 6, 7 },
+                { 1, 2, 12, 3, 13, 11, 4, 14, 15, 10, 5, 6, 7, 8, 9 },
+                { 1, 2, 15, 3, 16, 14, 4, 17, 21, 13, 5, 18, 19, 20, 12, 6, 7, 8, 9, 10, 11 } };
 
         for (int i = 0; i < result.length; i++) {
-            Assertions.assertArrayEquals(result[i], solution(rows[i], columns[i], queries[i]));
+            Assertions.assertArrayEquals(result[i], solution(n[i]));
         }
     }
 }

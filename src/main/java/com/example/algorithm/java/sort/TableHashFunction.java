@@ -1,4 +1,4 @@
-package com.example.algorithm.java.implement;
+package com.example.algorithm.java.sort;
 
 import java.util.Arrays;
 import java.util.Comparator;
