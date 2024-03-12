@@ -1,34 +1,48 @@
 package com.example.algorithm.java.math;
 
 public class KBasePrimeNumber {
-    public static int solution(int n, int k) {
+    public int solution(int n, int k) {
         int answer = 0;
-        String s = convertToBaseK(n, k);
+        int[] digits = convertToBaseKArray(n, k);
+
         int j;
-        for (int i = 0; i < s.length(); i = j) {
+        for (int i = 0; i < digits.length; i = j) {
             j = i + 1;
-            while (j < s.length() && s.charAt(j) != '0')
+            while (j < digits.length && digits[j] != 0)
                 j++;
 
-            if (isPrime(Long.parseLong(s.substring(i, j))))
+            if (isPrime(convertFromBaseK(digits, i, j)))
                 answer++;
         }
 
         return answer;
     }
 
-    public static String convertToBaseK(int n, int k) {
-        StringBuilder result = new StringBuilder();
+    public int[] convertToBaseKArray(int n, int k) {
+        int[] result = new int[32];
+        int i = 31;
 
         while (n > 0) {
-            result.insert(0, n % k);
+            result[i--] = n % k;
             n /= k;
         }
 
-        return result.toString();
+        return result;
     }
 
-    public static boolean isPrime(long n) {
+    public long convertFromBaseK(int[] digits, int start, int end) {
+        long result = 0;
+        long multiplier = 1;
+
+        for (int i = end - 1; i >= start; i--) {
+            result += digits[i] * multiplier;
+            multiplier *= 10;
+        }
+
+        return result;
+    }
+
+    public boolean isPrime(long n) {
         if (n <= 1) {
             return false;
         } else if (n == 2) {
@@ -44,7 +58,14 @@ public class KBasePrimeNumber {
         return true;
     }
 
-    public static void main(String[] args) {
-        System.out.println(solution(110011, 10));
-    }
+    // @Test
+    // void 정답() {
+    //     int[] n = { 437674, 110011 };
+    //     int[] k = { 3, 10 };
+    //     int[] result = { 3, 2 };
+
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(n[i], k[i]));
+    //     }
+    // }
 }
