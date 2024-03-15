@@ -2,26 +2,33 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestValue {
-    public long solution(int k, int d) {
-        long answer = 0;
+    public long solution(int w, int h) {
+        long area = (long) w * h;
 
-        long max_x = d / k;
-
-        for (long x = 0; x <= max_x; x++) {
-            answer += (long) Math.sqrt((double) d * d - x * x * k * k) / k + 1;
+        if (w == 1 || h == 1) {
+            return 0;
         }
 
-        return answer;
+        long gcd = calculateGcd(w, h);
+        long overlappedArea = (w / gcd) + (h / gcd) - 1;
+        return area - gcd * overlappedArea;
+    }
+
+    public long calculateGcd(long a, long b) {
+        if (b == 0) {
+            return a;
+        }
+        return calculateGcd(b, a % b);
     }
 
     @Test
     void 정답() {
-        int[] k = { 2, 1 };
-        int[] d = { 4, 5 };
-        int[] result = { 6, 26 };
+        int[] w = { 8 };
+        int[] h = { 12 };
+        int[] result = { 80 };
 
         for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(k[i], d[i]));
+            Assertions.assertEquals(result[i], solution(w[i], h[i]));
         }
     }
 }
