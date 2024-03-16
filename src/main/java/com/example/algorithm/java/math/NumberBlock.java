@@ -1,13 +1,12 @@
 package com.example.algorithm.java.math;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class NumberBlock {
-    static final int MAX = 10_000_000;
+    final int MAX = 10_000_000;
 
-    public static int[] solution(long begin, long end) {
+    public int[] solution(long begin, long end) {
         int[] answer = new int[(int) (end - begin + 1)];
 
         for (long i = begin; i <= end; i++) {
@@ -17,7 +16,7 @@ public class NumberBlock {
         return answer;
     }
 
-    private static int findValue(long num) {
+    private int findValue(long num) {
         if (num == 1) {
             return 0;
         }
@@ -40,7 +39,14 @@ public class NumberBlock {
         return 1;
     }
 
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(100000014, 100000016)));
-    }
+    // @Test
+    // void 정답() {
+    //     int[] begin = { 1 };
+    //     int[] end = { 10 };
+    //     int[][] result = { { 0, 1, 1, 2, 1, 3, 1, 4, 3, 5 } };
+
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertArrayEquals(result[i], solution(begin[i], end[i]));
+    //     }
+    // }
 }

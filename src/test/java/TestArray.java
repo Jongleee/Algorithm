@@ -1,46 +1,53 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[] solution(int n, long k) {
-        int[] result = new int[n];
-        long factorialNumber = 1;
-    
-        int[] numbers = new int[n];
+    final int MAX = 10_000_000;
 
-        for (int i = 1; i <= n; i++) {
-            factorialNumber *= i;
-            numbers[i-1] = i;
+    public int[] solution(long begin, long end) {
+        int[] answer = new int[(int) (end - begin + 1)];
+
+        for (long i = begin; i <= end; i++) {
+            answer[(int) (i - begin)] = findValue(i);
         }
-    
-        k--;
-    
-        for (int i = 0; i < n; i++) {
-            factorialNumber /= (n - i);
-            int index = (int) (k / factorialNumber);
-            result[i] = numbers[index];
-            removeElement(numbers, index, n);
-            k %= factorialNumber;
-        }
-    
-        return result;
+
+        return answer;
     }
-    
-    private void removeElement(int[] arr, int index, int size) {
-        for (int i = index; i < size - 1; i++) {
-            arr[i] = arr[i + 1];
+
+    private int findValue(long num) {
+        if (num == 1) {
+            return 0;
         }
+
+        List<Integer> l = new ArrayList<>();
+
+        for (int i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i == 0) {
+                l.add(i);
+
+                if (num / i <= MAX) {
+                    return (int) (num / i);
+                }
+            }
+        }
+
+        if (!l.isEmpty()) {
+            return l.get(l.size() - 1);
+        }
+        return 1;
     }
 
     @Test
     void 정답() {
-        int[] n = { 3 };
-        int[] k = { 5 };
-
-        int[][] result = { { 3,1,2} };
+        int[] begin = { 1 };
+        int[] end = { 10 };
+        int[][] result = { { 0, 1, 1, 2, 1, 3, 1, 4, 3, 5 } };
 
         for (int i = 0; i < result.length; i++) {
-            Assertions.assertArrayEquals(result[i], solution(n[i],k[i]));
+            Assertions.assertArrayEquals(result[i], solution(begin[i], end[i]));
         }
     }
 }
