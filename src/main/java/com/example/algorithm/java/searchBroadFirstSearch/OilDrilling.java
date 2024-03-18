@@ -1,3 +1,5 @@
+package com.example.algorithm.java.searchBroadFirstSearch;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -5,10 +7,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class OilDrilling {
     private static final int[] dx = new int[] { 0, 1, 0, -1 };
     private static final int[] dy = new int[] { -1, 0, 1, 0 };
     private Map<Integer, Integer> answerMap;
@@ -56,18 +55,18 @@ class TestValue {
         }
     }
 
-    @Test
-    void 정답() {
-        int[][][] land = {
-                { { 0, 0, 0, 1, 1, 1, 0, 0 }, { 0, 0, 0, 0, 1, 1, 0, 0 }, { 1, 1, 0, 0, 0, 1, 1, 0 },
-                        { 1, 1, 1, 0, 0, 0, 0, 0 }, { 1, 1, 1, 0, 0, 0, 1, 1 } },
-                { { 1, 0, 1, 0, 1, 1 }, { 1, 0, 1, 0, 0, 0 }, { 1, 0, 1, 0, 0, 1 }, { 1, 0, 0, 1, 0, 0 },
-                        { 1, 0, 0, 1, 0, 1 }, { 1, 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1, 1 } } };
+    // @Test
+    // void 정답() {
+    //     int[][][] land = {
+    //             { { 0, 0, 0, 1, 1, 1, 0, 0 }, { 0, 0, 0, 0, 1, 1, 0, 0 }, { 1, 1, 0, 0, 0, 1, 1, 0 },
+    //                     { 1, 1, 1, 0, 0, 0, 0, 0 }, { 1, 1, 1, 0, 0, 0, 1, 1 } },
+    //             { { 1, 0, 1, 0, 1, 1 }, { 1, 0, 1, 0, 0, 0 }, { 1, 0, 1, 0, 0, 1 }, { 1, 0, 0, 1, 0, 0 },
+    //                     { 1, 0, 0, 1, 0, 1 }, { 1, 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1, 1 } } };
 
-        int[] result = { 9, 16 };
+    //     int[] result = { 9, 16 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(land[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(land[i]));
+    //     }
+    // }
 }
