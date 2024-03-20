@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.dynamicProgramming;
 
-class TestValue {
+public class MountainShapedTiling {
     private static final int MOD = 10007;
     
     public int solution(int n, int[] tops) {
@@ -22,17 +21,17 @@ class TestValue {
         return (dp[n][0] + dp[n][1]) % MOD;
     }
 
-    @Test
-    void 정답() {
-        int[] n = { 4, 2, 10 };
-        int[][] tops = { { 1, 1, 0, 1 },
-                { 0, 1 },
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+    // @Test
+    // void 정답() {
+    //     int[] n = { 4, 2, 10 };
+    //     int[][] tops = { { 1, 1, 0, 1 },
+    //             { 0, 1 },
+    //             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 
-        int[] result = { 149, 11, 7704 };
+    //     int[] result = { 149, 11, 7704 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(n[i], tops[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(n[i], tops[i]));
+    //     }
+    // }
 }
