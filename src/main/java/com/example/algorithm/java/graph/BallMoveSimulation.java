@@ -1,4 +1,4 @@
-package com.example.algorithm.java.practice.graph;
+package com.example.algorithm.java.graph;
 
 public class BallMoveSimulation {
     public long solution(int n, int m, int x, int y, int[][] queries) {

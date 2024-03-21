@@ -1,10 +1,9 @@
+package com.example.algorithm.java.graph;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestArray {
+public class DonutStickGraph {
     public int[] solution(int[][] edges) {
         int[] answer = new int[4];
         Map<Integer, int[]> nodeMap = initializeNodeMap(edges);
@@ -48,15 +47,15 @@ class TestArray {
         return maxNode;
     }
 
-    @Test
-    void 정답() {
-        int[][][] edges = { { { 2, 3 }, { 4, 3 }, { 1, 1 }, { 2, 1 } },
-                { { 4, 11 }, { 1, 12 }, { 8, 3 }, { 12, 7 }, { 4, 2 }, { 7, 11 }, { 4, 8 }, { 9, 6 }, { 10, 11 },
-                        { 6, 10 }, { 3, 5 }, { 11, 1 }, { 5, 3 }, { 11, 9 }, { 3, 8 } } };
-        int[][] result = { { 2, 1, 1, 0 }, { 4, 0, 1, 2 } };
+    // @Test
+    // void 정답() {
+    //     int[][][] edges = { { { 2, 3 }, { 4, 3 }, { 1, 1 }, { 2, 1 } },
+    //             { { 4, 11 }, { 1, 12 }, { 8, 3 }, { 12, 7 }, { 4, 2 }, { 7, 11 }, { 4, 8 }, { 9, 6 }, { 10, 11 },
+    //                     { 6, 10 }, { 3, 5 }, { 11, 1 }, { 5, 3 }, { 11, 9 }, { 3, 8 } } };
+    //     int[][] result = { { 2, 1, 1, 0 }, { 4, 0, 1, 2 } };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertArrayEquals(result[i], solution(edges[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertArrayEquals(result[i], solution(edges[i]));
+    //     }
+    // }
 }
