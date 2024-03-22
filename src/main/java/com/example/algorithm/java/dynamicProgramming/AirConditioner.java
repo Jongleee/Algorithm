@@ -1,9 +1,8 @@
+package com.example.algorithm.java.dynamicProgramming;
+
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class AirConditioner {
     public int solution(int temperature, int t1, int t2, int a, int b, int[] onboard) {
         int temp = temperature > t2 ? t1 - (temperature - t2) : temperature;
         int INF = 100001;
@@ -42,21 +41,21 @@ class TestValue {
         return result;
     }
 
-    @Test
-    void 정답() {
-        int[] temperature = { 28, -10, 11, 11 };
-        int[] t1 = { 18, -5, 8, 8 };
-        int[] t2 = { 26, 5, 10, 10 };
-        int[] a = { 10, 5, 10, 10 };
-        int[] b = { 8, 1, 1, 100 };
-        int[][] onboard = { { 0, 0, 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 0, 1, 0 },
-                { 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 },
-                { 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 } };
+    // @Test
+    // void 정답() {
+    //     int[] temperature = { 28, -10, 11, 11 };
+    //     int[] t1 = { 18, -5, 8, 8 };
+    //     int[] t2 = { 26, 5, 10, 10 };
+    //     int[] a = { 10, 5, 10, 10 };
+    //     int[] b = { 8, 1, 1, 100 };
+    //     int[][] onboard = { { 0, 0, 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 0, 1, 0 },
+    //             { 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 },
+    //             { 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 } };
 
-        int[] result = { 40, 25, 20, 60 };
+    //     int[] result = { 40, 25, 20, 60 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(temperature[i], t1[i], t2[i], a[i], b[i], onboard[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(temperature[i], t1[i], t2[i], a[i], b[i], onboard[i]));
+    //     }
+    // }
 }
