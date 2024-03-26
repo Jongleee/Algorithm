@@ -1,7 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+package com.example.algorithm.java.backtracking;
 
-class TestValue {
+public class MoveCart {
     private static class Point {
         int x, y;
 
@@ -108,18 +107,18 @@ class TestValue {
         return minSteps;
     }
 
-    @Test
-    void 정답() {
-        int[][][] maze = { { { 1, 4 }, { 0, 0 }, { 2, 3 } },
-                { { 1, 0, 2 }, { 0, 0, 0 }, { 5, 0, 5 }, { 4, 0, 3 } },
-                { { 1, 5 }, { 2, 5 }, { 4, 5 }, { 3, 5 } },
-                { { 4, 1, 2, 3 } }
-        };
+    // @Test
+    // void 정답() {
+    //     int[][][] maze = { { { 1, 4 }, { 0, 0 }, { 2, 3 } },
+    //             { { 1, 0, 2 }, { 0, 0, 0 }, { 5, 0, 5 }, { 4, 0, 3 } },
+    //             { { 1, 5 }, { 2, 5 }, { 4, 5 }, { 3, 5 } },
+    //             { { 4, 1, 2, 3 } }
+    //     };
 
-        int[] result = { 3, 7, 0, 0 };
+    //     int[] result = { 3, 7, 0, 0 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(maze[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(maze[i]));
+    //     }
+    // }
 }
