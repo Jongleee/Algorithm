@@ -1,10 +1,9 @@
+package com.example.algorithm.java.implement;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class MaxGift {
     public int solution(String[] friends, String[] gifts) {
         int n = friends.length;
         int[][] history = new int[n][n];
@@ -51,22 +50,22 @@ class TestValue {
                 .getAsInt();
     }
 
-    @Test
-    void 정답() {
-        String[][] friends = { { "muzi", "ryan", "frodo", "neo" },
-                { "joy", "brad", "alessandro", "conan", "david" },
-                { "a", "b", "c" }
-        };
-        String[][] gifts = {
-                { "muzi frodo", "muzi frodo", "ryan muzi", "ryan muzi", "ryan muzi", "frodo muzi", "frodo ryan", "neo muzi" },
-                { "alessandro brad", "alessandro joy", "alessandro conan", "david alessandro", "alessandro david" },
-                { "a b", "b a", "c a", "a c", "a c", "c a" }
-        };
+    // @Test
+    // void 정답() {
+    //     String[][] friends = { { "muzi", "ryan", "frodo", "neo" },
+    //             { "joy", "brad", "alessandro", "conan", "david" },
+    //             { "a", "b", "c" }
+    //     };
+    //     String[][] gifts = {
+    //             { "muzi frodo", "muzi frodo", "ryan muzi", "ryan muzi", "ryan muzi", "frodo muzi", "frodo ryan", "neo muzi" },
+    //             { "alessandro brad", "alessandro joy", "alessandro conan", "david alessandro", "alessandro david" },
+    //             { "a b", "b a", "c a", "a c", "a c", "c a" }
+    //     };
 
-        int[] result = { 2, 4, 0 };
+    //     int[] result = { 2, 4, 0 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(friends[i], gifts[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(friends[i], gifts[i]));
+    //     }
+    // }
 }
