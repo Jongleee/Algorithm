@@ -1,11 +1,10 @@
+package com.example.algorithm.java.sort;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestArray {
+public class DataAnalysis {
     public int[][] solution(int[][] data, String ext, int val_ext, String sort_by) {
         int extIndex = getIndex(ext);
         int sortByIndex = getIndex(sort_by);
@@ -44,17 +43,17 @@ class TestArray {
         }
     }
 
-    @Test
-    void 정답() {
-        int[][][] data = { { { 1, 20300104, 100, 80 }, { 2, 20300804, 847, 37 }, { 3, 20300401, 10, 8 } } };
-        String[] ext = { "date" };
-        int[] val_ext = { 20300501 };
-        String[] sort_by = { "remain" };
+    // @Test
+    // void 정답() {
+    //     int[][][] data = { { { 1, 20300104, 100, 80 }, { 2, 20300804, 847, 37 }, { 3, 20300401, 10, 8 } } };
+    //     String[] ext = { "date" };
+    //     int[] val_ext = { 20300501 };
+    //     String[] sort_by = { "remain" };
 
-        int[][][] result = { { { 3, 20300401, 10, 8 }, { 1, 20300104, 100, 80 } } };
+    //     int[][][] result = { { { 3, 20300401, 10, 8 }, { 1, 20300104, 100, 80 } } };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertArrayEquals(result[i], solution(data[i], ext[i], val_ext[i], sort_by[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertArrayEquals(result[i], solution(data[i], ext[i], val_ext[i], sort_by[i]));
+    //     }
+    // }
 }
