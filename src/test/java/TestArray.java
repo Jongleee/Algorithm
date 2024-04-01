@@ -1,60 +1,25 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TestArray {
-    public int[][] solution(int[][] data, String ext, int val_ext, String sort_by) {
-        int extIndex = getIndex(ext);
-        int sortByIndex = getIndex(sort_by);
-
-        List<int[]> filteredList = new ArrayList<>();
-        for (int[] arr : data) {
-            if (arr[extIndex] < val_ext) {
-                filteredList.add(arr);
-            }
+    public long[] solution(int x, int n) {
+        long[] answer = new long[n];
+        long value = x;
+        for (int i = 0; i < n; i++) {
+            answer[i] = value;
+            value += x;
         }
-
-        Collections.sort(filteredList, (o1, o2) -> {
-            return Integer.compare(o1[sortByIndex], o2[sortByIndex]);
-        });
-
-        int[][] filteredData = new int[filteredList.size()][];
-        for (int i = 0; i < filteredList.size(); i++) {
-            filteredData[i] = filteredList.get(i);
-        }
-
-        return filteredData;
-    }
-
-    private int getIndex(String key) {
-        switch (key) {
-            case "code":
-                return 0;
-            case "date":
-                return 1;
-            case "maximum":
-                return 2;
-            case "remain":
-                return 3;
-            default:
-                throw new IllegalArgumentException("Invalid key: " + key);
-        }
+        return answer;
     }
 
     @Test
     void 정답() {
-        int[][][] data = { { { 1, 20300104, 100, 80 }, { 2, 20300804, 847, 37 }, { 3, 20300401, 10, 8 } } };
-        String[] ext = { "date" };
-        int[] val_ext = { 20300501 };
-        String[] sort_by = { "remain" };
-
-        int[][][] result = { { { 3, 20300401, 10, 8 }, { 1, 20300104, 100, 80 } } };
+        int[] x = { 2, 4, -4 };
+        int[] n = { 5, 3, 2 };
+        long[][] result = { { 2, 4, 6, 8, 10 }, { 4, 8, 12 }, { -4, -8 } };
 
         for (int i = 0; i < result.length; i++) {
-            Assertions.assertArrayEquals(result[i], solution(data[i], ext[i], val_ext[i], sort_by[i]));
+            Assertions.assertArrayEquals(result[i], solution(x[i], n[i]));
         }
     }
 }
