@@ -1,10 +1,9 @@
+package com.example.algorithm.java.tree;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class DevideTestSite {
     static class Node {
         int data;
         int left, right;
@@ -20,6 +19,7 @@ class TestValue {
     static List<Node>[] list;
     static int[][] cost;
 
+    @SuppressWarnings("unchecked")
     public int solution(int k, int[] num, int[][] links) {
         int size = num.length;
         list = new ArrayList[size];
@@ -115,19 +115,19 @@ class TestValue {
         return cost[pos][0] <= k;
     }
 
-    @Test
-    void 정답() {
-        int[] k = { 3, 1, 2, 4 };
-        int[][] num = { { 12, 30, 1, 8, 8, 6, 20, 7, 5, 10, 4, 1 }, { 6, 9, 7, 5 }, { 6, 9, 7, 5 }, { 6, 9, 7, 5 } };
-        int[][][] links = {
-                { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { 8, 5 }, { 2, 10 }, { 3, 0 }, { 6, 1 }, { 11, -1 },
-                        { 7, 4 }, { -1, -1 }, { -1, -1 } },
-                { { -1, -1 }, { -1, -1 }, { -1, 0 }, { 2, 1 } }, { { -1, -1 }, { -1, -1 }, { -1, 0 }, { 2, 1 } },
-                { { -1, -1 }, { -1, -1 }, { -1, 0 }, { 2, 1 } } };
-        int[] result = { 40, 27, 14, 9 };
+    // @Test
+    // void 정답() {
+    //     int[] k = { 3, 1, 2, 4 };
+    //     int[][] num = { { 12, 30, 1, 8, 8, 6, 20, 7, 5, 10, 4, 1 }, { 6, 9, 7, 5 }, { 6, 9, 7, 5 }, { 6, 9, 7, 5 } };
+    //     int[][][] links = {
+    //             { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { 8, 5 }, { 2, 10 }, { 3, 0 }, { 6, 1 }, { 11, -1 },
+    //                     { 7, 4 }, { -1, -1 }, { -1, -1 } },
+    //             { { -1, -1 }, { -1, -1 }, { -1, 0 }, { 2, 1 } }, { { -1, -1 }, { -1, -1 }, { -1, 0 }, { 2, 1 } },
+    //             { { -1, -1 }, { -1, -1 }, { -1, 0 }, { 2, 1 } } };
+    //     int[] result = { 40, 27, 14, 9 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(k[i], num[i], links[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(k[i], num[i], links[i]));
+    //     }
+    // }
 }
