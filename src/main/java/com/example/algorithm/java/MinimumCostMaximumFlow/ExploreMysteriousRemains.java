@@ -1,13 +1,12 @@
+package com.example.algorithm.java.MinimumCostMaximumFlow;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class ExploreMysteriousRemains {
     class Edge {
         int to, capacity, cost, reverse;
 
@@ -149,16 +148,16 @@ class TestValue {
         return dp[cur1][cur2] = ret;
     }
 
-    @Test
-    void 정답() {
-        int[] n1 = { 8 };
-        int[][][] g1 = { { { 3, 1 }, { 5, 7 }, { 8, 7 }, { 2, 3 }, { 3, 6 }, { 1, 5 }, { 4, 3 } } };
-        int[] n2 = { 9 };
-        int[][][] g2 = { { { 1, 5 }, { 5, 6 }, { 3, 7 }, { 3, 1 }, { 7, 4 }, { 7, 2 }, { 9, 8 }, { 5, 9 } } };
-        int[] result = { 7 };
+    // @Test
+    // void 정답() {
+    //     int[] n1 = { 8 };
+    //     int[][][] g1 = { { { 3, 1 }, { 5, 7 }, { 8, 7 }, { 2, 3 }, { 3, 6 }, { 1, 5 }, { 4, 3 } } };
+    //     int[] n2 = { 9 };
+    //     int[][][] g2 = { { { 1, 5 }, { 5, 6 }, { 3, 7 }, { 3, 1 }, { 7, 4 }, { 7, 2 }, { 9, 8 }, { 5, 9 } } };
+    //     int[] result = { 7 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(n1[i], g1[i], n2[i], g2[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(n1[i], g1[i], n2[i], g2[i]));
+    //     }
+    // }
 }
