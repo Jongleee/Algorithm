@@ -1,12 +1,11 @@
+package com.example.algorithm.java.dynamicProgramming;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestArray {
+public class AntiCell {
     static List<Map<Long, Integer>> levels;
     static long sum[];
     static final int MOD = 1000000007;
@@ -55,14 +54,14 @@ class TestArray {
         return result;
     }
 
-    @Test
-    void 정답() {
-        int[][] a = { { 1, 1, 1, 1, 1, 1, 2, 5, 8, 2, 1, 1, 4, 8, 8, 8, 12, 6, 6 } };
-        int[][] s = { { 4, 3, 1, 5, 6 } };
+    // @Test
+    // void 정답() {
+    //     int[][] a = { { 1, 1, 1, 1, 1, 1, 2, 5, 8, 2, 1, 1, 4, 8, 8, 8, 12, 6, 6 } };
+    //     int[][] s = { { 4, 3, 1, 5, 6 } };
 
-        int[][] result = { { 6, 3, 1, 5, 9 } };
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertArrayEquals(result[i], solution(a[i], s[i]));
-        }
-    }
+    //     int[][] result = { { 6, 3, 1, 5, 9 } };
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertArrayEquals(result[i], solution(a[i], s[i]));
+    //     }
+    // }
 }
