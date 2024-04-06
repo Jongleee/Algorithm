@@ -1,11 +1,10 @@
+package com.example.algorithm.java.greedy;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-class TestValue {
+public class ConsultantNumber {
     public int solution(int k, int n, int[][] reqs) {
         int answer = 0;
 
@@ -21,13 +20,7 @@ class TestValue {
             timeForEachType.get(type).add(new Time(startTime, startTime + duration));
         }
 
-        int[][] waitTimeForEachTime = new int[k + 1][n + 1];
-        for (int type = 1; type < k + 1; type++) {
-            if (timeForEachType.get(type).isEmpty()) continue;
-            for (int counselors = 1; counselors <= (n - k) + 1; counselors++) {
-                waitTimeForEachTime[type][counselors] = calculateWaitTime(timeForEachType.get(type), counselors);
-            }
-        }
+        int[][] waitTimeForEachType = calculateWaitTimeForEachType(k, n, timeForEachType);
 
         int[] currentCounselors = new int[k + 1];
         for (int type = 1; type < k + 1; type++) {
@@ -41,7 +34,7 @@ class TestValue {
 
             for (int type = 1; type < k + 1; type++) {
                 int currentCounselorsByType = currentCounselors[type];
-                int reduceWaitingTime = waitTimeForEachTime[type][currentCounselorsByType] - waitTimeForEachTime[type][currentCounselorsByType + 1];
+                int reduceWaitingTime = waitTimeForEachType[type][currentCounselorsByType] - waitTimeForEachType[type][currentCounselorsByType + 1];
 
                 if (reduceWaitingTime >= maxReduceTime) {
                     maxReduceTime = reduceWaitingTime;
@@ -57,10 +50,21 @@ class TestValue {
         for (int type = 1; type < k + 1; type++) {
             if (timeForEachType.get(type).isEmpty()) continue;
             int counselors = currentCounselors[type];
-            answer += waitTimeForEachTime[type][counselors];
+            answer += waitTimeForEachType[type][counselors];
         }
 
         return answer;
+    }
+
+    private int[][] calculateWaitTimeForEachType(int k, int n, List<List<Time>> timeForEachType) {
+        int[][] waitTimeForEachTime = new int[k + 1][n + 1];
+        for (int type = 1; type < k + 1; type++) {
+            if (timeForEachType.get(type).isEmpty()) continue;
+            for (int counselors = 1; counselors <= (n - k) + 1; counselors++) {
+                waitTimeForEachTime[type][counselors] = calculateWaitTime(timeForEachType.get(type), counselors);
+            }
+        }
+        return waitTimeForEachTime;
     }
 
     private int calculateWaitTime(List<Time> typeTime, int counselorNumber) {
@@ -84,7 +88,8 @@ class TestValue {
     }
 
     private static class Time {
-        int start, end;
+        int start;
+        int end;
 
         public Time(int start, int end) {
             this.start = start;
@@ -92,18 +97,18 @@ class TestValue {
         }
     }
     
-    @Test
-    void 정답() {
-        int[] k = { 3, 2 };
-        int[] n = { 5, 3 };
-        int[][][] reqs = {
-                { { 10, 60, 1 }, { 15, 100, 3 }, { 20, 30, 1 }, { 30, 50, 3 }, { 50, 40, 1 }, { 60, 30, 2 },
-                        { 65, 30, 1 }, { 70, 100, 2 } },
-                { { 5, 55, 2 }, { 10, 90, 2 }, { 20, 40, 2 }, { 50, 45, 2 }, { 100, 50, 2 } } };
-        int[] result = { 25, 90 };
+    // @Test
+    // void 정답() {
+    //     int[] k = { 3, 2 };
+    //     int[] n = { 5, 3 };
+    //     int[][][] reqs = {
+    //             { { 10, 60, 1 }, { 15, 100, 3 }, { 20, 30, 1 }, { 30, 50, 3 }, { 50, 40, 1 }, { 60, 30, 2 },
+    //                     { 65, 30, 1 }, { 70, 100, 2 } },
+    //             { { 5, 55, 2 }, { 10, 90, 2 }, { 20, 40, 2 }, { 50, 45, 2 }, { 100, 50, 2 } } };
+    //     int[] result = { 25, 90 };
 
-        for (int i = 0; i < result.length; i++) {
-            Assertions.assertEquals(result[i], solution(k[i], n[i], reqs[i]));
-        }
-    }
+    //     for (int i = 0; i < result.length; i++) {
+    //         Assertions.assertEquals(result[i], solution(k[i], n[i], reqs[i]));
+    //     }
+    // }
 }
