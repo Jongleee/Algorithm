@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AntiCell {
-    static List<Map<Long, Integer>> levels;
-    static long sum[];
+    List<Map<Long, Integer>> levels;
+    long[] sum;
     static final int MOD = 1000000007;
 
     public int[] solution(int[] a, int[] s) {
@@ -38,11 +38,9 @@ public class AntiCell {
         return answer;
     }
 
-    static long connect(long cellSize, int currentLevel, int parentLevel) {
+    long connect(long cellSize, int currentLevel, int parentLevel) {
         Map<Long, Integer> level = levels.get(currentLevel);
-        if (!level.containsKey(cellSize)) {
-            level.put(cellSize, parentLevel);
-        }
+        level.computeIfAbsent(cellSize, k -> parentLevel);
 
         long result = sum[parentLevel];
 
