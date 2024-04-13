@@ -1,8 +1,8 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.string;
 
 import java.io.IOException;
 
-public class Main {
+public class StudyWords {
     public static void main(String[] args) throws IOException {
         int[] arr = new int[26];
 
