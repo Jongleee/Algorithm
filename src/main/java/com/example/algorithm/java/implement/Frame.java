@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class Frame {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
@@ -40,4 +40,4 @@ public class Main {
 46 155
 
 2 2 1 2 5
-*/
+ */
