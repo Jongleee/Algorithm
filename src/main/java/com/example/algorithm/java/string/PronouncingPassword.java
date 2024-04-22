@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.string;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class PronouncingPassword {
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String password;
