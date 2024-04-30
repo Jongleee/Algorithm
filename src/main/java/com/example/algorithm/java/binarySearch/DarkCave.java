@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.binarySearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DarkCave {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int length = Integer.parseInt(reader.readLine());
