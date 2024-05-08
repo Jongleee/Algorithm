@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.greedy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DistributeHamburger {
     static int n;
     static int k;
 
