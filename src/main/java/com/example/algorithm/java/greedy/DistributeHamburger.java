@@ -16,14 +16,14 @@ public class DistributeHamburger {
         char[] line = br.readLine().toCharArray();
         int peopleNum = 0;
         for (int i = 0; i < n; i++) {
-            if (line[i] == 'P' && isEatHamburger(i, line)) {
+            if (line[i] == 'P' && isAteHamburger(i, line)) {
                 peopleNum++;
             }
         }
         System.out.println(peopleNum);
     }
 
-    private static boolean isEatHamburger(int index, char[] line) {
+    private static boolean isAteHamburger(int index, char[] line) {
         int start = Math.max(0, index - k);
         int end = Math.min(n - 1, index + k);
         for (int i = start; i <= end; i++) {
