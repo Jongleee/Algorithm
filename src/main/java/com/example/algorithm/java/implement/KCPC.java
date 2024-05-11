@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class KCPC {
     private static final String NEW_LINE = "\n";
 
     private static class Team implements Comparable<Team> {
