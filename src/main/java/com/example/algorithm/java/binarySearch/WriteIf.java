@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.binarySearch;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class WriteIf {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringBuilder sb = new StringBuilder();
     static String[] jobs;
