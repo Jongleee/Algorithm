@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.hashSet;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class Main {
+public class GahuiKeywords {
     static int n;
     static int m;
     static Set<String> set = new HashSet<>();
