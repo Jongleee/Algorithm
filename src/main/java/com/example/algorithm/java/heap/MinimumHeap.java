@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.heap;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class MinimumHeap {
     private static int[] heap = new int[100001];
     private static int heapsize = 0;
 
