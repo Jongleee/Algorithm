@@ -1,4 +1,4 @@
-package com.example.algorithm.java.MinimumCostMaximumFlow;
+package com.example.algorithm.java.minimumCostMaximumFlow;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,9 @@ public class ExploreMysteriousRemains {
     }
 
     class MinimumCostMaximumFlow {
-        int size, source, sink;
+        int size;
+        int source;
+        int sink;
         List<List<Edge>> graph;
         List<Integer> distance, parent, edgeIndex;
 
