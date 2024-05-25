@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class EasyShortestDistance {
     private static final int[] DX = {1, 0, -1, 0};
     private static final int[] DY = {0, 1, 0, -1};
 
