@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.recursive;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class AAndB {
     private static String start;
 
     public static void main(String[] args) throws IOException {
