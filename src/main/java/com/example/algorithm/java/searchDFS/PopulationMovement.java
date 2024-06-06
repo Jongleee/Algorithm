@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchDFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class PopulationMovement {
     static int[] dr = {1, 0, -1, 0};
     static int[] dc = {0, -1, 0, 1};
     static int n;
