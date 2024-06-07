@@ -6,119 +6,71 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] dr = {1, 0, -1, 0};
-    static int[] dc = {0, -1, 0, 1};
-    static int n;
-    static int l;
-    static int r;
-    static int[][] map;
-    static int[][] visitMap;
-    static int[] unionLand;
-    static int count;
+    private static Point[] stack;
+    private static StringBuilder sb;
+    private static int top;
 
+    static class Point {
+        int value;
+        int index;
+    
+        public Point(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+    }
     public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(in.readLine());
-        n = Integer.parseInt(st.nextToken());
-        l = Integer.parseInt(st.nextToken());
-        r = Integer.parseInt(st.nextToken());
+        stack = new Point[500001];
+        sb = new StringBuilder();
+        top = 0;
 
-        map = new int[n][n];
-        visitMap = new int[n][n];
-        unionLand = new int[n * n];
-        count = 0;
-
-        for (int i = 0; i < n; i++) {
-            st = new StringTokenizer(in.readLine());
-            for (int j = 0; j < n; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-                visitMap[i][j] = -1;
-            }
-        }
-
-        int answer = 0;
-        while (true) {
-            
-            int unionIndex = 0;
-
-            if (isMoved(unionIndex, false)) {
-                answer++;
-            } else {
-                break;
-            }
-            resetMap();
-        }
-        System.out.println(answer);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        add(br.readLine(), n);
+        System.out.print(sb);
     }
 
-    private static boolean isMoved(int unionIndex, boolean hasMoved) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (visitMap[i][j] == -1) {
-                    unionLand[unionIndex] = 0;
-                    searchUnion(i, j, unionIndex);
-                    if (count > 1) {
-                        hasMoved = true;
-                    }
-                    unionLand[unionIndex] /= count;
-                    unionIndex++;
-                    count = 0;
-                }
-            }
-        }
-        return hasMoved;
-    }
-
-    private static void searchUnion(int x, int y, int union) {
-        count++;
-        visitMap[x][y] = union;
-        unionLand[union] += map[x][y];
-
-        for (int i = 0; i < 4; i++) {
-            int nr = x + dr[i];
-            int nc = y + dc[i];
-            if (!isWithinBoundary(nr, nc) || visitMap[nr][nc] != -1) {
-                continue;
-            }
-            int diff = Math.abs(map[x][y] - map[nr][nc]);
-            if (diff >= l && diff <= r) {
-                searchUnion(nr, nc, union);
-            }
+    private static void add(String input, int n) {
+        StringTokenizer st = new StringTokenizer(input, " ");
+        for (int i = 1; i <= n; i++) {
+            int value = Integer.parseInt(st.nextToken());
+            add(value, i);
         }
     }
 
-    private static boolean isWithinBoundary(int r, int c) {
-        return r >= 0 && r < n && c >= 0 && c < n;
-    }
-
-    private static void resetMap() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                map[i][j] = unionLand[visitMap[i][j]];
-                visitMap[i][j] = -1;
-            }
+    private static void add(int value, int index) {
+        while (top > 0 && stack[top - 1].value < value) {
+            top--;
         }
+
+        if (top <= 0) {
+            sb.append(0).append(' ');
+        } else {
+            sb.append(stack[top - 1].index).append(' ');
+        }
+
+        stack[top++] = new Point(value, index);
     }
 }
 
 /*
-2 20 50
-50 30
-20 40
-
-1
-
-
-2 40 50
-50 30
-20 40
-
-0
-
-
-2 20 50
-50 30
-30 40
-
-1
+ * 2 20 50
+ * 50 30
+ * 20 40
+ * 
+ * 1
+ * 
+ * 
+ * 2 40 50
+ * 50 30
+ * 20 40
+ * 
+ * 0
+ * 
+ * 
+ * 2 20 50
+ * 50 30
+ * 30 40
+ * 
+ * 1
  */
