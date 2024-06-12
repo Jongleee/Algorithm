@@ -1,9 +1,9 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.greedy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Main {
+public class BulbAndSwitch {
     static int n;
     static int ans = Integer.MAX_VALUE;
     static char[] lights;
