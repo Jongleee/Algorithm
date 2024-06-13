@@ -1,9 +1,9 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bruteForce;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Main {
+public class TicTacToe {
     static char[][] board;
 
     public static void main(String[] args) throws Exception {
