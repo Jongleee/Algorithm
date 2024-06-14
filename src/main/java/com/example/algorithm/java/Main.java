@@ -70,7 +70,7 @@ XO.OX...X
 .XXX.XOOO
 X.OO..X..
 OOXXXOOXO
-end
+end1
 
 invalid
 valid
