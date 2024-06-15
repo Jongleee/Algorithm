@@ -40,7 +40,6 @@ public class Main {
         br.close();
     }
 }
-
 /*
 10
 1 1
