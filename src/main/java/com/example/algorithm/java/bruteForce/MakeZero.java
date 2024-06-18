@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bruteForce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class MakeZero {
     static int n;
     static StringBuilder sb;
     static final char[] OPERATORS = {' ', '+', '-'};
