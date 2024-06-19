@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.graph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class GreenClothedZelda {
     static int n;
     static int[][] map;
     static final int[] dr = {-1, 0, 1, 0};
