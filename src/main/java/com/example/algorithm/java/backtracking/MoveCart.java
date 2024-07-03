@@ -2,7 +2,8 @@ package com.example.algorithm.java.backtracking;
 
 public class MoveCart {
     private static class Point {
-        int x, y;
+        int x;
+        int y;
 
         Point(int x, int y) {
             this.x = x;
@@ -16,7 +17,8 @@ public class MoveCart {
     private static final int BLUE_GOAL = 4;
 
     private int[][] map;
-    private boolean redReachedGoal, blueReachedGoal;
+    private boolean redReachedGoal;
+    private boolean blueReachedGoal;
     private boolean[][][] visited;
     private final int[] dx = { -1, 1, 0, 0 };
     private final int[] dy = { 0, 0, -1, 1 };

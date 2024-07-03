@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class AirConditioner {
     public int solution(int temperature, int t1, int t2, int a, int b, int[] onboard) {
         int temp = temperature > t2 ? t1 - (temperature - t2) : temperature;
-        int INF = 100001;
+        final int INF = 100001;
 
         t1 -= temp;
         t2 -= temp;
