@@ -92,19 +92,20 @@ public class Fire {
             return false;
         return pos.y == 0 || pos.y == r - 1 || pos.x == 0 || pos.x == c - 1;
     }
-}
 
-class Position {
-    int x;
-    int y;
-    int state;
-
-    Position(int x, int y, int state) {
-        this.x = x;
-        this.y = y;
-        this.state = state;
+    static class Position {
+        int x;
+        int y;
+        int state;
+    
+        Position(int x, int y, int state) {
+            this.x = x;
+            this.y = y;
+            this.state = state;
+        }
     }
 }
+
 
 /*
 4 4
