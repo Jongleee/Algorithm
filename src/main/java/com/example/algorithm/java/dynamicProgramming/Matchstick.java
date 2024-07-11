@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Main {
+public class Matchstick {
     static long[] dp;
     static final int[] ARR = {1, 7, 4, 2, 0, 8};
 
