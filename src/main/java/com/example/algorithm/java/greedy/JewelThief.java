@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.greedy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class JewelThief {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer token = new StringTokenizer(br.readLine(), " ");
