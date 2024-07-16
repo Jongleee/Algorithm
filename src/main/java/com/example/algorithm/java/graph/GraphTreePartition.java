@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.graph;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Main {
+public class GraphTreePartition {
     static int v;
     static int e;
     static int[] vertexes;
