@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.practice;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class FindTheMiddle {
     private static final int DIFF = 10000;
     private static final int RANGE = 20000;
     private static final char LINE_BREAK = '\n';
