@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.math;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class FibonacciNumber3 {
     private static final long DIV = 1000000;
 
     public static void main(String[] args) throws IOException {
