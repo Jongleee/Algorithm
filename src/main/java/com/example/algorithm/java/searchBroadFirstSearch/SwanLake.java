@@ -118,25 +118,4 @@ XX
 .L
 
 3
-
-
-4 11
-..XXX...X..
-.X.XXX...L.
-....XXX..X.
-X.L..XXX...
-2
-
-
-8 17
-...XXXXXX..XX.XXX
-....XXXXXXXXX.XXX
-...XXXXXXXXXXXX..
-..XXXXX.LXXXXXX..
-.XXXXXX..XXXXXX..
-XXXXXXX...XXXX...
-..XXXXX...XXX....
-....XXXXX.XXXL...
-
-2
  */

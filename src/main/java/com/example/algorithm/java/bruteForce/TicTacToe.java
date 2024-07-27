@@ -62,22 +62,18 @@ public class TicTacToe {
     }
 }
 /*
-XXXOO.XXX
 XOXOXOXOX
 OXOXOXOXO
 XXOOOXXOX
 XO.OX...X
-.XXX.XOOO
 X.OO..X..
 OOXXXOOXO
 end
 
-invalid
 valid
 invalid
 valid
 valid
-invalid
 invalid
 invalid
  */
