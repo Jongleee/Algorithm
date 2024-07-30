@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Deque;
 import java.util.LinkedList;
 
-public class Main {
+public class LaserCommunication {
     static class Point {
         int x;
         int y;
