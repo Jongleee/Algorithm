@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.binarySearch;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class Main {
+public class MoveInArray {
     static int n;
     static int left;
     static int right;
