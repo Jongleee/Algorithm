@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.graph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class GasPipe {
     private static int rows;
     private static int cols;
     private static char[][] map;
