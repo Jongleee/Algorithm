@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Main {
+public class MovingMazeEscape {
     private static final int SIZE = 8;
     private static char[][] grid = new char[SIZE + 1][SIZE + 1];
     private static boolean[][][] visited = new boolean[SIZE + 1][SIZE + 1][SIZE + 1];
