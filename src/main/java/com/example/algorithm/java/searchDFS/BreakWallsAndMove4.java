@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchDFS;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BreakWallsAndMove4 {
     static int[][] map;
 
     public static void main(String[] args) throws Exception {
