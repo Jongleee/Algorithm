@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bitmask;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TravelingSalesmanProblem {
     private static final int INF = 15000000;
 
     public static void main(String[] args) throws IOException {
