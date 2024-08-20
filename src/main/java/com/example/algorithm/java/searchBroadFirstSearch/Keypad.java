@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Keypad {
     private static final int[] dx = { -1, 1, 0, 0 };
     private static final int[] dy = { 0, 0, 1, -1 };
 
