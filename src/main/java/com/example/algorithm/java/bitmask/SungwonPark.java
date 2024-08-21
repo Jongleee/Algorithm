@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bitmask;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class SungwonPark {
     private static int n;
     private static int k;
     private static int[] tenValue;
