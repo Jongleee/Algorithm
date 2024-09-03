@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Deque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class HideAndSeek4 {
     static class Position {
         int prev;
 
