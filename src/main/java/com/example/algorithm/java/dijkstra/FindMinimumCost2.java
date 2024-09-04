@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dijkstra;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class FindMinimumCost2 {
     private static class Node implements Comparable<Node> {
         int num;
         int cost;
