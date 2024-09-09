@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.divideAndConquer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TreeTraversal {
     private static int[] postOrder;
     private static int[] inOrderIndex;
     private static StringBuilder result = new StringBuilder();
@@ -13,7 +13,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         int[] inOrder;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      
         int n = Integer.parseInt(br.readLine());
 
         inOrder = new int[n + 1];
