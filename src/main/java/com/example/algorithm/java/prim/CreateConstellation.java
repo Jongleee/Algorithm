@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.prim;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class CreateConstellation {
     private static class Node {
         double x;
         double y;
