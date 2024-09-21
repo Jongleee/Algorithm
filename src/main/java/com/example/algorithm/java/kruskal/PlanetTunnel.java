@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.kruskal;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Main {
+public class PlanetTunnel {
     private int[] parents;
 
     private static class Coord implements Comparable<Coord> {
@@ -42,7 +42,7 @@ class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        Main main = new Main();
+        PlanetTunnel main = new PlanetTunnel();
         main.run();
     }
 
