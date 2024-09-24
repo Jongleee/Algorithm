@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BreakWallsAndMove3 {
     private int n;
     private int m;
     private int k;
@@ -18,7 +18,7 @@ public class Main {
     private int answer = -1;
 
     public static void main(String[] args) throws IOException {
-        Main main = new Main();
+        BreakWallsAndMove3 main = new BreakWallsAndMove3();
         main.run();
     }
 
