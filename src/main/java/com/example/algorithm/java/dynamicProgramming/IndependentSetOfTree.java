@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import com.example.algorithm.java.Main;
-
 public class IndependentSetOfTree {
     private int n;
     private int[] weights;
@@ -19,8 +17,8 @@ public class IndependentSetOfTree {
     private List<Integer> group;
 
     public static void main(String[] args) throws IOException {
-        Main main = new Main();
-        main.run();
+        IndependentSetOfTree independentSetOfTree = new IndependentSetOfTree();
+        independentSetOfTree.run();
     }
 
     public void run() throws IOException {
