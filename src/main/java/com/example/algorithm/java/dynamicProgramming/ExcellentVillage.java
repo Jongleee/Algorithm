@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class ExcellentVillage {
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static int[] population;
     private static List<Integer>[] graph;
