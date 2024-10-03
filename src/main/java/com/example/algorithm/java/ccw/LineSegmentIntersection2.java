@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.ccw;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class LineSegmentIntersection2 {
     static long[] a = new long[2];
     static long[] b = new long[2];
     static long[] c = new long[2];
