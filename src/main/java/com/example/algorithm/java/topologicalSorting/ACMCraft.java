@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.topologicalSorting;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class ACMCraft {
     private static class FastScanner {
         private BufferedReader br;
         private StringTokenizer st;
