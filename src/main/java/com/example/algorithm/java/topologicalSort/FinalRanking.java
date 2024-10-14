@@ -1,4 +1,4 @@
-package com.example.algorithm.java.topologicalSorting;
+package com.example.algorithm.java.topologicalSort;
 
 import java.io.BufferedReader;
 import java.io.IOException;
