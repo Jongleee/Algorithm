@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BreakingWallsAndMoving {
+public class BreakWallsAndMove {
     static StringBuilder sb = new StringBuilder();
 
     static int[] dx = { 1, 0, -1, 0 };
