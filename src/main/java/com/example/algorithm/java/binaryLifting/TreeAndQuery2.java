@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.binaryLifting;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TreeAndQuery2 {
     static int n;
     static int m;
     static int[] depth;
