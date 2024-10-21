@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchDFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class Main {
+public class StronglyConnectedComponent {
     private int nodeCount;
     private List<List<Integer>> graph;
     private boolean solved;
@@ -24,7 +24,7 @@ public class Main {
     private Deque<Integer> stack;
     private static final int UNVISITED = -1;
 
-    public Main(List<List<Integer>> graph) {
+    public StronglyConnectedComponent(List<List<Integer>> graph) {
         this.nodeCount = graph.size();
         this.graph = graph;
     }
@@ -106,7 +106,7 @@ public class Main {
             addEdge(graph, from, to);
         }
 
-        Main solver = new Main(graph);
+        StronglyConnectedComponent solver = new StronglyConnectedComponent(graph);
         int[] sccs = solver.getSccs();
 
         Map<Integer, List<Integer>> sccGroups = new LinkedHashMap<>();
