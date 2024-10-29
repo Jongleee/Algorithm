@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.fenwickTree;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class RangeSumQuery3 {
     static int n;
     static int[][] arr;
     static int[][] tree;
