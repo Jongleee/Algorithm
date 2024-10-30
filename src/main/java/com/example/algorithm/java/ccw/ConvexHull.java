@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.ccw;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class ConvexHull {
     static class Point {
         int x;
         int y;
