@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.convexHull;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
 
-public class Main {
+public class RobertHood {
     static class Point {
         int x;
         int y;
