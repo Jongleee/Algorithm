@@ -1,4 +1,4 @@
-package com.example.algorithm.java.ccw;
+package com.example.algorithm.java.convexHull;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
