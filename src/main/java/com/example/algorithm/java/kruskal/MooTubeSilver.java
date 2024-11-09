@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.kruskal;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class MooTubeSilver {
     private int[] parent;
     private int[] rank;
 
@@ -44,7 +44,7 @@ public class Main {
         }
     }
 
-    public Main(int size) {
+    public MooTubeSilver(int size) {
         parent = new int[size];
         rank = new int[size];
         for (int i = 0; i < size; i++) {
@@ -60,7 +60,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int q = Integer.parseInt(st.nextToken());
 
-        Main uf = new Main(n);
+        MooTubeSilver uf = new MooTubeSilver(n);
         Edge[] edges = new Edge[n - 1];
         Query[] queries = new Query[q];
 
