@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implement;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class Main {
+public class Mineral2 {
     private static char[][] map;
     private static int n, m;
     private static int[][] dir = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
