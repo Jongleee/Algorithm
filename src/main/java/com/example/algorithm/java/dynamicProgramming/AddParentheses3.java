@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-public class Main {
+public class AddParentheses3 {
     static class DPValue {
         int max, min;
 
