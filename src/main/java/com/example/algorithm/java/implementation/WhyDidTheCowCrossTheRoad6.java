@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class WhyDidTheCowCrossTheRoad6 {
     private static final int[] dx = { -1, 1, 0, 0 };
     private static final int[] dy = { 0, 0, -1, 1 };
 
