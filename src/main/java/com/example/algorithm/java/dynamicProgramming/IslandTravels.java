@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class IslandTravels {
     static int rows, cols, islandCount = 1, fullVisited = 0;
     static char[][] grid;
     static int[][] dp = new int[1 << 17][16];
