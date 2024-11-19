@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
-public class Main {
+public class WhatsUpWithGravity {
     private static class Point {
         int y, x, dir, cost;
 
