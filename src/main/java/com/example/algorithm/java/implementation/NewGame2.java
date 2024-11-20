@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class NewGame2 {
     static int n, k;
     static int[][] board;
     static int[] directions;
