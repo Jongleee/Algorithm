@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.backtracking;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Monitoring {
     static int[][] directions = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },
             { 0, 1 }, { 1, 0 } };
     static int n, m;
