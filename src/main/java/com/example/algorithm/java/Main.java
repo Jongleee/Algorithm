@@ -1,170 +1,144 @@
 package com.example.algorithm.java;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.StringTokenizer;
 
 public class Main {
-    private static class Node {
-        int redY, redX, blueY, blueX, time;
+    static class Line {
+        int left, right, bottom, top;
 
-        Node(int redY, int redX, int blueY, int blueX, int time) {
-            this.redY = redY;
-            this.redX = redX;
-            this.blueY = blueY;
-            this.blueX = blueX;
+        Line(int left, int bottom, int right, int top) {
+            this.left = left;
+            this.right = right;
+            this.bottom = bottom;
+            this.top = top;
+        }
+    }
+
+    static class Input {
+        int time, dir;
+
+        Input(int time, int dir) {
             this.time = time;
+            this.dir = dir;
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+        int border = Integer.parseInt(br.readLine());
+        int numTurns = Integer.parseInt(br.readLine());
 
-        char[][] map = new char[n][m];
-        int redY = 0, redX = 0, blueY = 0, blueX = 0;
-
-        for (int i = 0; i < n; i++) {
-            String row = br.readLine();
-            for (int j = 0; j < m; j++) {
-                map[i][j] = row.charAt(j);
-                if (map[i][j] == 'R') {
-                    redY = i;
-                    redX = j;
-                    map[i][j] = '.';
-                } else if (map[i][j] == 'B') {
-                    blueY = i;
-                    blueX = j;
-                    map[i][j] = '.';
-                }
-            }
+        Input[] inputs = new Input[numTurns + 2];
+        for (int i = 0; i < numTurns; i++) {
+            String[] str = br.readLine().split(" ");
+            char direction = str[1].charAt(0);
+            int dir = (direction == 'R') ? 0 : 1;
+            inputs[i] = new Input(Integer.parseInt(str[0]), dir);
         }
 
-        System.out.println(bfs(map, redY, redX, blueY, blueX, n, m));
+        System.out.println(play(inputs, border, numTurns));
     }
 
-    private static int bfs(char[][] map, int redY, int redX, int blueY, int blueX, int n, int m) {
-        int[] dy = { -1, 1, 0, 0 };
-        int[] dx = { 0, 0, -1, 1 };
-        boolean[][] visited = new boolean[n * m][n * m];
-        Queue<Node> queue = new ArrayDeque<>();
-        queue.add(new Node(redY, redX, blueY, blueX, 1));
-        visited[redY * m + redX][blueY * m + blueX] = true;
+    static long play(Input[] inputs, int border, int numTurns) {
+        Line[] lines = new Line[3005];
+        int[] dx = { 0, 1, 0, -1 };
+        int[] dy = { 1, 0, -1, 0 };
+        long time = 0;
+        int x = 0, y = 0, dir = 0;
+        long deadTime = 0;
+        int lineIndex = 1;
 
-        while (!queue.isEmpty()) {
-            Node node = queue.poll();
-            if (node.time > 10)
-                return -1;
+        for (int i = 0; i <= numTurns; i++) {
+            int newX = x, newY = y, turnTime = 0, turnDir = 0;
 
-            for (int i = 0; i < 4; i++) {
-                int newRedY = node.redY, newRedX = node.redX;
-                int newBlueY = node.blueY, newBlueX = node.blueX;
-
-                boolean redHole = false, blueHole = false;
-
-                while (map[newRedY + dy[i]][newRedX + dx[i]] != '#') {
-                    newRedY += dy[i];
-                    newRedX += dx[i];
-                    if (map[newRedY][newRedX] == 'O') {
-                        redHole = true;
-                        break;
-                    }
-                }
-
-                while (map[newBlueY + dy[i]][newBlueX + dx[i]] != '#') {
-                    newBlueY += dy[i];
-                    newBlueX += dx[i];
-                    if (map[newBlueY][newBlueX] == 'O') {
-                        blueHole = true;
-                        break;
-                    }
-                }
-
-                if (blueHole)
-                    continue;
-                if (redHole)
-                    return node.time;
-
-                adjustPosition(m, visited, queue, node, i, newRedY, newRedX, newBlueY, newBlueX);
-            }
-        }
-        return -1;
-    }
-
-    private static void adjustPosition(int m, boolean[][] visited, Queue<Node> queue, Node node, int i, int newRedY,
-            int newRedX, int newBlueY, int newBlueX) {
-        if (newRedY == newBlueY && newRedX == newBlueX) {
-            if (i == 0) {
-                if (node.redY > node.blueY)
-                    newRedY++;
-                else
-                    newBlueY++;
-            } else if (i == 1) {
-                if (node.redY < node.blueY)
-                    newRedY--;
-                else
-                    newBlueY--;
-            } else if (i == 2) {
-                if (node.redX > node.blueX)
-                    newRedX++;
-                else
-                    newBlueX++;
+            if (i == numTurns) {
+                turnTime = calculateTurnTime(dir, x, y, border);
+                newX = x + dx[dir] * turnTime;
+                newY = y + dy[dir] * turnTime;
+                lineIndex--;
             } else {
-                if (node.redX < node.blueX)
-                    newRedX--;
-                else
-                    newBlueX--;
+                turnTime = inputs[i].time;
+                turnDir = inputs[i].dir;
+                newX = x + dx[dir] * turnTime;
+                newY = y + dy[dir] * turnTime;
             }
+
+            time += turnTime;
+            if (isOutOfBounds(dir, newX, newY, border)) {
+                deadTime = calculateDeadTime(dir, time, newX, newY, border);
+            }
+
+            lines[lineIndex] = new Line(x, y, newX, newY);
+
+            for (int j = 1; j < lineIndex; j++) {
+                if (checkCollision(lines[lineIndex], lines[j], dir)) {
+                    deadTime = Math.min(deadTime == 0 ? time : deadTime, time);
+                }
+            }
+
+            if (deadTime != 0)
+                return deadTime;
+
+            dir = (turnDir == 0) ? (dir + 1) % 4 : (dir + 3) % 4;
+            x = newX;
+            y = newY;
+            lineIndex++;
         }
 
-        if (!visited[newRedY * m + newRedX][newBlueY * m + newBlueX]) {
-            visited[newRedY * m + newRedX][newBlueY * m + newBlueX] = true;
-            queue.add(new Node(newRedY, newRedX, newBlueY, newBlueX, node.time + 1));
-        }
+        return deadTime;
+    }
+
+    static int calculateTurnTime(int dir, int x, int y, int border) {
+        if (dir == 0)
+            return border + 1 - y;
+        if (dir == 2)
+            return y - (-border - 1);
+        if (dir == 1)
+            return border + 1 - x;
+        return x - (-border - 1);
+    }
+
+    static boolean isOutOfBounds(int dir, int x, int y, int border) {
+        if (dir == 0)
+            return y > border;
+        if (dir == 1)
+            return x > border;
+        if (dir == 2)
+            return y < -border;
+        return x < -border;
+    }
+
+    static long calculateDeadTime(int dir, long time, int newX, int newY, int border) {
+        if (dir == 0)
+            return time - (newY - border) + 1;
+        if (dir == 1)
+            return time - (newX - border) + 1;
+        if (dir == 2)
+            return time - (-border - newY) + 1;
+        return time - (-border - newX) + 1;
+    }
+
+    static boolean checkCollision(Line line1, Line line2, int dir) {
+        int top1 = line1.top, bottom1 = line1.bottom, left1 = line1.left, right1 = line1.right;
+        int top2 = line2.top, bottom2 = line2.bottom, left2 = line2.left, right2 = line2.right;
+
+        if (top1 > bottom2 || bottom1 < top2)
+            return false;
+        if (right1 < left2 || left1 > right2)
+            return false;
+
+        if (dir == 0)
+            return right1 >= left2;
+        if (dir == 1)
+            return bottom1 >= top2;
+        if (dir == 2)
+            return left1 <= right2;
+        return top1 <= bottom2;
     }
 }
 
 /*
-5 5
-#####
-#..B#
-#.#.#
-#RO.#
-#####
 
-1
-
-
-10 10
-##########
-#R#...##B#
-#...#.##.#
-#####.##.#
-#......#.#
-#.######.#
-#.#....#.#
-#.#.#.#..#
-#...#.O#.#
-##########
-
--1
-
-
-10 10
-##########
-#R#...##B#
-#...#.##.#
-#####.##.#
-#......#.#
-#.######.#
-#.#....#.#
-#.#.##...#
-#O..#....#
-##########
-
-7
 */
