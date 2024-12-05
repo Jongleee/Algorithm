@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class Snake {
     static class Line {
         int left, right, bottom, top;
 
