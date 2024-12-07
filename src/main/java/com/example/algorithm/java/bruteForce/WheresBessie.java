@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bruteForce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class WheresBessie {
     private static final int[][] DIRECTIONS = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
     static char[][] map;
     static boolean[][] visited;
