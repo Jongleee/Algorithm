@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bruteForce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Laboratory {
     private static final int EMPTY = -1;
     private static final int WALL = 0;
     private static final int VIRUS = 1;
