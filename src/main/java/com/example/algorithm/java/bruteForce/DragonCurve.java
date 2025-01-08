@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bruteForce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DragonCurve {
     private static final int[] dx = { 1, 0, -1, 0 };
     private static final int[] dy = { 0, -1, 0, 1 };
     private static boolean[][] map = new boolean[101][101];
