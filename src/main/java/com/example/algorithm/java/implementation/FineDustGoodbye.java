@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class FineDustGoodbye {
-    rivate static final int[][] DIRECTIONS = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
+    private static final int[][] DIRECTIONS = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
     private static int[][] grid, tempGrid;
     private static int rows, cols;
     private static int purifierTop = -1;
