@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Main {
+public class TwoDimensionalArrayOperations {
     private static int r, c, k;
     private static int rowSize = 3, colSize = 3;
     private static int[][] map = new int[100][100];
