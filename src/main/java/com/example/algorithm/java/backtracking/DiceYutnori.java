@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.backtracking;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DiceYutnori {
     static class Space {
         public static final Space LAST_SPACE = new Space(0);
         private final int value;
