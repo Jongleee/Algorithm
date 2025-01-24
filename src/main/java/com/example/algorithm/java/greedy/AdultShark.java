@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.greedy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class AdultShark {
     static final int[] DI = { 0, -1, 1, 0, 0 };
     static final int[] DJ = { 0, 0, 0, -1, 1 };
     static int n, m, k, remainShark, curTime;
