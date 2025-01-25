@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.greedy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class StartTaxi {
     static final int[] DX = { 0, 0, 1, -1 };
     static final int[] DY = { 1, -1, 0, 0 };
     static int n, m, k;
