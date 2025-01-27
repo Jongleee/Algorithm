@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class WizardSharkAndFireball {
     static int n, m, k;
     static int[] dr = { -1, -1, 0, 1, 1, 1, 0, -1 };
     static int[] dc = { 0, 1, 1, 1, 0, -1, -1, -1 };
