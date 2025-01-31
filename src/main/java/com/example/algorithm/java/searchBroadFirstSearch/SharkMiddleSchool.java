@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SharkMiddleSchool {
     private static final int[] DX = { -1, 0, 1, 0 };
     private static final int[] DY = { 0, 1, 0, -1 };
 
