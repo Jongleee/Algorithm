@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DiceRolling2 {
     static int[] dx = { -1, 0, 1, 0 };
     static int[] dy = { 0, 1, 0, -1 };
 
