@@ -77,17 +77,17 @@ public class DiceRolling2 {
     }
 
     public static void main(String[] args) throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-        int n = Integer.parseInt(tokenizer.nextToken());
-        int m = Integer.parseInt(tokenizer.nextToken());
-        int k = Integer.parseInt(tokenizer.nextToken());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
         int[][] map = new int[n][m];
         for (int i = 0; i < n; i++) {
-            tokenizer = new StringTokenizer(reader.readLine());
+            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
-                map[i][j] = Integer.parseInt(tokenizer.nextToken());
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
