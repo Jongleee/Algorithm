@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class FishbowlArrangement {
     static final int[][] DIRECTIONS = { { -1, 1, 0, 0 }, { 0, 0, -1, 1 } };
     
     public static void main(String[] args) throws Exception {
