@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.sweepLine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Railroad {
     private static class Line {
         long start, end;
 
