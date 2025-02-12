@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.trie;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Main {
+public class Legend {
     private static class Trie {
         private final int[][] trieNodes;
         private final boolean[][] isWordEnd;
