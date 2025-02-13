@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchDFS;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class Main {
+public class InternationalMessiOrganization {
     private static int n, s, idx;
     private static int[] size, depth, head, parent, start, end;
     private static int[] segmentTree, lazyMul, lazyAdd;
