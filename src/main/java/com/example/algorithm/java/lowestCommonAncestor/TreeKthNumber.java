@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.lowestCommonAncestor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TreeKthNumber {
     private static final class Edge {
         int idx;
         Edge next;
