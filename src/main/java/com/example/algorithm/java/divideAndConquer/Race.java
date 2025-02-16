@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.divideAndConquer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Race {
     private static final int INF = Integer.MAX_VALUE >> 1;
 
     private static class Node {
