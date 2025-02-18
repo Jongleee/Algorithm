@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.unionFind;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Main {
+public class Mountaineers {
     private static class Edge implements Comparable<Edge> {
         int start, end, weight;
 
