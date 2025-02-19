@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SequenceAndQuery13 {
     private static class SegmentTree {
         private static final int MOD = 1_000_000_007;
         private final int size;
