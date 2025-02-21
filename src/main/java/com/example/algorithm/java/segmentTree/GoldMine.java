@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class Main {
+public class GoldMine {
     private static class Mine {
         int x, y, idx;
         long num;
