@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class ChickenDelivery {
-    
     private static class Dist implements Comparable<Dist> {
         int idx, distance;
 
