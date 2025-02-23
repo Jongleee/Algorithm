@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.math;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
-public class Main {
+public class LemoineConjecture {
     private static final int MOD = 998244353;
     private static final int BASE = 3;
     private static final int SIZE = 4194304;
