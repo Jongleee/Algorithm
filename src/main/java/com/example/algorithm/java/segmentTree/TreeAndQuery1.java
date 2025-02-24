@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TreeAndQuery1 {
     private static int n, cnt, len;
     private static List<Integer>[] adj;
     private static int[] top, parent, size, index, eu, ev, ew, tree;
