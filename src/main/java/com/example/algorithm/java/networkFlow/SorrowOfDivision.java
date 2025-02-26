@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.networkFlow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SorrowOfDivision {
     private static final int INF = 1_000_000_000;
     private static int n, source, sink;
     private static int[][] capacity, flow, adjList;
