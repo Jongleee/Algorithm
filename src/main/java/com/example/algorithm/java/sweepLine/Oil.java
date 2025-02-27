@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.sweepLine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-class Main {
+public class Oil {
     static class Point implements Comparable<Point> {
         long x, y;
         int value;
