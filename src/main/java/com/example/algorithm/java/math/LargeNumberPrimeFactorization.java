@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.math;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-class Main {
+public class LargeNumberPrimeFactorization {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         long n = Long.parseLong(br.readLine());
