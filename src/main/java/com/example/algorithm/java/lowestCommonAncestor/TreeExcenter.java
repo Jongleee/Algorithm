@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.lowestCommonAncestor;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TreeExcenter {
     private static final int MAX_HEIGHT = 18;
     private static List<Integer>[] graph;
     private static int[][] parent;
