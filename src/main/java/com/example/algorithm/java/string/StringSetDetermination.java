@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.string;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public class Main {
+public class StringSetDetermination {
     static class TrieNode {
         boolean output;
         Map<Character, TrieNode> children = new HashMap<>();
