@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchDFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TermProject {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int testCases = Integer.parseInt(br.readLine());
