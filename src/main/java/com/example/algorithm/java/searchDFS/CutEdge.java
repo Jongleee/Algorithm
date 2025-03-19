@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchDFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class CutEdge {
     static class Node implements Comparable<Node> {
         int from, to;
 
