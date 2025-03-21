@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.trie;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class MobileKeyboard {
     static class Node {
         Node[] children = new Node[26];
         int childCount = 0;
