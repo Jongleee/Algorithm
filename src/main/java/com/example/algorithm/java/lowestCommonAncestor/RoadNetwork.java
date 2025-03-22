@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.lowestCommonAncestor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class RoadNetwork {
     private static final int INF = 987654321;
     private static int logN, n;
     private static List<Edge>[] adjList;
