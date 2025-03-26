@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.lowestCommonAncestor;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DistanceBetweenVertices {
     static class Node {
         int to, cost;
 
