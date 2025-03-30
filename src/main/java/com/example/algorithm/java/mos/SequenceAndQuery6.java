@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.mos;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SequenceAndQuery6 {
     private static int[] count = new int[100010];
     private static int[] frequency = new int[100010];
     private static int currentAnswer = 0;
