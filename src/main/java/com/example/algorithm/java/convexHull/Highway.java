@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.convexHull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Highway {
     private static class Point implements Comparable<Point> {
         long x, y;
 
