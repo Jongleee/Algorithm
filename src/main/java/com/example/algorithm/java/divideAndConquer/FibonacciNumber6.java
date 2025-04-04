@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.divideAndConquer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class FibonacciNumber6 {
     private static final long MOD = 1_000_000_007;
 
     public static void main(String[] args) throws IOException {
