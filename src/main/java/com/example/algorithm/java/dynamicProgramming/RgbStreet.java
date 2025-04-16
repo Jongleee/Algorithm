@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class RgbStreet {
     private static final int RED = 0;
     private static final int GREEN = 1;
     private static final int BLUE = 2;
