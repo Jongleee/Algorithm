@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.graph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class FindParentInTree {
     private static class Node {
         int num;
         Node next;
