@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.minimumCostMaximumFlow;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Admiral {
     private static class Edge {
         int to, capacity, flow, cost;
         Edge reverse;
