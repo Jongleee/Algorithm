@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bipartiteMatching;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class UnidirectionalLinkNetwork {
     private static class Matcher {
         private final int n;
         private final List<List<Integer>> graph;
