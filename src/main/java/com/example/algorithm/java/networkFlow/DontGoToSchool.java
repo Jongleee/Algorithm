@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.networkFlow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DontGoToSchool {
     private static int n, m, start, end;
     private static List<List<Integer>> graph;
     private static char[][] board;
