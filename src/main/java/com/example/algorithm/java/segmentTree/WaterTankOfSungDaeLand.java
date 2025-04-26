@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class WaterTankOfSungDaeLand {
     private static int n, root, rangeCounter = 0;
     private static int[] newIndex, rangeEnd, depth, tree;
     private static List<List<Integer>> adjacency = new ArrayList<>();
