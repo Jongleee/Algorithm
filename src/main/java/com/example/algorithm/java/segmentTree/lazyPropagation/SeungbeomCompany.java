@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree.lazyPropagation;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SeungbeomCompany {
     private static int n, m, indexCounter = 0, size;
     private static int[] newIndex, rangeEnd;
     private static long[] tree, lazy;
