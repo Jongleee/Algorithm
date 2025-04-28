@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.mergeSortTree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SequenceAndQuery1 {
     private static int n;
     private static int[][] segmentTree;
     private static int[] array;
