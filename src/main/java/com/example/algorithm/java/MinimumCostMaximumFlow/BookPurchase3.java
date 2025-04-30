@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.minimumCostMaximumFlow;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BookPurchase3 {
     private static final int INF = 987654321;
     private static final int SRC = 200;
     private static final int SINK = 201;
