@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SameTower {
     private static final int MAX_HEIGHT = 250000;
     private static final int[][] dp = new int[2][MAX_HEIGHT + 1];
 
