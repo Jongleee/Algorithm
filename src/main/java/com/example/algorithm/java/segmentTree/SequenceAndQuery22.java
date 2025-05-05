@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SequenceAndQuery22 {
     private static class Node {
         Node left, right;
         long value;
