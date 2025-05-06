@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree.lazyPropagation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class Main {
+public class RangeSumQuery2 {
     static class SegmentTree {
         private final long[] tree;
         private final long[] lazy;
