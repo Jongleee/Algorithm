@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.unionFind;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class CardGame {
     static int n, m, k;
     static boolean[] hasCard;
     static int[] nextCard;
