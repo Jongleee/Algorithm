@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.matrixExponentiation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class CampusWalk2 {
     private static final long MOD = 1_000_000_007;
 
     public static void main(String[] args) throws IOException {
