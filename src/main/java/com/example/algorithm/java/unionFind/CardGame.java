@@ -13,19 +13,10 @@ public class CardGame {
     static int[] nextCard;
     static StringBuilder sb = new StringBuilder();
     static Queue<Integer> compressionQueue = new LinkedList<>();
-    static StringTokenizer st;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        initialize(br);
-        for (int i = 0; i < k; i++) {
-            play();
-        }
-        System.out.println(sb);
-    }
-
-    private static void initialize(BufferedReader br) throws IOException {
-        st = new StringTokenizer(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
@@ -43,10 +34,13 @@ public class CardGame {
         }
 
         st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < k; i++) {
+            play(Integer.parseInt(st.nextToken()));
+        }
+        System.out.println(sb);
     }
 
-    private static void play() {
-        int cheolsuCard = Integer.parseInt(st.nextToken());
+    private static void play(int cheolsuCard) {
         int chosenCard = nextCard[cheolsuCard];
         compressionQueue.add(chosenCard);
 
