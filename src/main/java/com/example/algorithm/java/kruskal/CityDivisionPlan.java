@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.kruskal;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class CityDivisionPlan {
     static class Edge implements Comparable<Edge> {
         int u, v, w;
 
