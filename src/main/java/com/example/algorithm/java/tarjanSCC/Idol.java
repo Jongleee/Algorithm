@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.tarjanSCC;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Idol {
     static class SCCSolver {
         int n, varCount, index, sccCount;
         List<Integer>[] graph;
