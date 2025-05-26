@@ -1,9 +1,9 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.bitmaskBruteForce;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Main {
+public class TurnOffLights {
     public static int[] map;
     public static int result = Integer.MAX_VALUE;
 
