@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dynamicProgramming;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class TreeAndPathLength {
     private static final int INF = Integer.MAX_VALUE;
 
     public static void main(String[] args) throws IOException {
