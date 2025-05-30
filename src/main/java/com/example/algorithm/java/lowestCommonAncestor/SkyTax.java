@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.lowestCommonAncestor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Main {
+public class SkyTax {
     private static final int LOG = 17;
     private static final StringBuilder sb = new StringBuilder();
 
