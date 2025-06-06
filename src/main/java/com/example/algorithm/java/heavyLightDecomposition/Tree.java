@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.heavyLightDecomposition;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Tree {
     static int size, index;
     static int[] subtreeSize, parent, depth, top, dfsOrder, segmentTree;
     static List<Integer>[] graph;
