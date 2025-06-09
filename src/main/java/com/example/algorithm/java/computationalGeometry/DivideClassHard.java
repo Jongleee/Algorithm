@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.computationalGeometry;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class DivideClassHard {
     static class Point {
         double x, y;
 
