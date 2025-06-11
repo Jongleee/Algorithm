@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree.persistent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class XorQuery {
     private static final int MAX_X = 500000;
     private static final char ADD = '1';
     private static final char XOR = '2';
