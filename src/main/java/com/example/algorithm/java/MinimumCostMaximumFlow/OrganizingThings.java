@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.minimumCostMaximumFlow;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
-public class Main {
+public class OrganizingThings {
     static class Edge {
         int to, capacity;
         double cost;
