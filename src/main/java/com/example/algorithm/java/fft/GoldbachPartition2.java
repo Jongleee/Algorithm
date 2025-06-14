@@ -1,10 +1,10 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.fft;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Main {
+public class GoldbachPartition2 {
     private static final int MAX_PRIME_INDEX = 499999;
     private static final long MOD = 2_281_701_377L;
     private static final long ROOT = 3;
