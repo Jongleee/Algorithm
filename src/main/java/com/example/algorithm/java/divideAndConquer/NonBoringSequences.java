@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.divideAndConquer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class Main {
+public class NonBoringSequences {
     private static final int MAX_N = 200_000;
     private static final String BORING = "boring\n";
     private static final String NON_BORING = "non-boring\n";
