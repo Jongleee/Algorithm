@@ -1,11 +1,11 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.fenwickTree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Meteor {
     static final String NIE = "NIE\n";
     static final char NEW_LINE = '\n';
 
