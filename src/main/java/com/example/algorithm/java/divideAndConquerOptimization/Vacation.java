@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.divideAndConquerOptimization;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Vacation {
     static class SegmentTree {
         long[] tree;
         int[] count;
