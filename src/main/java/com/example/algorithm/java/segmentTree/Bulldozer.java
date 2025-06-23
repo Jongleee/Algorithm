@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Bulldozer {
     private static final int MAX_N = 4002;
     private static final int SEG_SIZE = 1 << 13;
     private static final long INF = (long) 1e13;
