@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.longestIncreasingSubsequence;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,7 +14,7 @@ import java.util.NavigableSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-public class Main {
+public class HarmoniousMatrix {
     static class Point3D implements Comparable<Point3D> {
         int a, b, c;
 
