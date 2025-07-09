@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.sweepLine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
-public class Main {
+public class Pinball {
     static class Segment implements Comparable<Segment> {
         int x1, y1, x2, y2, idx;
 
