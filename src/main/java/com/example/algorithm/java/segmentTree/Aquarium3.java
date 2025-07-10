@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.segmentTree;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-public class Main {
+public class Aquarium3 {
     private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static ArrayList<Integer> positions, heights;
     private static int[] segmentTree;
