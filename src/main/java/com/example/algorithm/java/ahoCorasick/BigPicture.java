@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.ahoCorasick;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BigPicture {
     private static class Trie {
         private int currentKey = 0;
         private final Node origin = new Node(0);
