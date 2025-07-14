@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.searchBroadFirstSearch;
 
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Ballerino {
     private static final int[][] directions = {
             { -2, 1 }, { -1, 2 }, { 1, 2 }, { 2, 1 },
             { -2, -1 }, { -1, -2 }, { 1, -2 }, { 2, -1 }
