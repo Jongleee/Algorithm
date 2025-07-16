@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dijkstra;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main {
+public class ShortestPathAndQuery {
     static class Query {
         int n1, m1, n2, m2;
         long answer = Long.MAX_VALUE;
