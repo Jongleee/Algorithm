@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.dijkstra;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class OlympicBus {
     private static final int N = 207, M = 100007;
     private static final long INF = (long) 1e18;
 
