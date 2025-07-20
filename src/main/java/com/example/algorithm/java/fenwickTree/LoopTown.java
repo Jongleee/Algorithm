@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.fenwickTree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class Main {
+public class LoopTown {
     private static class Pair implements Comparable<Pair> {
         int x, y;
 
