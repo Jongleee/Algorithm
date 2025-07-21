@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.math;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Main {
+public class WhatsOurVectorVictor {
     static final double EPS = 1e-6;
 
     static class Point {
