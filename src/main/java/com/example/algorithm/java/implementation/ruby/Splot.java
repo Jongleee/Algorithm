@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.implementation.ruby;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
-public class Main {
+public class Splot {
     enum FunctionType {
         FORWARD, BACKWARD, BOTH, THROUGH, NONE
     }
