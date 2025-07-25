@@ -1,4 +1,4 @@
-package com.example.algorithm.java;
+package com.example.algorithm.java.convexHull;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 @SuppressWarnings("unchecked")
-public class Main {
+public class MatrixChainMultiplication3 {
     static class HArc implements Comparable<HArc> {
         int id, start, end, low;
         long product, base, numerator, denominator;
